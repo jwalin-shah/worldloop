@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 from collections.abc import Callable
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from .episode import EpisodeTrace
@@ -57,7 +57,7 @@ def _trace_episode(payload: dict[str, Any]) -> dict[str, Any]:
     return payload
 
 
-def publish_episode(trace: "EpisodeTrace") -> dict[str, Any]:
+def publish_episode(trace: EpisodeTrace) -> dict[str, Any]:
     """Publish one completed episode to Weave, or return an offline receipt.
 
     The local `EpisodeTrace` is always the source artifact. Remote publishing is additive,
