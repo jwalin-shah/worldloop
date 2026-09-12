@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 from uuid import uuid4
 
@@ -33,7 +33,7 @@ class RunIdentity:
         model: str = "none",
         scorer_version: str = "transition-check-v1",
         run_id: str | None = None,
-    ) -> "RunIdentity":
+    ) -> RunIdentity:
         return cls(
             experiment_id=experiment_id,
             run_id=run_id or f"run-{uuid4().hex[:12]}",
@@ -59,8 +59,8 @@ class EpisodeEvent:
     observed_at: str
 
     @classmethod
-    def make(cls, event_type: str, stage: str, payload: dict[str, Any]) -> "EpisodeEvent":
-        observed_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+    def make(cls, event_type: str, stage: str, payload: dict[str, Any]) -> EpisodeEvent:
+        observed_at = datetime.now(UTC).replace(microsecond=0).isoformat()
         return cls(event_type=event_type, stage=stage, payload=payload, observed_at=observed_at)
 
 
