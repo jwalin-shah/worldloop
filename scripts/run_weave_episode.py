@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import argparse
-from hashlib import sha256
 import os
-from pathlib import Path
 import subprocess
+from hashlib import sha256
+from pathlib import Path
 
 from worldloop.engine import WorldLoop
 from worldloop.episode import RunIdentity, run_episode, write_episode_trace
