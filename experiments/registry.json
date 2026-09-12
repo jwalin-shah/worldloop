@@ -96,12 +96,12 @@
     {
       "id": "EXP-008",
       "status": "planned",
-      "question": "Do prior WorldLoop failure trajectories produce a policy that improves first-pass behavior on unseen tasks?",
-      "hypothesis": "A candidate context/resource policy learned or derived only from training trajectories reduces held-out routing/context regret or improves first-pass verified success without reducing final correctness.",
-      "independent_variable": "incumbent policy-v0 vs candidate policy-v1",
-      "baseline": "policy-v0 on a frozen held-out task/entity/time split",
-      "treatment": "policy-v1 derived from training-split failure classes/counterfactual outcomes",
-      "metrics": ["first_pass_verified_success", "final_verified_success", "recovery_rate", "routing_regret", "retrieval_calls", "context_tokens", "latency_ms", "cost_if_available", "guardrail_regressions"],
+      "question": "Do prior WorldLoop failure trajectories produce a policy/program that improves first-pass behavior on unseen tasks?",
+      "hypothesis": "A candidate context/resource/workflow policy derived only from training trajectories reduces held-out routing/context regret or improves first-pass verified success without reducing final correctness.",
+      "independent_variable": "incumbent policy/program-v0 vs candidate-v1",
+      "baseline": "v0 on a frozen held-out task/entity/time split",
+      "treatment": "v1 derived from training-split failure classes/counterfactual outcomes",
+      "metrics": ["first_pass_verified_success", "final_verified_success", "recovery_rate", "routing_regret", "retrieval_calls", "context_tokens", "semantic_node_count", "semantic_surface_ratio", "latency_ms", "cost_if_available", "guardrail_regressions"],
       "dataset_or_cases": "new train/held-out split derived from sanitized/synthetic WorldLoop cases; held-out cluster identities must not appear in policy training",
       "stop_rule": "promote only if a predeclared primary metric improves without a verified-correctness or fail-closed regression; otherwise reject/rollback",
       "artifact": "reports/experiments/EXP-008.json + optional W&B dataset/model artifacts"
@@ -114,7 +114,7 @@
       "independent_variable": "2^3 W/C/M availability plus stale/conflict interventions",
       "baseline": "base open model with W=0, C=0, M=0 and controlled individual arms",
       "treatment": "LoRA on/off for W, explicit prompt context for C, controlled external memory for M, plus conflicts such as stale W/current M",
-      "metrics": ["closed_book_correctness", "verified_correctness", "retrieval_invoked", "context_utilization", "conflict_resolution", "abstention_correctness", "routing_regret", "latency_ms", "cost_if_available"],
+      "metrics": ["closed_book_correctness", "verified_correctness", "retrieval_invoked", "context_utilization", "conflict_resolution", "abstention_correctness", "routing_regret", "semantic_surface_ratio", "latency_ms", "cost_if_available"],
       "dataset_or_cases": "synthetic fictional world with train/held-out entity and fact splits",
       "stop_rule": "do not claim physical weight knowledge for hosted models; LoRA intervention must be reproducible and held-out facts/tasks must remain uncontaminated",
       "artifact": "marimo W/C/M cube + Weave evaluation + optional W&B model artifact"
@@ -122,15 +122,28 @@
     {
       "id": "EXP-010",
       "status": "optional",
-      "question": "Can ARIA use real WorldLoop Weave results to propose a bounded experiment that improves the incumbent policy?",
-      "hypothesis": "ARIA can identify a non-obvious failure cluster or performance driver and propose a testable policy/data/config change that can be evaluated against the frozen incumbent.",
-      "independent_variable": "incumbent policy vs ARIA-proposed candidate experiment",
-      "baseline": "current best policy/evaluation",
+      "question": "Can ARIA use real WorldLoop Weave results to propose a bounded experiment that improves the incumbent policy/program?",
+      "hypothesis": "ARIA can identify a non-obvious failure cluster or performance driver and propose a testable graph/node/policy/data/config change that can be evaluated against the frozen incumbent.",
+      "independent_variable": "incumbent vs ARIA-proposed candidate experiment",
+      "baseline": "current best policy/program evaluation",
       "treatment": "one ARIA-derived hypothesis implemented as a bounded candidate",
-      "metrics": ["primary_eval_delta", "guardrail_regressions", "trials_required", "hypothesis_specificity", "promotion_decision"],
+      "metrics": ["primary_eval_delta", "semantic_surface_delta", "guardrail_regressions", "trials_required", "hypothesis_specificity", "promotion_decision"],
       "dataset_or_cases": "WorldLoop Weave trajectories and held-out evaluation",
       "stop_rule": "one real hypothesis-to-experiment-to-evaluation cycle is sufficient; do not use ARIA only as a report summarizer",
       "artifact": "ARIA/W&B experiment refs + reports/experiments/EXP-010.json"
+    },
+    {
+      "id": "EXP-011",
+      "status": "planned",
+      "question": "Can WorldLoop progressively compile successful open-ended agent behavior into a smaller typed workflow while preserving held-out verified success?",
+      "hypothesis": "Replacing broad/open-loop reasoning with deterministic transitions or narrow typed semantic primitives reduces semantic-surface ratio and execution variance without degrading verified correctness.",
+      "independent_variable": "open exploratory execution vs compiled typed workflow version",
+      "baseline": "a traced workflow requiring broad model-owned routing/reasoning",
+      "treatment": "a candidate typed graph that replaces at least one broad semantic/open-loop step with deterministic logic or a bounded semantic primitive and explicit transition",
+      "metrics": ["verified_correctness", "first_pass_verified_success", "semantic_node_count", "semantic_surface_ratio", "compilation_ratio", "open_loop_branch_count", "latency_ms", "cost_if_available", "calibration_error_if_available", "authority_violations"],
+      "dataset_or_cases": "a small repeated-task family with frozen held-out variants so graph compilation cannot overfit one exact trajectory",
+      "stop_rule": "accept the compiled candidate only if semantic surface or execution variance decreases while verified correctness and guardrails remain non-inferior on held-out variants",
+      "artifact": "reports/experiments/EXP-011.json + marimo before/after graph + Weave traces"
     }
   ]
 }
