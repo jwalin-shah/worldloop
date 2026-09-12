@@ -1,7 +1,6 @@
 import json
 from pathlib import Path
 
-
 REQUIRED_FIELDS = {
     "id",
     "status",

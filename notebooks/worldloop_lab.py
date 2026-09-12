@@ -66,7 +66,6 @@ def _(mo, pass_rows, result):
             ),
         ]
     )
-    return
 
 
 @app.cell
@@ -84,7 +83,6 @@ def _(loop):
 @app.cell
 def _(mo, summary):
     mo.vstack([mo.md("## Benchmark scorecard"), mo.ui.table(summary)])
-    return
 
 
 @app.cell
@@ -99,7 +97,6 @@ def _(mo, registry):
         for item in registry["experiments"]
     ]
     mo.vstack([mo.md("## Experiment registry"), mo.ui.table(experiment_rows)])
-    return
 
 
 @app.cell
@@ -112,7 +109,6 @@ def _(mo):
         ),
         kind="info",
     )
-    return
 
 
 if __name__ == "__main__":
