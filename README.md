@@ -1,5 +1,7 @@
 # WorldLoop
 
-Self-improving context compiler, built for CoreWeave Hacks: Agent Loops 2026.
+WorldLoop is a self-improving context compiler for **CoreWeave Hacks: Agent Loops**, September 12–13, 2026.
 
-See [PRIOR_WORK.md](PRIOR_WORK.md) for context on pre-existing, unrelated repos referenced during development.
+This repository is the home for WorldLoop hackathon work. See [PRIOR_WORK.md](PRIOR_WORK.md) for the explicit boundary between hackathon-new code and pre-existing optional prior work or adapters.
+
+Do not commit secrets or personal data.
