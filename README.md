@@ -10,6 +10,8 @@ The public demo is fully reproducible on sanitized fixtures. Private LifeOps/Liv
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — end-to-end, inner-loop, outer-learning-loop, W/C/M, and prior-work architecture diagrams.
 - [`docs/ROADMAP.md`](docs/ROADMAP.md) — hackathon proof -> real external knowledge -> continuous policy improvement -> production runtime.
 - [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) — OCI/marimo/W&B runtime, Infisical secret injection, external-memory adapters, and production promotion path.
+- [`docs/PLATFORM_DEEP_DIVE.md`](docs/PLATFORM_DEEP_DIVE.md) — non-obvious platform constraints/capabilities from the current W&B, marimo, Infisical, CoreWeave, SkyPilot, and TypeSafe docs.
+- [`docs/OPERATOR_CHECKLIST.md`](docs/OPERATOR_CHECKLIST.md) — exact account/setup actions, critical-path gates, and demo-readiness checklist.
 - [`docs/SPONSOR_STACK.md`](docs/SPONSOR_STACK.md) — exact responsibility of Weave, marimo/molab, W&B MCP, ARIA, Models/Artifacts, Inference, TypeSafe, Sandboxes, SkyPilot, and prior-work adapters.
 - [`experiments/registry.json`](experiments/registry.json) — executable experiment questions, hypotheses, metrics, stop rules, and artifact targets.
 - [`PRIOR_WORK.md`](PRIOR_WORK.md) — explicit hackathon/prior-work boundary.
