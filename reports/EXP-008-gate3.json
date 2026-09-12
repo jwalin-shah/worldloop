@@ -1,0 +1,124 @@
+{
+  "dataset_snapshot": "worldloop.change-aware-rollout.v1:eccb8b1a77397dc7",
+  "heldout_case_ids": [
+    "heldout-001",
+    "heldout-002",
+    "heldout-003",
+    "heldout-004",
+    "heldout-005",
+    "heldout-006",
+    "heldout-007",
+    "heldout-008",
+    "heldout-009",
+    "heldout-010",
+    "heldout-011",
+    "heldout-012",
+    "heldout-013",
+    "heldout-014",
+    "heldout-015",
+    "heldout-016",
+    "heldout-017",
+    "heldout-018",
+    "heldout-019",
+    "heldout-020",
+    "heldout-021"
+  ],
+  "policy": {
+    "development_case_ids": [
+      "dev-001",
+      "dev-002",
+      "dev-003",
+      "dev-004",
+      "dev-005",
+      "dev-006",
+      "dev-007",
+      "dev-008",
+      "dev-009",
+      "dev-010",
+      "dev-011",
+      "dev-012",
+      "dev-013",
+      "dev-014",
+      "dev-015",
+      "dev-016",
+      "dev-017",
+      "dev-018",
+      "dev-019",
+      "dev-020",
+      "dev-021",
+      "dev-022",
+      "dev-023",
+      "dev-024",
+      "dev-025",
+      "dev-026",
+      "dev-027",
+      "dev-028",
+      "dev-029",
+      "dev-030",
+      "dev-031",
+      "dev-032",
+      "dev-033",
+      "dev-034",
+      "dev-035",
+      "dev-036",
+      "dev-037",
+      "dev-038",
+      "dev-039",
+      "dev-040",
+      "dev-041",
+      "dev-042",
+      "dev-043",
+      "dev-044",
+      "dev-045"
+    ],
+    "rules": [
+      {
+        "cross_entity": false,
+        "freshness_sensitive": false,
+        "has_dependency": false,
+        "recipe": [
+          "exact"
+        ]
+      },
+      {
+        "cross_entity": false,
+        "freshness_sensitive": true,
+        "has_dependency": false,
+        "recipe": [
+          "vector",
+          "temporal"
+        ]
+      },
+      {
+        "cross_entity": true,
+        "freshness_sensitive": false,
+        "has_dependency": true,
+        "recipe": [
+          "vector",
+          "graph"
+        ]
+      }
+    ],
+    "version": "policy-v1-derived-rules"
+  },
+  "primary_metric": "first_pass_verified_success",
+  "promotion_decision": "PROMOTED",
+  "v0": {
+    "case_count": 21,
+    "final_verified_count": 21,
+    "final_verified_success": 1.0,
+    "first_pass_verified_count": 7,
+    "first_pass_verified_success": 0.333333,
+    "mean_retrieval_steps": 1.0,
+    "policy_version": "policy-v0"
+  },
+  "v1": {
+    "case_count": 21,
+    "final_verified_count": 21,
+    "final_verified_success": 1.0,
+    "first_pass_verified_count": 21,
+    "first_pass_verified_success": 1.0,
+    "mean_retrieval_steps": 1.666667,
+    "policy_version": "policy-v1-derived-rules"
+  }
+}
