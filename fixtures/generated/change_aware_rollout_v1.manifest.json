@@ -1,0 +1,8 @@
+{
+  "version": "worldloop.change-aware-rollout.v1",
+  "snapshot_id": "worldloop.change-aware-rollout.v1:eccb8b1a77397dc7",
+  "seed": 20260912,
+  "development_count": 45,
+  "heldout_count": 21,
+  "generator": "src/worldloop/benchmark.py"
+}
