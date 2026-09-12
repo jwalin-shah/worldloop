@@ -1,6 +1,6 @@
 import importlib
 
-import worldloop.weave_integration as weave_integration
+from worldloop import weave_integration
 
 
 def test_weave_status_defaults_to_real_worldloop_project(monkeypatch):
