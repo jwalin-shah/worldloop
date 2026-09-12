@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from .ir import NodeSpec, TransitionCheck
 from .models import BenchmarkCase, LoopResult, PassResult
 from .store import EvidenceStore
 
@@ -64,9 +65,47 @@ class WorldLoop:
                 merged.append(item)
         return merged
 
-    def evaluate(self, case: BenchmarkCase, items: list, pass_number: int, recipe: list[str]) -> PassResult:
+    @staticmethod
+    def _required_method(case: BenchmarkCase) -> str | None:
+        if case.failure_class in {"stale_temporal", "contradiction_or_staleness"}:
+            return "temporal"
+        if case.failure_class == "cross_entity_join":
+            return "graph"
+        if case.failure_class == "lexical_or_alias_miss":
+            return "vector"
+        return None
+
+    def _node_spec(self, case: BenchmarkCase) -> NodeSpec:
+        obligations = tuple(f"evidence:{item}" for item in case.required_evidence)
+        required_method = self._required_method(case)
+        if required_method:
+            obligations += (f"retrieval_method:{required_method}",)
+        return NodeSpec(
+            node_id="retrieve-and-verify",
+            version="v1",
+            kind="retrieval",
+            input_schema="BenchmarkCase",
+            output_schema="PassResult",
+            evidence_obligations=obligations,
+            preconditions=("question_nonempty",),
+            effects=("read:evidence_store",),
+            postconditions=("supported_answer_or_correct_abstention",),
+            success_transition="DONE",
+            failure_transition="REPAIR",
+        )
+
+    def evaluate(
+        self,
+        case: BenchmarkCase,
+        items: list,
+        pass_number: int,
+        recipe: list[str],
+    ) -> PassResult:
         ids = [item.evidence_id for item in items]
         required = set(case.required_evidence)
+        required_method = self._required_method(case)
+        preconditions_passed = bool(case.question.strip())
+
         if case.expected_abstain:
             score = 1.0 if not required.intersection(ids) else 0.0
             sufficient = True
@@ -74,17 +113,16 @@ class WorldLoop:
         else:
             covered = len(required.intersection(ids))
             score = covered / len(required) if required else 1.0
-            method_required = None
-            if case.failure_class in {"stale_temporal", "contradiction_or_staleness"}:
-                method_required = "temporal"
-            elif case.failure_class == "cross_entity_join":
-                method_required = "graph"
-            elif case.failure_class == "lexical_or_alias_miss":
-                method_required = "vector"
-            if method_required and method_required not in recipe:
+            if required_method and required_method not in recipe:
                 score = min(score, 0.5)
             sufficient = score == 1.0
             answer = case.expected_answer if sufficient else "INSUFFICIENT_EVIDENCE"
+
+        if not preconditions_passed:
+            score = 0.0
+            sufficient = False
+            answer = "INSUFFICIENT_EVIDENCE"
+
         failure_class = None if sufficient else case.failure_class
         diagnosis = None if sufficient else self.diagnose(case, ids)
         provenance = [
@@ -96,6 +134,35 @@ class WorldLoop:
             }
             for item in items
         ]
+
+        spec = self._node_spec(case)
+        obligation_results = {
+            f"evidence:{evidence_id}": evidence_id in ids for evidence_id in case.required_evidence
+        }
+        if required_method:
+            obligation_results[f"retrieval_method:{required_method}"] = required_method in recipe
+        if case.expected_abstain:
+            obligation_results["correct_abstention"] = answer == "INSUFFICIENT_EVIDENCE"
+
+        postcondition_passed = sufficient and preconditions_passed
+        transition_check = TransitionCheck(
+            node_id=spec.node_id,
+            node_version=spec.version,
+            pass_number=pass_number,
+            evidence_used=ids,
+            obligation_results=obligation_results,
+            preconditions_checked=list(spec.preconditions),
+            preconditions_passed=preconditions_passed,
+            effects=list(spec.effects),
+            result=answer,
+            postconditions_checked=list(spec.postconditions),
+            postcondition_passed=postcondition_passed,
+            next_state=(
+                spec.success_transition if postcondition_passed else spec.failure_transition
+            ),
+            failure_class=failure_class,
+        )
+
         return PassResult(
             pass_number=pass_number,
             recipe=recipe,
@@ -106,6 +173,7 @@ class WorldLoop:
             failure_class=failure_class,
             diagnosis=diagnosis,
             provenance=provenance,
+            transition_check=transition_check,
         )
 
     @staticmethod
