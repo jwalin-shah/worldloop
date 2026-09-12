@@ -22,10 +22,10 @@
       "hypothesis": "Provider/model choice changes synthesis quality less than context quality on the seeded retrieval failures.",
       "independent_variable": "provider/model",
       "baseline": "one fixed provider/model over frozen evidence packets",
-      "treatment": "Gemini, OpenAI, and Anthropic-style adapters over identical packets",
-      "metrics": ["task_score", "citation_validity", "abstention_correctness", "latency_ms", "cost_if_available"],
+      "treatment": "Gemini, OpenAI, W&B Inference, TypeSafe, or other available adapters over identical packets",
+      "metrics": ["task_score", "citation_validity", "abstention_correctness", "latency_ms", "cost_if_available", "unnecessary_resource_calls"],
       "dataset_or_cases": "held subset of sanitized WorldLoop cases with frozen evidence snapshots",
-      "stop_rule": "stop after each provider has one reproducible run per case; do not tune prompts per-provider during the comparison",
+      "stop_rule": "stop after each selected provider has one reproducible run per case; do not tune prompts per-provider during the comparison",
       "artifact": "reports/experiments/EXP-002.json"
     },
     {
@@ -58,13 +58,13 @@
       "id": "EXP-005",
       "status": "active",
       "question": "Can Weave make the failure-to-repair trajectory inspectable and comparable across loop versions?",
-      "hypothesis": "Trajectory-level logging makes pass-1 failure, policy mutation, pass-2 improvement, latency and scores reviewable in one evaluation surface.",
+      "hypothesis": "Trajectory-level logging makes Compiler planning, pass-1 failure, Critic diagnosis, Loop Doctor mutation, pass-2 improvement, latency and scores reviewable in one evaluation surface.",
       "independent_variable": "loop/policy version",
       "baseline": "local JSON benchmark only",
-      "treatment": "Weave traced passes plus evaluation rows/summary",
-      "metrics": ["score_delta", "failure_class", "policy_change", "latency_ms", "trace_completeness"],
+      "treatment": "Weave traced agent-role spans plus evaluation rows/summary",
+      "metrics": ["score_delta", "failure_class", "policy_change", "latency_ms", "trace_completeness", "role_handoff_completeness"],
       "dataset_or_cases": "seeded failure cases, starting with case-cross-entity",
-      "stop_rule": "one complete inspectable trajectory plus aggregate comparison is enough for hackathon MVP",
+      "stop_rule": "one complete inspectable three-role trajectory plus aggregate comparison is enough for hackathon MVP",
       "artifact": "W&B Weave project + reports/experiments/EXP-005.json"
     },
     {
@@ -87,11 +87,50 @@
       "hypothesis": "A source-authority-preserving LifeOps/BTW adapter can reuse the same evaluation contract without making private data a hidden demo dependency.",
       "independent_variable": "evidence backend",
       "baseline": "sanitized fixture backend",
-      "treatment": "optional LifeOps/BTW read-only evidence adapter",
+      "treatment": "optional hackathon-built read-only adapter to pre-existing LifeOps/BTW",
       "metrics": ["grounded_task_score", "freshness", "citation_validity", "contradiction_handling", "latency_ms"],
-      "dataset_or_cases": "small reviewed live/public-safe seed plus fixture fallback",
+      "dataset_or_cases": "small reviewed public-safe/live seed plus fixture fallback",
       "stop_rule": "skip for judging if source permissions, provenance, or human review are not ready; never expose private data",
       "artifact": "reports/experiments/EXP-007.json"
+    },
+    {
+      "id": "EXP-008",
+      "status": "planned",
+      "question": "Do prior WorldLoop failure trajectories produce a policy that improves first-pass behavior on unseen tasks?",
+      "hypothesis": "A candidate context/resource policy learned or derived only from training trajectories reduces held-out routing/context regret or improves first-pass verified success without reducing final correctness.",
+      "independent_variable": "incumbent policy-v0 vs candidate policy-v1",
+      "baseline": "policy-v0 on a frozen held-out task/entity/time split",
+      "treatment": "policy-v1 derived from training-split failure classes/counterfactual outcomes",
+      "metrics": ["first_pass_verified_success", "final_verified_success", "recovery_rate", "routing_regret", "retrieval_calls", "context_tokens", "latency_ms", "cost_if_available", "guardrail_regressions"],
+      "dataset_or_cases": "new train/held-out split derived from sanitized/synthetic WorldLoop cases; held-out cluster identities must not appear in policy training",
+      "stop_rule": "promote only if a predeclared primary metric improves without a verified-correctness or fail-closed regression; otherwise reject/rollback",
+      "artifact": "reports/experiments/EXP-008.json + optional W&B dataset/model artifacts"
+    },
+    {
+      "id": "EXP-009",
+      "status": "optional",
+      "question": "Can WorldLoop causally distinguish when task-relevant knowledge is available in model parameters (W), active context (C), or external memory (M), and learn to allocate those resources?",
+      "hypothesis": "On a synthetic world absent from pretraining, independent W/C/M interventions produce distinguishable behavioral regimes and a resource policy can reduce unnecessary context/retrieval while preserving verified correctness.",
+      "independent_variable": "2^3 W/C/M availability plus stale/conflict interventions",
+      "baseline": "base open model with W=0, C=0, M=0 and controlled individual arms",
+      "treatment": "LoRA on/off for W, explicit prompt context for C, controlled external memory for M, plus conflicts such as stale W/current M",
+      "metrics": ["closed_book_correctness", "verified_correctness", "retrieval_invoked", "context_utilization", "conflict_resolution", "abstention_correctness", "routing_regret", "latency_ms", "cost_if_available"],
+      "dataset_or_cases": "synthetic fictional world with train/held-out entity and fact splits",
+      "stop_rule": "do not claim physical weight knowledge for hosted models; LoRA intervention must be reproducible and held-out facts/tasks must remain uncontaminated",
+      "artifact": "marimo W/C/M cube + Weave evaluation + optional W&B model artifact"
+    },
+    {
+      "id": "EXP-010",
+      "status": "optional",
+      "question": "Can ARIA use real WorldLoop Weave results to propose a bounded experiment that improves the incumbent policy?",
+      "hypothesis": "ARIA can identify a non-obvious failure cluster or performance driver and propose a testable policy/data/config change that can be evaluated against the frozen incumbent.",
+      "independent_variable": "incumbent policy vs ARIA-proposed candidate experiment",
+      "baseline": "current best policy/evaluation",
+      "treatment": "one ARIA-derived hypothesis implemented as a bounded candidate",
+      "metrics": ["primary_eval_delta", "guardrail_regressions", "trials_required", "hypothesis_specificity", "promotion_decision"],
+      "dataset_or_cases": "WorldLoop Weave trajectories and held-out evaluation",
+      "stop_rule": "one real hypothesis-to-experiment-to-evaluation cycle is sufficient; do not use ARIA only as a report summarizer",
+      "artifact": "ARIA/W&B experiment refs + reports/experiments/EXP-010.json"
     }
   ]
 }
