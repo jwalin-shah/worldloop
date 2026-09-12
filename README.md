@@ -6,23 +6,25 @@ The public demo is fully reproducible on sanitized fixtures. Private LifeOps dat
 
 ## Plug-and-play on the OCI VM
 
+For an existing checkout:
+
+```bash
+cd ~/projects/worldloop
+git fetch origin main && git merge --ff-only origin/main
+./scripts/ready.sh
+```
+
+For a fresh checkout:
+
 ```bash
 git clone https://github.com/jwalin-shah/worldloop.git ~/projects/worldloop
 cd ~/projects/worldloop
-./scripts/bootstrap_oci.sh
-./scripts/preflight.sh
-./scripts/smoke.sh
+./scripts/ready.sh
 ```
 
-Start the localhost demo server:
+A successful run ends with `READY_FOR_HACKATHON`. Start the localhost demo server with `./scripts/start.sh`, verify `curl http://127.0.0.1:8787/health`, then stop it with `./scripts/stop.sh`.
 
-```bash
-./scripts/start.sh
-curl http://127.0.0.1:8787/health
-./scripts/stop.sh
-```
-
-Or use `make bootstrap`, `make preflight`, `make smoke`, `make demo`, and `make benchmark`.
+Or use `make ready`, `make demo`, and `make benchmark`. See `docs/OCI_RUNBOOK.md` for the host runbook.
 
 ## What the loop does
 
@@ -36,7 +38,7 @@ The benchmark contains 12 sanitized cases spanning temporal state, contradictory
 
 ## W&B Weave
 
-`./scripts/bootstrap_oci.sh` installs the optional sponsor stack by default. Remote tracing activates only when `WANDB_API_KEY` is present. `WORLDLOOP_WEAVE_PROJECT` defaults to `worldloop-coreweave-2026`. Preflight reports only whether keys are present; it never prints values.
+`./scripts/bootstrap_oci.sh` installs the sponsor stack by default. Remote tracing activates only when `WANDB_API_KEY` is present. `WORLDLOOP_WEAVE_PROJECT` defaults to `worldloop-coreweave-2026`. Preflight reports only whether keys are present; it never prints values.
 
 ```bash
 export WANDB_API_KEY='...'
@@ -46,10 +48,10 @@ uv run worldloop demo --case case-cross-entity --json
 
 See `docs/DEMO.md` for the three-minute story, `docs/ARCHITECTURE.md` for the system map, and `PRIOR_WORK.md` for the explicit hackathon/prior-work boundary.
 
-## Safety boundary
-
-WorldLoop does not mutate external systems. Retrieval scores do not confer authority. Fixture results prove only the deterministic fixture behavior in this repository.
-
 ## Hackathon sponsor stack
 
-The OCI bootstrap also installs **CoreWeave Sandboxes (`cwsandbox`)** and **marimo** alongside Weave. ARIA uses the W&B/CoreWeave project rather than a separate assumed local daemon, and TypeSafe AI remains an adapter slot until the event-issued model access details are provided. See `docs/SPONSOR_STACK.md`.
+The OCI bootstrap installs **W&B Weave**, **CoreWeave Sandboxes (`cwsandbox`)**, and **marimo**. ARIA uses the W&B/CoreWeave project rather than a separate assumed local daemon, and TypeSafe AI remains an adapter slot until the event-issued model access details are provided. See `docs/SPONSOR_STACK.md`.
+
+## Safety boundary
+
+WorldLoop does not mutate external systems. Retrieval scores do not confer authority. Fixture results prove only the deterministic fixture behavior in this repository. The server binds to localhost by default; bootstrap does not change firewall, SSH, IAM, or OCI networking.

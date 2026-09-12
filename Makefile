@@ -1,4 +1,6 @@
-.PHONY: bootstrap preflight test lint smoke start stop demo benchmark
+.PHONY: ready bootstrap preflight test lint smoke start stop demo benchmark
+ready:
+	./scripts/ready.sh
 bootstrap:
 	./scripts/bootstrap_oci.sh
 preflight:
