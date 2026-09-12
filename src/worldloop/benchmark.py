@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
-from datetime import datetime, timedelta, timezone
-from hashlib import sha256
 import json
+from dataclasses import asdict, dataclass
+from datetime import UTC, datetime, timedelta
+from hashlib import sha256
 from pathlib import Path
 from typing import Any, Literal
 
@@ -110,7 +110,7 @@ class BenchmarkDataset:
 
 
 def _iso(dt: datetime) -> str:
-    return dt.astimezone(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    return dt.astimezone(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
 def _case_prefix(split: Split) -> str:
@@ -131,8 +131,8 @@ def _dependency_name(split: Split, index: int) -> str:
 def _base_time(split: Split) -> datetime:
     # Held-out time clusters are months away from development time clusters.
     if split == "development":
-        return datetime(2026, 1, 5, 9, tzinfo=timezone.utc)
-    return datetime(2026, 7, 6, 9, tzinfo=timezone.utc)
+        return datetime(2026, 1, 5, 9, tzinfo=UTC)
+    return datetime(2026, 7, 6, 9, tzinfo=UTC)
 
 
 def _risk_band(index: int) -> str:
