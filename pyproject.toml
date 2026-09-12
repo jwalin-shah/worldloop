@@ -14,7 +14,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<9", "ruff>=0.8"]
-weave = ["weave"]
+sponsors = ["weave", "cwsandbox", "marimo"]
 
 [project.scripts]
 worldloop = "worldloop.cli:main"

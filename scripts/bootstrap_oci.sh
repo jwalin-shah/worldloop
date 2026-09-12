@@ -18,7 +18,7 @@ if ! command -v uv >/dev/null 2>&1; then
 fi
 
 if [[ "${WORLDLOOP_INSTALL_WEAVE:-1}" == "1" ]]; then
-  uv sync --extra dev --extra weave
+  uv sync --extra dev --extra sponsors
 else
   uv sync --extra dev
 fi

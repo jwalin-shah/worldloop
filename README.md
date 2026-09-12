@@ -36,7 +36,7 @@ The benchmark contains 12 sanitized cases spanning temporal state, contradictory
 
 ## W&B Weave
 
-`./scripts/bootstrap_oci.sh` installs the optional `weave` extra by default. Remote tracing activates only when `WANDB_API_KEY` is present. `WORLDLOOP_WEAVE_PROJECT` defaults to `worldloop-coreweave-2026`. Preflight reports only whether keys are present; it never prints values.
+`./scripts/bootstrap_oci.sh` installs the optional sponsor stack by default. Remote tracing activates only when `WANDB_API_KEY` is present. `WORLDLOOP_WEAVE_PROJECT` defaults to `worldloop-coreweave-2026`. Preflight reports only whether keys are present; it never prints values.
 
 ```bash
 export WANDB_API_KEY='...'
@@ -49,3 +49,7 @@ See `docs/DEMO.md` for the three-minute story, `docs/ARCHITECTURE.md` for the sy
 ## Safety boundary
 
 WorldLoop does not mutate external systems. Retrieval scores do not confer authority. Fixture results prove only the deterministic fixture behavior in this repository.
+
+## Hackathon sponsor stack
+
+The OCI bootstrap also installs **CoreWeave Sandboxes (`cwsandbox`)** and **marimo** alongside Weave. ARIA uses the W&B/CoreWeave project rather than a separate assumed local daemon, and TypeSafe AI remains an adapter slot until the event-issued model access details are provided. See `docs/SPONSOR_STACK.md`.
