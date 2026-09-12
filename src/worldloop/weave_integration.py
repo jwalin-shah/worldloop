@@ -102,7 +102,7 @@ def publish_episode(trace: EpisodeTrace) -> dict[str, Any]:
             },
             dataset=trace.identity.dataset_snapshot,
             scorers=["verified_success", "improved", "final_score"],
-            attributes=attributes,
+            eval_attributes=attributes,
         )
         evaluator.log_example(
             inputs={"case_id": trace.case_id, "question": trace.question},
