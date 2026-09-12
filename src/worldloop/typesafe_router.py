@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+from collections import Counter
 from dataclasses import asdict, dataclass
-from typing import Any, Literal
+from typing import Any, Callable, Literal
 
 from .benchmark import GeneratedCase
 
@@ -81,6 +82,23 @@ class SemanticRouteResult:
         return payload
 
 
+@dataclass(frozen=True)
+class RouterMetrics:
+    provider: str
+    model: str
+    case_count: int
+    verified_count: int
+    verified_success: float
+    under_allocation_count: int
+    unnecessary_retrieval_count: int
+    abstain_count: int
+    mean_confidence: float | None
+    route_counts: dict[str, int]
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
 def routing_state(case: GeneratedCase) -> dict[str, Any]:
     """Construct legitimate pre-action state shared by every router arm.
 
@@ -136,6 +154,24 @@ def parse_typesafe_choice(answer: Any) -> SemanticRouteResult:
     )
 
 
+def typesafe_question() -> Any:
+    """Build the official SDK Choice object lazily so core/offline imports stay optional."""
+    try:
+        from typesafe_sdk import Choice
+    except ImportError as exc:  # pragma: no cover - optional sponsor dependency
+        raise RuntimeError(
+            "TypeSafe SDK is not installed; install the sponsors extra or `uv add typesafe-sdk`"
+        ) from exc
+    return Choice(
+        instructions=(
+            "Choose the smallest retrieval route WorldLoop should use before deciding the rollout "
+            "question. Choose a retrieval strategy only; do not decide APPROVE/BLOCK/ESCALATE and "
+            "do not invent facts that are absent from state."
+        ),
+        criteria=ROUTE_CRITERIA,
+    )
+
+
 def typesafe_route(case: GeneratedCase) -> SemanticRouteResult:
     """Run one bounded TypeSafe Choice judgment.
 
@@ -144,21 +180,73 @@ def typesafe_route(case: GeneratedCase) -> SemanticRouteResult:
     execution, and verification.
     """
     try:
-        from typesafe_sdk import Choice, TypeSafeClient
+        from typesafe_sdk import TypeSafeClient
     except ImportError as exc:  # pragma: no cover - optional sponsor dependency
         raise RuntimeError(
             "TypeSafe SDK is not installed; install the sponsors extra or `uv add typesafe-sdk`"
         ) from exc
 
-    state = routing_state(case)
-    question = Choice(
-        instructions=(
-            "Choose the smallest retrieval route WorldLoop should use before deciding the rollout "
-            "question. Choose a retrieval strategy only; do not decide APPROVE/BLOCK/ESCALATE and "
-            "do not invent facts that are absent from state."
-        ),
-        criteria=ROUTE_CRITERIA,
-    )
     with TypeSafeClient() as client:
-        response = client.system_one(state=state, questions={"route": question})
+        response = client.system_one(
+            state=routing_state(case),
+            questions={"route": typesafe_question()},
+        )
     return parse_typesafe_choice(response.choices["route"])
+
+
+def route_is_verified(case: GeneratedCase, result: SemanticRouteResult) -> bool:
+    return set(case.repair_recipe).issubset(result.recipe)
+
+
+def evaluate_router(
+    cases: tuple[GeneratedCase, ...],
+    router: Callable[[GeneratedCase], SemanticRouteResult],
+) -> tuple[RouterMetrics, list[dict[str, Any]]]:
+    rows: list[dict[str, Any]] = []
+    confidences: list[float] = []
+    route_counts: Counter[str] = Counter()
+    verified_count = 0
+    under_allocation_count = 0
+    unnecessary_retrieval_count = 0
+    abstain_count = 0
+    provider = "unknown"
+    model = "unknown"
+
+    for case in cases:
+        result = router(case)
+        provider = result.provider
+        model = result.model
+        verified = route_is_verified(case, result)
+        verified_count += int(verified)
+        under_allocation_count += int(not verified and result.route != "ABSTAIN")
+        abstain_count += int(result.route == "ABSTAIN")
+        unnecessary = verified and not set(result.recipe).issubset(set(case.repair_recipe))
+        unnecessary_retrieval_count += int(unnecessary)
+        if result.confidence is not None:
+            confidences.append(result.confidence)
+        route_counts[result.route] += 1
+        rows.append(
+            {
+                "case_id": case.case_id,
+                "route": result.route,
+                "recipe": list(result.recipe),
+                "verified": verified,
+                "confidence": result.confidence,
+                "probabilities": result.probabilities,
+            }
+        )
+
+    count = len(cases)
+    metrics = RouterMetrics(
+        provider=provider,
+        model=model,
+        case_count=count,
+        verified_count=verified_count,
+        verified_success=round(verified_count / count, 6) if count else 0.0,
+        under_allocation_count=under_allocation_count,
+        unnecessary_retrieval_count=unnecessary_retrieval_count,
+        abstain_count=abstain_count,
+        mean_confidence=(round(sum(confidences) / len(confidences), 6) if confidences else None),
+        route_counts=dict(sorted(route_counts.items())),
+    )
+    return metrics, rows
