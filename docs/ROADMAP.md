@@ -1,107 +1,163 @@
 # WorldLoop Roadmap
 
-WorldLoop starts as a hackathon proof of a self-improving context and epistemic/resource compiler, but the architecture is intentionally shaped so the same system can become useful against real, changing external knowledge rather than ending as a fixture-only demo.
+WorldLoop starts as a hackathon proof of self-correcting context/resource allocation, but the long-term architecture is now more precise: **the outer loop learns how to compile open-ended agent behavior into a smaller typed program over a changing world**.
 
-`DESIGN.md` defines the system contract. `ARCHITECTURE.md` defines the component map. This file defines the order in which capabilities should become real.
+`DESIGN.md` defines the broader system contract. `TYPED_EXECUTION_IR.md` defines the production execution target. `ARCHITECTURE.md` defines how the runtime and learning loops fit together.
 
 ## North star
 
-Given a task and a budget, WorldLoop should select the cheapest sufficient combination of model capability, active context, external knowledge, tools, and verification needed for a supported result. When that selection fails, the failure should become evidence for a better future policy.
+Given an objective and a budget, WorldLoop should construct the smallest verified typed program that can reliably accomplish the task using the cheapest sufficient combination of deterministic code, active context, external knowledge, bounded semantic intelligence, tools, authorization, and verification.
 
-The product is therefore not "RAG with retries" and not "put everything into model weights." It is a learned control plane for allocating cognition over a changing world.
+When the program fails, the failure becomes evidence for improving the graph, node, context, model, threshold, or evidence policy.
+
+The product is therefore not “RAG with retries,” not “a giant autonomous agent,” and not “put everything into model weights.” It is a **learning compiler for intelligent workflows**.
 
 ## Phase 0 — Hackathon proof
 
-Goal: prove the loop and make every claim inspectable.
+Goal: prove that the loop can diagnose a bad cognition/resource decision, repair it, and use prior trajectories to improve future execution.
 
 Required:
 
 - deterministic/synthetic public benchmark;
-- visible Context Compiler, independent Critic/Verifier, and Loop Doctor roles;
-- real Weave trajectory with context/resource plan, evidence refs, scores, failure class, and policy delta;
-- marimo WorldLoop Lab with Live Loop and Policy Comparison views;
+- visible Compiler, Critic/Verifier, and Loop Doctor roles;
+- one real Weave trajectory with graph/resource plan, evidence refs, scores, failure class, and policy delta;
+- marimo WorldLoop Lab with Live Execution and Policy/Program Comparison views;
 - EXP-008 held-out policy-v0 versus policy-v1 result using first-pass success and/or routing/context regret;
-- exact code, data/evidence, policy, provider/model, and scorer identity on every comparable run;
+- exact code, data/evidence, workflow/policy, provider/model, and scorer identity on comparable runs;
 - fail-closed behavior on insufficient/conflicting evidence.
 
-Strong extensions, only after the core proof is working:
+Stronger hackathon proof:
+
+- represent the task as a small typed graph rather than only an open loop;
+- show one broad/open-ended decision compiled into an explicit transition or narrow semantic primitive;
+- report semantic-node count or semantic-surface ratio alongside success/regret;
+- add EXP-011 progressive-compilation comparison.
+
+Strong extensions only after the core proof works:
 
 - W/C/M controlled knowledge-location experiment;
 - small learned router or LoRA intervention on molab;
-- ARIA-generated bounded experiment;
-- TypeSafe / W&B Inference model comparison;
+- ARIA-generated graph/node experiment;
+- TypeSafe as a measured semantic-node provider if the onsite interface supports it;
 - read-only BTW/LiveLM external-memory adapter;
 - SkyPilot parallel experiment execution when it removes operational friction;
-- CoreWeave Sandbox episodes for genuinely stateful/code-execution tasks.
+- CoreWeave Sandbox episodes for genuinely stateful/code-execution nodes.
 
-Exit condition: a judge can see one task fail, understand why, see the actual decision variable change, see the repair succeed, and then see a later policy perform better on unseen tasks.
+Exit condition: a judge can see one task fail, see exactly which node/resource decision failed, see the graph/policy change, see the repaired execution, and see a candidate program/policy perform better on unseen tasks.
 
-## Phase 1 — Real external knowledge
+## Phase 1 — Typed execution core
 
-Goal: keep the same evaluation contract while replacing toy memory with source-backed changing-world evidence.
+Goal: stop treating the open-ended agent loop as the runtime architecture.
 
-Add a normalized external-memory interface that can read from:
+Build the first reusable workflow IR with:
+
+- typed workflow/version identity;
+- typed node inputs/outputs;
+- explicit transitions;
+- deterministic nodes;
+- retrieval nodes;
+- semantic primitives such as `CLASSIFY`, `DECIDE`, `EXTRACT`, `CRITIQUE`, and `VERIFY`;
+- tool nodes;
+- abstention/escalation paths;
+- risk/stakes thresholds;
+- separate authorization and verification nodes for consequential actions.
+
+The model must not own global control flow. A semantic node can return a typed decision/uncertainty value; the workflow engine evaluates that output against explicit transition rules.
+
+Exit condition: representative WorldLoop tasks execute as versioned typed graphs and can be replayed/tested without reconstructing control flow from model prose.
+
+## Phase 2 — Real external knowledge
+
+Goal: keep the same typed graph/evaluation contract while replacing toy memory with source-backed changing-world evidence.
+
+Add normalized evidence adapters for:
 
 - BTW/LiveLM as a clearly labeled prior-work backend;
 - source-native APIs/files/databases;
-- web/freshness-aware evidence collectors where permitted;
+- freshness-aware web evidence where permitted;
 - LifeOps durable objects for provider-neutral continuity when appropriate.
 
-Every returned evidence item should preserve source identity, observation time, event/validity time, entity/object refs, provenance, and supersession/freshness state.
+Every evidence item preserves source identity, observation time, event/validity time, entity/object refs, provenance, and supersession/freshness state.
 
-The Context Materializer should learn what subset of durable state must enter the active working context. The Epistemic Router should learn when model-only reasoning is sufficient, when memory is necessary, when a deeper source is required, when a stronger model/tool/verifier is worth the cost, and when to abstain.
+The Context Materializer learns which durable objects enter active working context. Semantic/retrieval nodes receive evidence through typed obligations instead of unbounded prompt stuffing.
 
-Exit condition: the same WorldLoop policy/eval machinery works against real changing evidence without making the private index a hidden dependency or treating model output as world truth.
+Exit condition: the same compiled workflow can execute against real changing evidence while preserving source authority and fail-closed behavior.
 
-## Phase 2 — Continuous policy improvement
+## Phase 3 — Progressive compilation and continuous improvement
 
-Goal: convert trajectories into safe cross-task learning.
+Goal: use trajectories to reduce unnecessary open-ended intelligence, not merely improve retry prompts.
 
-Build a counterfactual dataset where selected tasks are run through multiple allowed routes. Record verified success, support, latency, tokens, cost, tool/retrieval usage, and failures. Use these outcomes to train or derive candidate context/resource policies.
+Build counterfactual datasets where tasks are run through multiple allowed graphs/routes. Record:
 
-Promote only through:
+- verified success;
+- evidence quality;
+- latency/tokens/cost;
+- tool/retrieval usage;
+- semantic-node count;
+- semantic-surface ratio;
+- calibration error where applicable;
+- authority/verification guardrails.
+
+Candidate improvements may:
+
+- replace a model transformation with deterministic code;
+- turn free-form planning into a typed graph template;
+- replace broad reasoning with a narrow semantic node;
+- introduce explicit branches/thresholds/abstention;
+- change context/evidence obligations;
+- change provider/model for one primitive;
+- add a verifier or authorization boundary.
+
+Promotion path:
 
 ```text
-incumbent policy
+incumbent graph/policy
   -> candidate
   -> frozen held-out evaluation
-  -> guardrail comparison
+  -> correctness + regret + semantic-surface + calibration + safety comparison
   -> canary
   -> promote | reject
 ```
 
-Preserve rollback and full lineage from trajectory/evidence snapshot to training dataset to candidate policy to evaluation result.
+Exit condition: candidate programs improve unseen-task behavior and/or reduce semantic surface/resource regret without verified-correctness or safety regression.
 
-Exit condition: policy changes improve unseen-task first-pass success or reduce routing/context regret at equal or better verified correctness.
+## Phase 4 — Production runtime
 
-## Phase 3 — Production runtime
-
-Goal: deploy WorldLoop as a reliable service rather than a notebook-only experiment.
+Goal: deploy WorldLoop as a reliable typed-workflow service rather than a notebook or wandering agent.
 
 Runtime surfaces:
 
-- `/answer` or task endpoint for bounded execution;
+- `/execute` or task endpoint for bounded workflow execution;
 - `/health` / readiness;
 - optional `/feedback` and evaluation ingestion;
-- provider/model adapters;
+- workflow/policy registry + rollback;
+- provider/model adapters by semantic primitive;
 - external-memory adapters;
 - verifier/scorer service;
-- policy registry and rollback;
-- Weave telemetry/evaluations;
 - budgets, timeouts, circuit breakers, cache, retries, abstention, and rate limits;
-- explicit request/run IDs and receipts.
+- explicit request/run/workflow/node IDs and receipts;
+- Weave telemetry/evaluations.
 
-The marimo app remains the human research/operations surface, not the serving dependency. The same notebook code may be run as a read-only app for analysis because marimo notebooks are normal Python and can be deployed as apps.
+The marimo app remains the human research/operations surface, not a serving dependency.
 
-For consequential external actions, WorldLoop proposes a plan/result but does not self-authorize. A separate authority/execution boundary such as HomeBase/Bridge can admit, execute, independently verify, and receipt the side effect.
+For consequential external actions:
 
-Exit condition: policy/version rollback, source/version identity, observability, security boundaries, and failure behavior are all testable independently of the interactive research UI.
+```text
+semantic/deterministic result
+  -> proposed effect
+  -> HomeBase / Bridge authorization
+  -> bounded actuator
+  -> independent verification
+  -> durable receipt/world-state update
+```
+
+Exit condition: graph/policy rollback, source/version identity, observability, security boundaries, authority separation, and failure behavior are independently testable.
 
 ## Deployment and secret-management principle
 
-GitHub owns source and reviewable configuration. W&B owns experiment/evaluation/model lineage. marimo/molab owns live scientific interaction. Infisical injects runtime secrets. Source-backed systems own mutable truth. No one of these systems becomes a substitute for the others.
+GitHub owns source, typed schemas, workflows, and reviewable configuration. W&B owns experiment/evaluation/model lineage. marimo/molab owns live scientific interaction. Infisical injects runtime secrets. Source-backed systems own mutable truth. Authority systems own permission to mutate consequential external state.
 
-The secret path should be:
+Secret path:
 
 ```text
 Infisical project/environment
@@ -113,15 +169,16 @@ Infisical project/environment
 
 Do not commit `.env` files or copy long-lived keys into notebooks, prompts, LifeOps observations, or GitHub issues.
 
-See `DEPLOYMENT.md` for the concrete setup.
+See `DEPLOYMENT.md` for concrete setup.
 
 ## Decision rule for adding features
 
-A new tool, sponsor integration, or architecture layer is accepted only if it materially improves one of four things:
+A new tool, sponsor integration, or architecture layer is accepted only if it materially improves one of five things:
 
 1. verified correctness/recovery;
 2. lower routing/context/cost/latency regret;
-3. stronger causal/evaluation evidence;
-4. safer, more reproducible production operation.
+3. smaller semantic surface without correctness regression;
+4. stronger causal/evaluation evidence;
+5. safer, more reproducible production operation.
 
 If it does not improve one of those, it is outside the critical path.
