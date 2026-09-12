@@ -8,6 +8,8 @@ The public demo is fully reproducible on sanitized fixtures. Private LifeOps/Liv
 
 - [`docs/DESIGN.md`](docs/DESIGN.md) — canonical design specification: axioms, invariants, agent roles, data contracts, evaluation metrics, training targets, failure modes, MVP and extensions.
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — end-to-end, inner-loop, outer-learning-loop, W/C/M, and prior-work architecture diagrams.
+- [`docs/ROADMAP.md`](docs/ROADMAP.md) — hackathon proof -> real external knowledge -> continuous policy improvement -> production runtime.
+- [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) — OCI/marimo/W&B runtime, Infisical secret injection, external-memory adapters, and production promotion path.
 - [`docs/SPONSOR_STACK.md`](docs/SPONSOR_STACK.md) — exact responsibility of Weave, marimo/molab, W&B MCP, ARIA, Models/Artifacts, Inference, TypeSafe, Sandboxes, SkyPilot, and prior-work adapters.
 - [`experiments/registry.json`](experiments/registry.json) — executable experiment questions, hypotheses, metrics, stop rules, and artifact targets.
 - [`PRIOR_WORK.md`](PRIOR_WORK.md) — explicit hackathon/prior-work boundary.
