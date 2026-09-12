@@ -8,6 +8,8 @@ The public demo remains fully reproducible on sanitized fixtures. Private LifeOp
 
 ## Design
 
+- [`docs/HACKATHON_MVP.md`](docs/HACKATHON_MVP.md) — the one-day build target: exact problem, demo, benchmark, metrics, implementation order, and go/no-go criteria.
+- [`docs/CRITICAL_REVIEW.md`](docs/CRITICAL_REVIEW.md) — explicit novelty risks, counterarguments, hardest parts, kill criteria, and the defensible wedge versus adjacent systems.
 - [`docs/DESIGN.md`](docs/DESIGN.md) — broader system specification: axioms, invariants, data contracts, evaluation metrics, training targets, failure modes, MVP and extensions.
 - [`docs/TYPED_EXECUTION_IR.md`](docs/TYPED_EXECUTION_IR.md) — runtime centerpiece: typed workflow/state-machine IR, semantic primitives, explicit transitions, confidence/stakes/authority separation, and progressive compilation metrics.
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — typed runtime graph, learning loop, W/C/M, compilation, source boundaries, and tool responsibilities.
