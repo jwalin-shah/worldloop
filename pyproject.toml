@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "worldloop"
+version = "0.1.0"
+description = "Self-improving context compiler for CoreWeave Hacks: Agent Loops"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn>=0.30,<1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9", "ruff>=0.8"]
+weave = ["weave"]
+
+[project.scripts]
+worldloop = "worldloop.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/worldloop"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100

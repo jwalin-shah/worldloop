@@ -1,7 +1,7 @@
-# Prior Work
+# Prior-work boundary
 
-LiveLM and LifeOps are pre-existing projects. They are optional, read-only prior work or adapters, **not hackathon-new code** for WorldLoop or CoreWeave Hacks: Agent Loops, September 12–13, 2026.
+WorldLoop is a fresh hackathon repository created for CoreWeave Hacks: Agent Loops on September 12-13, 2026.
 
-WorldLoop does not claim their existing code as work created during the hackathon. Any future reference to or use of LiveLM/LifeOps adapters must retain that distinction and keep the prior-work projects read-only. Neither project is required by this seed repository.
+Pre-existing systems such as **LiveLM/BTW retrieval** and **LifeOps** informed the problem statement and may later be connected through optional, read-only adapters. They are not part of the hackathon-new implementation in this repository, and the public demo does not require private LifeOps data.
 
-This repository must not contain secrets or personal data from those projects.
+The benchmark in `fixtures/` is sanitized and deterministic. Its scores prove behavior on those fixtures only; they are not claims of production retrieval quality or factual completeness.
