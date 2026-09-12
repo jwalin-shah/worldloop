@@ -12,6 +12,7 @@ The public demo remains fully reproducible on sanitized fixtures. Private LifeOp
 - [`docs/CRITICAL_REVIEW.md`](docs/CRITICAL_REVIEW.md) — explicit novelty risks, counterarguments, hardest parts, kill criteria, and the defensible wedge versus adjacent systems.
 - [`docs/DESIGN.md`](docs/DESIGN.md) — broader system specification: axioms, invariants, data contracts, evaluation metrics, training targets, failure modes, MVP and extensions.
 - [`docs/TYPED_EXECUTION_IR.md`](docs/TYPED_EXECUTION_IR.md) — runtime centerpiece: typed workflow/state-machine IR, semantic primitives, explicit transitions, confidence/stakes/authority separation, and progressive compilation metrics.
+- [`docs/TRANSITION_CONTRACTS.md`](docs/TRANSITION_CONTRACTS.md) — executable `NodeSpec + TransitionCheck`, proof-carrying-transition interpretation, liveness, specification provenance, and security-context continuity constraints.
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — typed runtime graph, learning loop, W/C/M, compilation, source boundaries, and tool responsibilities.
 - [`docs/ROADMAP.md`](docs/ROADMAP.md) — hackathon proof -> typed execution core -> real external knowledge -> progressive compilation -> production runtime.
 - [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) — OCI/marimo/W&B runtime, Infisical secret injection, external-memory adapters, and production promotion path.
