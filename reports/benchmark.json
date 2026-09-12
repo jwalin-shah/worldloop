@@ -1,0 +1,926 @@
+{
+  "all_seeded_repaired": true,
+  "case_count": 12,
+  "final_sufficient_count": 12,
+  "improved_seeded_cases": 8,
+  "results": [
+    {
+      "case_id": "case-acquisition-cto",
+      "final_sufficient": true,
+      "improved": true,
+      "passes": [
+        {
+          "answer": "INSUFFICIENT_EVIDENCE",
+          "diagnosis": "cross_entity_join: missing required evidence none",
+          "evidence_ids": [
+            "E10",
+            "E11",
+            "E05",
+            "E16"
+          ],
+          "failure_class": "cross_entity_join",
+          "pass_number": 1,
+          "provenance": [
+            {
+              "event_time": "2026-02-01",
+              "evidence_id": "E10",
+              "observed_time": "2026-02-01",
+              "source": "fixture://atlas/acquisition"
+            },
+            {
+              "event_time": "2026-02-02",
+              "evidence_id": "E11",
+              "observed_time": "2026-02-02",
+              "source": "fixture://nova/leadership"
+            },
+            {
+              "event_time": "2026-01-01",
+              "evidence_id": "E05",
+              "observed_time": "2026-01-02",
+              "source": "fixture://orbit/profile"
+            },
+            {
+              "event_time": "2026-03-06",
+              "evidence_id": "E16",
+              "observed_time": "2026-03-06",
+              "source": "fixture://northstar/operator"
+            }
+          ],
+          "recipe": [
+            "vector"
+          ],
+          "score": 0.5,
+          "sufficient": false
+        },
+        {
+          "answer": "Dana Ruiz is CTO of Nova AI.",
+          "diagnosis": null,
+          "evidence_ids": [
+            "E10",
+            "E11",
+            "E05",
+            "E16",
+            "E04",
+            "E15",
+            "E03",
+            "E14"
+          ],
+          "failure_class": null,
+          "pass_number": 2,
+          "provenance": [
+            {
+              "event_time": "2026-02-01",
+              "evidence_id": "E10",
+              "observed_time": "2026-02-01",
+              "source": "fixture://atlas/acquisition"
+            },
+            {
+              "event_time": "2026-02-02",
+              "evidence_id": "E11",
+              "observed_time": "2026-02-02",
+              "source": "fixture://nova/leadership"
+            },
+            {
+              "event_time": "2026-01-01",
+              "evidence_id": "E05",
+              "observed_time": "2026-01-02",
+              "source": "fixture://orbit/profile"
+            },
+            {
+              "event_time": "2026-03-06",
+              "evidence_id": "E16",
+              "observed_time": "2026-03-06",
+              "source": "fixture://northstar/operator"
+            },
+            {
+              "event_time": "2026-05-15",
+              "evidence_id": "E04",
+              "observed_time": "2026-05-16",
+              "source": "fixture://helix/partnership"
+            },
+            {
+              "event_time": "2026-03-05",
+              "evidence_id": "E15",
+              "observed_time": "2026-03-05",
+              "source": "fixture://lantern/dependency"
+            },
+            {
+              "event_time": "2023-01-10",
+              "evidence_id": "E03",
+              "observed_time": "2023-01-11",
+              "source": "fixture://people/maya"
+            },
+            {
+              "event_time": "2026-03-01",
+              "evidence_id": "E14",
+              "observed_time": "2026-03-01",
+              "source": "fixture://quarry/ownership"
+            }
+          ],
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "score": 1.0,
+          "sufficient": true
+        }
+      ],
+      "question": "Who is CTO of the company Atlas Labs acquired in February 2026?"
+    },
+    {
+      "case_id": "case-atlas-event",
+      "final_sufficient": true,
+      "improved": false,
+      "passes": [
+        {
+          "answer": "Atlas Labs acquired Nova AI on February 1, 2026.",
+          "diagnosis": null,
+          "evidence_ids": [
+            "E10",
+            "E11"
+          ],
+          "failure_class": null,
+          "pass_number": 1,
+          "provenance": [
+            {
+              "event_time": "2026-02-01",
+              "evidence_id": "E10",
+              "observed_time": "2026-02-01",
+              "source": "fixture://atlas/acquisition"
+            },
+            {
+              "event_time": "2026-02-02",
+              "evidence_id": "E11",
+              "observed_time": "2026-02-02",
+              "source": "fixture://nova/leadership"
+            }
+          ],
+          "recipe": [
+            "exact",
+            "lexical"
+          ],
+          "score": 1.0,
+          "sufficient": true
+        }
+      ],
+      "question": "When did Atlas Labs acquire Nova AI?"
+    },
+    {
+      "case_id": "case-cross-entity",
+      "final_sufficient": true,
+      "improved": true,
+      "passes": [
+        {
+          "answer": "INSUFFICIENT_EVIDENCE",
+          "diagnosis": "cross_entity_join: missing required evidence E04",
+          "evidence_ids": [
+            "E05",
+            "E03",
+            "E11",
+            "E16"
+          ],
+          "failure_class": "cross_entity_join",
+          "pass_number": 1,
+          "provenance": [
+            {
+              "event_time": "2026-01-01",
+              "evidence_id": "E05",
+              "observed_time": "2026-01-02",
+              "source": "fixture://orbit/profile"
+            },
+            {
+              "event_time": "2023-01-10",
+              "evidence_id": "E03",
+              "observed_time": "2023-01-11",
+              "source": "fixture://people/maya"
+            },
+            {
+              "event_time": "2026-02-02",
+              "evidence_id": "E11",
+              "observed_time": "2026-02-02",
+              "source": "fixture://nova/leadership"
+            },
+            {
+              "event_time": "2026-03-06",
+              "evidence_id": "E16",
+              "observed_time": "2026-03-06",
+              "source": "fixture://northstar/operator"
+            }
+          ],
+          "recipe": [
+            "vector"
+          ],
+          "score": 0.5,
+          "sufficient": false
+        },
+        {
+          "answer": "Orbit Systems is headquartered in Denver, Colorado.",
+          "diagnosis": null,
+          "evidence_ids": [
+            "E05",
+            "E03",
+            "E11",
+            "E16",
+            "E04",
+            "E10",
+            "E15",
+            "E14"
+          ],
+          "failure_class": null,
+          "pass_number": 2,
+          "provenance": [
+            {
+              "event_time": "2026-01-01",
+              "evidence_id": "E05",
+              "observed_time": "2026-01-02",
+              "source": "fixture://orbit/profile"
+            },
+            {
+              "event_time": "2023-01-10",
+              "evidence_id": "E03",
+              "observed_time": "2023-01-11",
+              "source": "fixture://people/maya"
+            },
+            {
+              "event_time": "2026-02-02",
+              "evidence_id": "E11",
+              "observed_time": "2026-02-02",
+              "source": "fixture://nova/leadership"
+            },
+            {
+              "event_time": "2026-03-06",
+              "evidence_id": "E16",
+              "observed_time": "2026-03-06",
+              "source": "fixture://northstar/operator"
+            },
+            {
+              "event_time": "2026-05-15",
+              "evidence_id": "E04",
+              "observed_time": "2026-05-16",
+              "source": "fixture://helix/partnership"
+            },
+            {
+              "event_time": "2026-02-01",
+              "evidence_id": "E10",
+              "observed_time": "2026-02-01",
+              "source": "fixture://atlas/acquisition"
+            },
+            {
+              "event_time": "2026-03-05",
+              "evidence_id": "E15",
+              "observed_time": "2026-03-05",
+              "source": "fixture://lantern/dependency"
+            },
+            {
+              "event_time": "2026-03-01",
+              "evidence_id": "E14",
+              "observed_time": "2026-03-01",
+              "source": "fixture://quarry/ownership"
+            }
+          ],
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "score": 1.0,
+          "sufficient": true
+        }
+      ],
+      "question": "Which city is the partner company of Maya Singh's company headquartered in?"
+    },
+    {
+      "case_id": "case-current-cache",
+      "final_sufficient": true,
+      "improved": true,
+      "passes": [
+        {
+          "answer": "INSUFFICIENT_EVIDENCE",
+          "diagnosis": "stale_temporal: missing required evidence none",
+          "evidence_ids": [
+            "E06",
+            "E07",
+            "E14",
+            "E15"
+          ],
+          "failure_class": "stale_temporal",
+          "pass_number": 1,
+          "provenance": [
+            {
+              "event_time": "2025-06-01",
+              "evidence_id": "E06",
+              "observed_time": "2025-06-02",
+              "source": "fixture://cedar/2025"
+            },
+            {
+              "event_time": "2026-01-12",
+              "evidence_id": "E07",
+              "observed_time": "2026-01-12",
+              "source": "fixture://cedar/2026"
+            },
+            {
+              "event_time": "2026-03-01",
+              "evidence_id": "E14",
+              "observed_time": "2026-03-01",
+              "source": "fixture://quarry/ownership"
+            },
+            {
+              "event_time": "2026-03-05",
+              "evidence_id": "E15",
+              "observed_time": "2026-03-05",
+              "source": "fixture://lantern/dependency"
+            }
+          ],
+          "recipe": [
+            "lexical"
+          ],
+          "score": 0.5,
+          "sufficient": false
+        },
+        {
+          "answer": "Project Cedar uses SQLite FTS5 for its local retrieval cache.",
+          "diagnosis": null,
+          "evidence_ids": [
+            "E15",
+            "E14",
+            "E07",
+            "E06"
+          ],
+          "failure_class": null,
+          "pass_number": 2,
+          "provenance": [
+            {
+              "event_time": "2026-03-05",
+              "evidence_id": "E15",
+              "observed_time": "2026-03-05",
+              "source": "fixture://lantern/dependency"
+            },
+            {
+              "event_time": "2026-03-01",
+              "evidence_id": "E14",
+              "observed_time": "2026-03-01",
+              "source": "fixture://quarry/ownership"
+            },
+            {
+              "event_time": "2026-01-12",
+              "evidence_id": "E07",
+              "observed_time": "2026-01-12",
+              "source": "fixture://cedar/2026"
+            },
+            {
+              "event_time": "2025-06-01",
+              "evidence_id": "E06",
+              "observed_time": "2025-06-02",
+              "source": "fixture://cedar/2025"
+            }
+          ],
+          "recipe": [
+            "lexical",
+            "temporal"
+          ],
+          "score": 1.0,
+          "sufficient": true
+        }
+      ],
+      "question": "What retrieval cache does Project Cedar use now?"
+    },
+    {
+      "case_id": "case-exact-founder",
+      "final_sufficient": true,
+      "improved": false,
+      "passes": [
+        {
+          "answer": "Maya Singh founded Helix Robotics.",
+          "diagnosis": null,
+          "evidence_ids": [
+            "E03",
+            "E04"
+          ],
+          "failure_class": null,
+          "pass_number": 1,
+          "provenance": [
+            {
+              "event_time": "2023-01-10",
+              "evidence_id": "E03",
+              "observed_time": "2023-01-11",
+              "source": "fixture://people/maya"
+            },
+            {
+              "event_time": "2026-05-15",
+              "evidence_id": "E04",
+              "observed_time": "2026-05-16",
+              "source": "fixture://helix/partnership"
+            }
+          ],
+          "recipe": [
+            "exact"
+          ],
+          "score": 1.0,
+          "sufficient": true
+        }
+      ],
+      "question": "Who founded Helix Robotics?"
+    },
+    {
+      "case_id": "case-falcon-current",
+      "final_sufficient": true,
+      "improved": true,
+      "passes": [
+        {
+          "answer": "INSUFFICIENT_EVIDENCE",
+          "diagnosis": "stale_temporal: missing required evidence E12",
+          "evidence_ids": [
+            "E02",
+            "E04",
+            "E06",
+            "E07"
+          ],
+          "failure_class": "stale_temporal",
+          "pass_number": 1,
+          "provenance": [
+            {
+              "event_time": "2025-03-03",
+              "evidence_id": "E02",
+              "observed_time": "2025-03-04",
+              "source": "fixture://acme/2025"
+            },
+            {
+              "event_time": "2026-05-15",
+              "evidence_id": "E04",
+              "observed_time": "2026-05-16",
+              "source": "fixture://helix/partnership"
+            },
+            {
+              "event_time": "2025-06-01",
+              "evidence_id": "E06",
+              "observed_time": "2025-06-02",
+              "source": "fixture://cedar/2025"
+            },
+            {
+              "event_time": "2026-01-12",
+              "evidence_id": "E07",
+              "observed_time": "2026-01-12",
+              "source": "fixture://cedar/2026"
+            }
+          ],
+          "recipe": [
+            "lexical"
+          ],
+          "score": 0.0,
+          "sufficient": false
+        },
+        {
+          "answer": "Falcon Model version 2 was used for production scoring on August 1, 2026.",
+          "diagnosis": null,
+          "evidence_ids": [
+            "E12",
+            "E08",
+            "E04",
+            "E10",
+            "E13",
+            "E07"
+          ],
+          "failure_class": null,
+          "pass_number": 2,
+          "provenance": [
+            {
+              "event_time": "2026-07-07",
+              "evidence_id": "E12",
+              "observed_time": "2026-07-07",
+              "source": "fixture://falcon/v2"
+            },
+            {
+              "event_time": "2026-06-01",
+              "evidence_id": "E08",
+              "observed_time": "2026-06-01",
+              "source": "fixture://redwood/announcement"
+            },
+            {
+              "event_time": "2026-05-15",
+              "evidence_id": "E04",
+              "observed_time": "2026-05-16",
+              "source": "fixture://helix/partnership"
+            },
+            {
+              "event_time": "2026-02-01",
+              "evidence_id": "E10",
+              "observed_time": "2026-02-01",
+              "source": "fixture://atlas/acquisition"
+            },
+            {
+              "event_time": "2026-01-15",
+              "evidence_id": "E13",
+              "observed_time": "2026-01-15",
+              "source": "fixture://falcon/v1"
+            },
+            {
+              "event_time": "2026-01-12",
+              "evidence_id": "E07",
+              "observed_time": "2026-01-12",
+              "source": "fixture://cedar/2026"
+            }
+          ],
+          "recipe": [
+            "lexical",
+            "vector",
+            "temporal"
+          ],
+          "score": 1.0,
+          "sufficient": true
+        }
+      ],
+      "question": "Which Falcon Model version was used for production scoring on August 1, 2026?"
+    },
+    {
+      "case_id": "case-insufficient",
+      "final_sufficient": true,
+      "improved": false,
+      "passes": [
+        {
+          "answer": "INSUFFICIENT_EVIDENCE",
+          "diagnosis": null,
+          "evidence_ids": [
+            "E03",
+            "E04"
+          ],
+          "failure_class": null,
+          "pass_number": 1,
+          "provenance": [
+            {
+              "event_time": "2023-01-10",
+              "evidence_id": "E03",
+              "observed_time": "2023-01-11",
+              "source": "fixture://people/maya"
+            },
+            {
+              "event_time": "2026-05-15",
+              "evidence_id": "E04",
+              "observed_time": "2026-05-16",
+              "source": "fixture://helix/partnership"
+            }
+          ],
+          "recipe": [
+            "lexical"
+          ],
+          "score": 1.0,
+          "sufficient": true
+        }
+      ],
+      "question": "What is Helix Robotics' 2030 annual revenue?"
+    },
+    {
+      "case_id": "case-orbit-location",
+      "final_sufficient": true,
+      "improved": false,
+      "passes": [
+        {
+          "answer": "Orbit Systems is headquartered in Denver, Colorado.",
+          "diagnosis": null,
+          "evidence_ids": [
+            "E05"
+          ],
+          "failure_class": null,
+          "pass_number": 1,
+          "provenance": [
+            {
+              "event_time": "2026-01-01",
+              "evidence_id": "E05",
+              "observed_time": "2026-01-02",
+              "source": "fixture://orbit/profile"
+            }
+          ],
+          "recipe": [
+            "exact"
+          ],
+          "score": 1.0,
+          "sufficient": true
+        }
+      ],
+      "question": "Where is Orbit Systems headquartered?"
+    },
+    {
+      "case_id": "case-owner-operator",
+      "final_sufficient": true,
+      "improved": true,
+      "passes": [
+        {
+          "answer": "INSUFFICIENT_EVIDENCE",
+          "diagnosis": "cross_entity_join: missing required evidence E15,E16",
+          "evidence_ids": [
+            "E14"
+          ],
+          "failure_class": "cross_entity_join",
+          "pass_number": 1,
+          "provenance": [
+            {
+              "event_time": "2026-03-01",
+              "evidence_id": "E14",
+              "observed_time": "2026-03-01",
+              "source": "fixture://quarry/ownership"
+            }
+          ],
+          "recipe": [
+            "exact"
+          ],
+          "score": 0.333,
+          "sufficient": false
+        },
+        {
+          "answer": "The Search Infrastructure group operates Northstar.",
+          "diagnosis": null,
+          "evidence_ids": [
+            "E14",
+            "E15",
+            "E16"
+          ],
+          "failure_class": null,
+          "pass_number": 2,
+          "provenance": [
+            {
+              "event_time": "2026-03-01",
+              "evidence_id": "E14",
+              "observed_time": "2026-03-01",
+              "source": "fixture://quarry/ownership"
+            },
+            {
+              "event_time": "2026-03-05",
+              "evidence_id": "E15",
+              "observed_time": "2026-03-05",
+              "source": "fixture://lantern/dependency"
+            },
+            {
+              "event_time": "2026-03-06",
+              "evidence_id": "E16",
+              "observed_time": "2026-03-06",
+              "source": "fixture://northstar/operator"
+            }
+          ],
+          "recipe": [
+            "exact",
+            "graph"
+          ],
+          "score": 1.0,
+          "sufficient": true
+        }
+      ],
+      "question": "Which group operates the indexing dependency of the project owned by Quarry Team?"
+    },
+    {
+      "case_id": "case-redwood-contradiction",
+      "final_sufficient": true,
+      "improved": true,
+      "passes": [
+        {
+          "answer": "INSUFFICIENT_EVIDENCE",
+          "diagnosis": "contradiction_or_staleness: missing required evidence E09",
+          "evidence_ids": [
+            "E02",
+            "E06",
+            "E07",
+            "E08"
+          ],
+          "failure_class": "contradiction_or_staleness",
+          "pass_number": 1,
+          "provenance": [
+            {
+              "event_time": "2025-03-03",
+              "evidence_id": "E02",
+              "observed_time": "2025-03-04",
+              "source": "fixture://acme/2025"
+            },
+            {
+              "event_time": "2025-06-01",
+              "evidence_id": "E06",
+              "observed_time": "2025-06-02",
+              "source": "fixture://cedar/2025"
+            },
+            {
+              "event_time": "2026-01-12",
+              "evidence_id": "E07",
+              "observed_time": "2026-01-12",
+              "source": "fixture://cedar/2026"
+            },
+            {
+              "event_time": "2026-06-01",
+              "evidence_id": "E08",
+              "observed_time": "2026-06-01",
+              "source": "fixture://redwood/announcement"
+            }
+          ],
+          "recipe": [
+            "lexical"
+          ],
+          "score": 0.0,
+          "sufficient": false
+        },
+        {
+          "answer": "Redwood's current launch date is September 20, 2026.",
+          "diagnosis": null,
+          "evidence_ids": [
+            "E09",
+            "E08",
+            "E11",
+            "E10",
+            "E07",
+            "E06"
+          ],
+          "failure_class": null,
+          "pass_number": 2,
+          "provenance": [
+            {
+              "event_time": "2026-08-10",
+              "evidence_id": "E09",
+              "observed_time": "2026-08-10",
+              "source": "fixture://redwood/update"
+            },
+            {
+              "event_time": "2026-06-01",
+              "evidence_id": "E08",
+              "observed_time": "2026-06-01",
+              "source": "fixture://redwood/announcement"
+            },
+            {
+              "event_time": "2026-02-02",
+              "evidence_id": "E11",
+              "observed_time": "2026-02-02",
+              "source": "fixture://nova/leadership"
+            },
+            {
+              "event_time": "2026-02-01",
+              "evidence_id": "E10",
+              "observed_time": "2026-02-01",
+              "source": "fixture://atlas/acquisition"
+            },
+            {
+              "event_time": "2026-01-12",
+              "evidence_id": "E07",
+              "observed_time": "2026-01-12",
+              "source": "fixture://cedar/2026"
+            },
+            {
+              "event_time": "2025-06-01",
+              "evidence_id": "E06",
+              "observed_time": "2025-06-02",
+              "source": "fixture://cedar/2025"
+            }
+          ],
+          "recipe": [
+            "lexical",
+            "vector",
+            "temporal"
+          ],
+          "score": 1.0,
+          "sufficient": true
+        }
+      ],
+      "question": "What is Redwood's launch date as of September 1, 2026?"
+    },
+    {
+      "case_id": "case-semantic-migration",
+      "final_sufficient": true,
+      "improved": true,
+      "passes": [
+        {
+          "answer": "INSUFFICIENT_EVIDENCE",
+          "diagnosis": "lexical_or_alias_miss: missing required evidence E07",
+          "evidence_ids": [],
+          "failure_class": "lexical_or_alias_miss",
+          "pass_number": 1,
+          "provenance": [],
+          "recipe": [
+            "exact"
+          ],
+          "score": 0.0,
+          "sufficient": false
+        },
+        {
+          "answer": "SQLite FTS5 replaced Redis for Project Cedar's local retrieval cache.",
+          "diagnosis": null,
+          "evidence_ids": [
+            "E12",
+            "E16",
+            "E07",
+            "E06"
+          ],
+          "failure_class": null,
+          "pass_number": 2,
+          "provenance": [
+            {
+              "event_time": "2026-07-07",
+              "evidence_id": "E12",
+              "observed_time": "2026-07-07",
+              "source": "fixture://falcon/v2"
+            },
+            {
+              "event_time": "2026-03-06",
+              "evidence_id": "E16",
+              "observed_time": "2026-03-06",
+              "source": "fixture://northstar/operator"
+            },
+            {
+              "event_time": "2026-01-12",
+              "evidence_id": "E07",
+              "observed_time": "2026-01-12",
+              "source": "fixture://cedar/2026"
+            },
+            {
+              "event_time": "2025-06-01",
+              "evidence_id": "E06",
+              "observed_time": "2025-06-02",
+              "source": "fixture://cedar/2025"
+            }
+          ],
+          "recipe": [
+            "exact",
+            "vector",
+            "temporal"
+          ],
+          "score": 1.0,
+          "sufficient": true
+        }
+      ],
+      "question": "Which embedded search engine replaced Cedar's older cache?"
+    },
+    {
+      "case_id": "case-temporal-ceo",
+      "final_sufficient": true,
+      "improved": true,
+      "passes": [
+        {
+          "answer": "INSUFFICIENT_EVIDENCE",
+          "diagnosis": "stale_temporal: missing required evidence none",
+          "evidence_ids": [
+            "E01",
+            "E02",
+            "E06"
+          ],
+          "failure_class": "stale_temporal",
+          "pass_number": 1,
+          "provenance": [
+            {
+              "event_time": "2024-04-01",
+              "evidence_id": "E01",
+              "observed_time": "2024-04-02",
+              "source": "fixture://acme/2024"
+            },
+            {
+              "event_time": "2025-03-03",
+              "evidence_id": "E02",
+              "observed_time": "2025-03-04",
+              "source": "fixture://acme/2025"
+            },
+            {
+              "event_time": "2025-06-01",
+              "evidence_id": "E06",
+              "observed_time": "2025-06-02",
+              "source": "fixture://cedar/2025"
+            }
+          ],
+          "recipe": [
+            "lexical"
+          ],
+          "score": 0.5,
+          "sufficient": false
+        },
+        {
+          "answer": "Leo Park was Acme CEO as of December 2025.",
+          "diagnosis": null,
+          "evidence_ids": [
+            "E06",
+            "E02",
+            "E01"
+          ],
+          "failure_class": null,
+          "pass_number": 2,
+          "provenance": [
+            {
+              "event_time": "2025-06-01",
+              "evidence_id": "E06",
+              "observed_time": "2025-06-02",
+              "source": "fixture://cedar/2025"
+            },
+            {
+              "event_time": "2025-03-03",
+              "evidence_id": "E02",
+              "observed_time": "2025-03-04",
+              "source": "fixture://acme/2025"
+            },
+            {
+              "event_time": "2024-04-01",
+              "evidence_id": "E01",
+              "observed_time": "2024-04-02",
+              "source": "fixture://acme/2024"
+            }
+          ],
+          "recipe": [
+            "lexical",
+            "temporal"
+          ],
+          "score": 1.0,
+          "sufficient": true
+        }
+      ],
+      "question": "Who was Acme CEO as of December 2025?"
+    }
+  ],
+  "seeded_failure_count": 8
+}
