@@ -2,7 +2,7 @@
 
 The demo should make one idea impossible to miss:
 
-> **WorldLoop does not simply answer twice. Three cooperating roles identify that the agent used the wrong cognitive resources, change the policy, verify the repair, and use those trajectories to improve future routing/context decisions.**
+> **WorldLoop uses an agent loop to learn how to build a better typed program. The loop diagnoses bad context/resource/node choices, repairs them, and then tries to compile repeated successful behavior into more explicit transitions and fewer broad semantic decisions.**
 
 Use only measured values. Never present fixture performance as production accuracy.
 
@@ -14,7 +14,7 @@ Show the marimo WorldLoop Lab.
 
 Say approximately:
 
-> "Agents often fail because they use the wrong knowledge at the wrong time: too little context and they hallucinate; too much retrieval/model/tool use and they waste time and money. WorldLoop learns how to allocate cognition."
+> "Agents fail for two reasons at once: they often use the wrong knowledge or compute, and their control flow is too open-ended to reason about. WorldLoop learns what cognition a task needs and progressively compiles successful behavior into a typed workflow."
 
 ### 0:15-0:45 — First-pass failure
 
@@ -23,7 +23,7 @@ Select `case-cross-entity`.
 Show:
 
 - task/evidence obligations;
-- Context Compiler / Router initial recipe;
+- current workflow/resource plan;
 - retrieved evidence IDs;
 - pass-1 score;
 - missing evidence.
@@ -38,109 +38,136 @@ It should classify the failure as `cross_entity_join`, not simply return "wrong"
 
 Point out that the verifier evaluates evidence sufficiency/provenance rather than trusting the Compiler's confidence.
 
-### 1:15-1:45 — Behavioral repair
+### 1:15-1:45 — Behavioral / graph repair
 
-Show the **Loop Doctor / Policy Researcher** receiving the typed failure and changing the actual retrieval policy:
+Show the **Loop Doctor / Policy Researcher** receiving the typed failure and changing an actual decision variable:
 
 ```text
-vector
-  -> vector + graph
+retrieval node:
+  vector
+    -> vector + graph
 ```
 
 Rerun.
 
-Show new evidence refs and the measured pass-to-pass score improvement. The critical proof is that context/retrieval behavior changed; the answer was not merely rewritten.
+Show new evidence refs and the measured pass-to-pass score improvement. The critical proof is that workflow/context behavior changed; the answer was not merely rewritten.
+
+If a typed graph view is ready, show the failing node and the revised node/transition directly.
 
 ### 1:45-2:15 — Weave proof
 
 Open the W&B Weave trajectory/evaluation view if available.
 
-Show the sequence:
+Show:
 
 ```text
-Compiler plan
- -> retrieval spans
- -> worker/model
- -> Critic score/failure class
- -> Loop Doctor policy delta
+workflow/program version
+ -> Compiler / graph plan
+ -> retrieval/tool/semantic nodes
+ -> Critic score + failure class
+ -> Loop Doctor graph/policy delta
  -> rerun
  -> verified score
 ```
 
-Point to exact `run_id`, policy version, failure class, policy change, latency/cost if available, and pass score.
+Point to exact `run_id`, graph/program version, policy version, failure class, node/policy change, latency/cost if available, and pass score.
 
 If remote W&B is unavailable, show the same typed local run record and say the public/offline baseline does not depend on credentials.
 
 ### 2:15-2:45 — Learning across tasks
 
-This is the preferred strong ending if held-out results are ready.
+Preferred strong ending if held-out results are ready.
 
-In marimo switch between **Policy v0** and **Policy v1** on a frozen held-out set.
+In marimo switch between **Program/Policy v0** and **v1** on a frozen held-out set.
 
 Show real measured differences in some subset of:
 
-- first-pass success;
+- first-pass verified success;
 - final verified success / correct abstention;
 - recovery rate;
 - routing/context regret;
 - unnecessary retrieval/tool use;
+- semantic-node count;
+- semantic-surface ratio;
 - latency;
 - cost.
 
 Say:
 
-> "The first loop repairs one task. These trajectories then change the next policy, and we only promote it if it performs better on tasks it did not train on."
+> "The first loop repairs one task. Those trajectories then produce a candidate program. We only promote it if it works better on tasks it did not train on—and ideally needs less open-ended intelligence to do so."
 
-If held-out v1 results are not ready, do **not** pretend the same-task retry proves cross-task learning. Instead show the frozen outer-loop experiment and call it the next measured gate.
+If EXP-011 is ready, show one before/after graph where a broad semantic/open-loop operation has become deterministic or a narrow typed primitive.
 
-### 2:45-3:00 — Research extension / close
+If held-out results are not ready, do **not** claim the same-task retry proves cross-task learning.
 
-If real results exist, show one of:
+### 2:45-3:00 — Close
 
+If real results exist, flash one extension:
+
+- EXP-011 progressive compilation;
 - W/C/M knowledge-location cube;
-- TypeSafe vs comparison model under the same budget;
-- ARIA-generated experiment and result;
+- TypeSafe semantic-node comparison under the same typed primitive;
+- ARIA-generated graph/node experiment;
 - read-only BTW/LiveLM external-memory adapter.
 
 Close with:
 
-> **"WorldLoop is a learned scheduler for intelligence: it learns what an agent already knows, what must be paged into context or retrieved from the world, and how much model/tool compute the task deserves."**
+> **"WorldLoop is not trying to make an agent loop wander forever. It uses the loop to learn the smallest verified typed program that can do the work over a changing world."**
+
+A shorter alternate close:
+
+> **"The best agent loop is one that learns how to need less agent loop next time."**
 
 ## marimo screen layout
 
 The primary demo screen should fit the critical loop without navigation:
 
 ```text
-+--------------------------------------------------------------+
-| WORLDLOOP LAB                                                 |
-| Case [cross-entity v]   Policy [v0/v1 v]   Provider [ ... ]  |
-+-----------------------------+--------------------------------+
-| Context / evidence plan     | Critic                         |
-| vector                      | score: 0.5                     |
-| E03                         | cross_entity_join              |
-|                             | missing: E04,E05               |
-+-----------------------------+--------------------------------+
-| Loop Doctor: ADD graph                                       |
-+--------------------------------------------------------------+
-| Pass | Recipe          | Evidence     | Score | Sufficient   |
-| 1    | vector          | E03          | 0.5   | no           |
-| 2    | vector -> graph | E03,E04,E05  | 1.0   | yes          |
-+--------------------------------------------------------------+
-| Held-out policy comparison / failure distribution / regret   |
-+--------------------------------------------------------------+
++------------------------------------------------------------------+
+| WORLDLOOP LAB                                                     |
+| Case [cross-entity v] Program [v0/v1] Provider [ ... ]           |
++------------------------------+-----------------------------------+
+| Typed graph / current node   | Critic                            |
+| retrieval.vector             | score: 0.5                        |
+| evidence: E03                | cross_entity_join                 |
+| next transition: blocked     | missing: E04,E05                  |
++------------------------------+-----------------------------------+
+| Loop Doctor: retrieval.vector -> retrieval.vector+graph          |
++------------------------------------------------------------------+
+| Pass | Program | Evidence      | Score | Semantic nodes | Pass?   |
+| 1    | v0      | E03           | 0.5   | ...            | no      |
+| 2    | v1      | E03,E04,E05   | 1.0   | ...            | yes     |
++------------------------------------------------------------------+
+| Held-out comparison: success / regret / semantic-surface delta   |
++------------------------------------------------------------------+
 ```
 
-A Weave trace link/run ID should be visible from the selected trajectory.
+A Weave trace/run ID and exact program/policy version should be visible from the selected trajectory.
+
+## Why TypeSafe is interesting without making it a dependency
+
+Do not pitch TypeSafe as “another chat model.” If onsite access supports typed/calibrated machine decisions, evaluate it inside a narrow semantic primitive such as `CLASSIFY` or `DECIDE` under the same input/output/eval contract.
+
+The interesting comparison is:
+
+```text
+broad text-generation node
+vs
+bounded typed semantic node
+```
+
+Measure correctness, abstention, calibration if exposed, latency/cost, and downstream control-flow stability. Do not invent an API or calibration guarantee that TypeSafe has not actually exposed.
 
 ## Fallback hierarchy
 
-If an extension is unstable, fall back in this order without losing the core demo:
+If an extension is unstable, fall back without losing the core demo:
 
-1. deterministic fixture inner loop;
+1. deterministic fixture inner repair loop;
 2. local typed trace/score record;
 3. remote Weave trajectory;
-4. marimo held-out policy comparison;
-5. ARIA / TypeSafe / W&C&M / training extensions.
+4. marimo held-out policy/program comparison;
+5. EXP-011 typed-graph compilation result;
+6. ARIA / TypeSafe / W/C/M / training extensions.
 
 Do not let sponsor credentials, model access, GPU access, LifeOps, BTW, SkyPilot, or Sandboxes become required to show a working WorldLoop.
 
@@ -148,13 +175,14 @@ Do not let sponsor credentials, model access, GPU access, LifeOps, BTW, SkyPilot
 
 BTW is **not** the project and is not needed for the public benchmark.
 
-If the adapter is ready, show the same WorldLoop context/resource interface switching from `fixture-memory` to `btw-readonly` and demonstrate one public-safe changing-world query. Label LiveLM/BTW clearly as pre-existing infrastructure; the hackathon-new artifact is the adapter plus WorldLoop's decision/evaluation behavior.
+If the adapter is ready, show the same retrieval/evidence node switching from `fixture-memory` to `btw-readonly` and demonstrate one public-safe changing-world query. Label LiveLM/BTW clearly as pre-existing infrastructure; the hackathon-new artifact is the adapter plus WorldLoop's typed compilation/decision/evaluation behavior.
 
 ## Demo truth rules
 
-- Never claim a policy "learned" unless an unseen/held-out evaluation supports it.
+- Never claim a policy/program "learned" unless an unseen/held-out evaluation supports it.
+- Never claim semantic-surface improvement unless a real before/after graph and metrics support it.
 - Never claim a hosted model fact is physically "in the weights"; call it closed-book or behaviorally accessible parametric knowledge.
 - Never present fixture scores as production accuracy.
 - Never hide prior-work dependencies.
-- Never use an LLM's confidence as the sole verifier.
-- If a candidate policy regresses, showing **REJECTED** is a valid and potentially stronger production-readiness demonstration than silently promoting it.
+- Never use an LLM's confidence as the sole verifier or as execution authority.
+- If a candidate graph/policy regresses, showing **REJECTED** is a valid and potentially stronger production-readiness demonstration than silently promoting it.
