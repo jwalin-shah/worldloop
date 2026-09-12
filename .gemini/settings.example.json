@@ -1,0 +1,21 @@
+{
+  "mcp": {
+    "allowed": ["lifeops"]
+  },
+  "mcpServers": {
+    "lifeops": {
+      "httpUrl": "${LIFEOPS_MCP_HTTP_URL}",
+      "timeout": 600000,
+      "trust": false,
+      "includeTools": [
+        "resolve",
+        "search",
+        "health",
+        "now",
+        "observe",
+        "checkpoint",
+        "propose"
+      ]
+    }
+  }
+}

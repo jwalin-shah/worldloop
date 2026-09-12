@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "project": "WorldLoop",
+  "experiments": [
+    {
+      "id": "EXP-001",
+      "status": "done",
+      "question": "Does an adaptive retrieval loop repair seeded context failures better than the fixed initial recipe on the sanitized benchmark?",
+      "hypothesis": "Changing retrieval behavior after diagnosis improves evidence-grounded task score on seeded failures.",
+      "independent_variable": "fixed initial retrieval recipe vs adaptive repair recipe",
+      "baseline": "first pass on 12 sanitized fixture cases",
+      "treatment": "critic diagnosis plus Loop Doctor retrieval-policy mutation and rerun",
+      "metrics": ["case_count", "seeded_failure_count", "improved_seeded_cases", "final_sufficient_count", "score_delta"],
+      "dataset_or_cases": "fixtures/cases.json (12 cases)",
+      "stop_rule": "done when all seeded cases have deterministic pass-to-pass evidence and no unsupported success claim",
+      "artifact": "reports/OCI_BOOTSTRAP_REPORT.md"
+    },
+    {
+      "id": "EXP-002",
+      "status": "planned",
+      "question": "How sensitive is answer quality to the reasoning provider when every provider receives the same evidence packet?",
+      "hypothesis": "Provider/model choice changes synthesis quality less than context quality on the seeded retrieval failures.",
+      "independent_variable": "provider/model",
+      "baseline": "one fixed provider/model over frozen evidence packets",
+      "treatment": "Gemini, OpenAI, and Anthropic-style adapters over identical packets",
+      "metrics": ["task_score", "citation_validity", "abstention_correctness", "latency_ms", "cost_if_available"],
+      "dataset_or_cases": "held subset of sanitized WorldLoop cases with frozen evidence snapshots",
+      "stop_rule": "stop after each provider has one reproducible run per case; do not tune prompts per-provider during the comparison",
+      "artifact": "reports/experiments/EXP-002.json"
+    },
+    {
+      "id": "EXP-003",
+      "status": "planned",
+      "question": "Can a typed fixed-evidence reader fix failures that are actually interpretation/schema failures without adding retrieval depth?",
+      "hypothesis": "Some apparent retrieval failures disappear when the same evidence is read through typed obligations instead of naive concatenation.",
+      "independent_variable": "reader/context schema",
+      "baseline": "naive concatenated evidence reader",
+      "treatment": "typed evidence-obligation reader over exactly the same evidence",
+      "metrics": ["task_score", "evidence_coverage", "unsupported_claims", "latency_ms"],
+      "dataset_or_cases": "fixed-evidence cases including a multi-facet/ambiguous case",
+      "stop_rule": "do not add graph/traversal until same-evidence reader ablation is adjudicated",
+      "artifact": "reports/experiments/EXP-003.json"
+    },
+    {
+      "id": "EXP-004",
+      "status": "planned",
+      "question": "Which retrieval operators actually contribute to correction on each failure class?",
+      "hypothesis": "Temporal and graph operators help only their corresponding demonstrated failure classes; adding every operator increases cost without universal gains.",
+      "independent_variable": "retrieval operator set",
+      "baseline": "fixed lexical/vector policy",
+      "treatment": "exact, lexical, vector, temporal, graph and selected combinations",
+      "metrics": ["task_score", "evidence_recall", "passes", "latency_ms", "retrieved_item_count"],
+      "dataset_or_cases": "12 fixture cases grouped by failure_class",
+      "stop_rule": "retain an operator only when it improves a predeclared metric on its target class without unacceptable regression",
+      "artifact": "reports/experiments/EXP-004.json"
+    },
+    {
+      "id": "EXP-005",
+      "status": "active",
+      "question": "Can Weave make the failure-to-repair trajectory inspectable and comparable across loop versions?",
+      "hypothesis": "Trajectory-level logging makes pass-1 failure, policy mutation, pass-2 improvement, latency and scores reviewable in one evaluation surface.",
+      "independent_variable": "loop/policy version",
+      "baseline": "local JSON benchmark only",
+      "treatment": "Weave traced passes plus evaluation rows/summary",
+      "metrics": ["score_delta", "failure_class", "policy_change", "latency_ms", "trace_completeness"],
+      "dataset_or_cases": "seeded failure cases, starting with case-cross-entity",
+      "stop_rule": "one complete inspectable trajectory plus aggregate comparison is enough for hackathon MVP",
+      "artifact": "W&B Weave project + reports/experiments/EXP-005.json"
+    },
+    {
+      "id": "EXP-006",
+      "status": "planned",
+      "question": "Can Gemini on Mac and an OCI provider independently continue from the same LifeOps durable state without chat-history dependence?",
+      "hypothesis": "Both providers can resolve the same project/checkpoint and emit compatible typed run records through the shared LifeOps loop.",
+      "independent_variable": "provider/runtime location",
+      "baseline": "single-provider session continuity",
+      "treatment": "Gemini CLI on Mac and governed OCI worker starting from the same resolved LifeOps object refs",
+      "metrics": ["resolved_object_match", "run_schema_match", "durable_writeback_readback", "manual_context_required"],
+      "dataset_or_cases": "WorldLoop project/checkpoint canary; no private corpus required",
+      "stop_rule": "pass when both providers independently resolve the same refs and a typed non-authoritative delta round-trips",
+      "artifact": "reports/experiments/EXP-006.json"
+    },
+    {
+      "id": "EXP-007",
+      "status": "optional",
+      "question": "Does the same loop generalize from sanitized fixtures to source-backed changing-world evidence?",
+      "hypothesis": "A source-authority-preserving LifeOps/BTW adapter can reuse the same evaluation contract without making private data a hidden demo dependency.",
+      "independent_variable": "evidence backend",
+      "baseline": "sanitized fixture backend",
+      "treatment": "optional LifeOps/BTW read-only evidence adapter",
+      "metrics": ["grounded_task_score", "freshness", "citation_validity", "contradiction_handling", "latency_ms"],
+      "dataset_or_cases": "small reviewed live/public-safe seed plus fixture fallback",
+      "stop_rule": "skip for judging if source permissions, provenance, or human review are not ready; never expose private data",
+      "artifact": "reports/experiments/EXP-007.json"
+    }
+  ]
+}
