@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
+from .ir import TransitionCheck
+
 
 @dataclass(frozen=True)
 class Evidence:
@@ -40,6 +42,7 @@ class PassResult:
     failure_class: str | None = None
     diagnosis: str | None = None
     provenance: list[dict[str, str]] = field(default_factory=list)
+    transition_check: TransitionCheck | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
