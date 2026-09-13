@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Cheap provider-readiness preflight for WorldLoop.
 
 This script proves the execution path only up to (but not including) a paid/provider
@@ -24,8 +23,8 @@ import os
 import shutil
 import subprocess
 import sys
-from dataclasses import dataclass, asdict
-from typing import Sequence
+from collections.abc import Sequence
+from dataclasses import asdict, dataclass
 
 
 @dataclass(frozen=True)
