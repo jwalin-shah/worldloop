@@ -117,3 +117,56 @@ def lab_summary(report: dict[str, Any]) -> dict[str, Any]:
         "final_verified": report["v1"]["final_verified_success"],
         "promotion_decision": report["promotion_decision"],
     }
+
+
+def load_three_arm_report(root: Path) -> dict[str, Any] | None:
+    target = root / "reports" / "three-arm-eval.json"
+    if not target.exists():
+        return None
+    try:
+        return json.loads(target.read_text())
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def three_arm_summary_rows(report: dict[str, Any]) -> list[dict[str, Any]]:
+    summary = report.get("summary", {})
+    labels = {
+        "deterministic": "Deterministic Heuristic",
+        "typesafe": "TypeSafe Multi-Primitive (Jev)",
+        "wandb_inference": "W&B Hosted LLM (Llama-3.3-70B)",
+    }
+    rows: list[dict[str, Any]] = []
+    for key, arm in summary.items():
+        rows.append(
+            {
+                "Arm": labels.get(key, key),
+                "Accuracy": f"{arm.get('verified_success_rate', 0.0) * 100:.1f}%",
+                "Under-Allocation": f"{arm.get('under_allocation_rate', 0.0) * 100:.1f}%",
+                "Unnecessary Retrieval": f"{arm.get('unnecessary_retrieval_rate', 0.0) * 100:.1f}%",
+                "Mean Latency": f"{arm.get('mean_latency_ms', 0.0):.1f} ms",
+                "Mean Confidence": f"{arm.get('mean_confidence', 0.0):.2f}",
+            }
+        )
+    return rows
+
+
+def three_arm_case_rows(report: dict[str, Any]) -> list[dict[str, Any]]:
+    cases = report.get("cases", [])
+    rows: list[dict[str, Any]] = []
+    for item in cases:
+        arms = item.get("arms", {})
+        det = arms.get("deterministic", {})
+        ts = arms.get("typesafe", {})
+        wb = arms.get("wandb_inference", {})
+        rows.append(
+            {
+                "Case": item.get("case_id"),
+                "Target Recipe": " -> ".join(item.get("target_recipe", [])),
+                "Deterministic": f"{det.get('route', '-')} ({'✓' if det.get('verified') else '✗'})",
+                "TypeSafe Jev": f"{ts.get('route', '-')} ({'✓' if ts.get('verified') else '✗'}) [p={ts.get('confidence', 0):.2f}]",
+                "W&B Llama 3.3": f"{wb.get('route', '-')} ({'✓' if wb.get('verified') else '✗'}) [{wb.get('latency_ms', 0):.0f}ms]",
+            }
+        )
+    return rows
+

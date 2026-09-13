@@ -17,13 +17,17 @@ def _():
         lab_summary,
         live_program_view,
         load_gate3_report,
+        load_three_arm_report,
         program_comparison_rows,
+        three_arm_case_rows,
+        three_arm_summary_rows,
     )
     from worldloop.runtime import FIXTURES
 
     root = Path(__file__).resolve().parents[1]
     loop = WorldLoop(FIXTURES)
     gate3_report = load_gate3_report(root)
+    three_arm_report = load_three_arm_report(root)
     scorecard = lab_summary(gate3_report)
     weave_project = os.getenv("WORLDLOOP_WEAVE_PROJECT", "jwalinshah13-personal/worldloop")
     weave_run_url = os.getenv("WORLDLOOP_WEAVE_RUN_URL", "")
@@ -35,6 +39,9 @@ def _():
         mo,
         program_comparison_rows,
         scorecard,
+        three_arm_case_rows,
+        three_arm_report,
+        three_arm_summary_rows,
         weave_project,
         weave_run_url,
     )
@@ -168,6 +175,53 @@ def _(mo, program_rows):
             ),
         ]
     )
+
+
+@app.cell
+def _(mo, three_arm_case_rows, three_arm_report, three_arm_summary_rows):
+    if three_arm_report is None:
+        frontier_view = mo.callout(
+            mo.md(
+                "### 4. Three-Arm Cognitive Frontier\n\n"
+                "*Report (`reports/three-arm-eval.json`) not yet loaded.*\n\n"
+                "Run `infisical run --env=dev --path=/providers -- uv run python scripts/run_three_arm_eval.py` "
+                "to evaluate Deterministic Heuristics vs. TypeSafe Multi-Primitive vs. W&B Hosted LLM."
+            ),
+            kind="info",
+        )
+    else:
+        summary_rows = three_arm_summary_rows(three_arm_report)
+        case_rows = three_arm_case_rows(three_arm_report)
+        mode = three_arm_report.get("mode", "latent")
+        exp_id = three_arm_report.get("experiment_id", "")
+        frontier_view = mo.vstack(
+            [
+                mo.md(
+                    "## 4. Three-Arm Cognitive Frontier\n"
+                    "Evaluating where deterministic structure stops being sufficient and where semantic "
+                    "judgment is strictly necessary. Comparison on **unstructured operational prose**:\n"
+                    "1. **Deterministic Heuristic** (pattern matching on brief)\n"
+                    "2. **TypeSafe Multi-Primitive Jev** (parallel Nouls & Choices + WorldLoop policy composition)\n"
+                    "3. **W&B Hosted Inference** (Meta Llama 3.3 70B Instruct general LLM)\n\n"
+                    f"*Experiment:* `{exp_id}` | *Mode:* `{mode}`"
+                ),
+                mo.md("### Aggregate Routing Metrics"),
+                mo.ui.table(summary_rows, selection=None),
+                mo.md("### Held-Out Cases Comparison"),
+                mo.ui.table(case_rows, selection=None),
+                mo.callout(
+                    mo.md(
+                        "**Cognitive Frontier Takeaway:** Latent prose introduces linguistic subtleties "
+                        "(negations, ambiguous timelines, implied dependencies) that break keyword heuristics. "
+                        "TypeSafe Jev provides sub-500ms atomic semantic probability estimates without giving away "
+                        "execution control flow, while W&B Hosted Llama 3.3 70B provides deep reasoning at ~950ms latency."
+                    ),
+                    kind="success",
+                ),
+            ]
+        )
+    frontier_view
+
 
 
 @app.cell

@@ -1,0 +1,75 @@
+{
+  "case_ids": [
+    "heldout-001"
+  ],
+  "dataset_snapshot": "worldloop.change-aware-rollout.v1:eccb8b1a77397dc7",
+  "heuristic": {
+    "metrics": {
+      "abstain_count": 0,
+      "case_count": 1,
+      "mean_confidence": null,
+      "model": "heuristic-v1",
+      "provider": "deterministic",
+      "route_counts": {
+        "GRAPH": 1
+      },
+      "under_allocation_count": 0,
+      "unnecessary_retrieval_count": 0,
+      "verified_count": 1,
+      "verified_success": 1.0
+    },
+    "rows": [
+      {
+        "case_id": "heldout-001",
+        "confidence": null,
+        "probabilities": {},
+        "recipe": [
+          "vector",
+          "graph"
+        ],
+        "route": "GRAPH",
+        "verified": true
+      }
+    ]
+  },
+  "interpretation_rule": "TypeSafe confidence is model-reported distribution concentration. It is not authority or proof of correctness; evaluate thresholds empirically on frozen outcomes.",
+  "split": "heldout",
+  "typesafe": {
+    "metrics": {
+      "abstain_count": 0,
+      "case_count": 1,
+      "mean_confidence": 0.98,
+      "model": "jev-latest",
+      "provider": "typesafe",
+      "route_counts": {
+        "GRAPH": 1
+      },
+      "under_allocation_count": 0,
+      "unnecessary_retrieval_count": 0,
+      "verified_count": 1,
+      "verified_success": 1.0
+    },
+    "rows": [
+      {
+        "case_id": "heldout-001",
+        "confidence": 0.98,
+        "probabilities": {
+          "ABSTAIN": 0.0,
+          "DEEP_RETRIEVAL": 0.01,
+          "EXACT": 0.0,
+          "GRAPH": 0.99,
+          "LEXICAL": 0.0,
+          "MODEL_ONLY": 0.0,
+          "TEMPORAL": 0.0,
+          "VECTOR": 0.0
+        },
+        "recipe": [
+          "vector",
+          "graph"
+        ],
+        "route": "GRAPH",
+        "verified": true
+      }
+    ]
+  }
+}

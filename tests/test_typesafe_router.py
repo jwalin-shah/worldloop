@@ -59,3 +59,62 @@ def test_deterministic_baseline_is_perfect_on_current_frozen_task_family():
     assert metrics.unnecessary_retrieval_count == 0
     assert metrics.route_counts == {"EXACT": 7, "GRAPH": 7, "TEMPORAL": 7}
     assert all(row["verified"] for row in rows)
+
+
+def test_latent_routing_state_provides_context_prose_and_no_booleans():
+    case = generate_benchmark().heldout[0]
+    legacy_state = routing_state(case, mode="legacy")
+    latent_state = routing_state(case, mode="latent")
+
+    assert "has_dependency" in legacy_state
+    assert "has_dependency" not in latent_state
+    assert "cross_entity" not in latent_state
+    assert "freshness_sensitive" not in latent_state
+    assert "context_brief" in latent_state
+    assert len(latent_state["context_brief"]) > 20
+
+
+def test_multi_primitive_questions_structure():
+    from worldloop.typesafe_router import typesafe_multi_questions
+
+    questions = typesafe_multi_questions()
+    assert "is_evidence_stale" in questions
+    assert "has_cross_entity_dependency" in questions
+    assert "is_evidence_sufficient" in questions
+    assert "missing_evidence_class" in questions
+    assert "candidate_route" in questions
+
+
+def test_compose_typesafe_policy_prioritizes_dependency_and_staleness():
+    from worldloop.typesafe_router import compose_typesafe_policy
+
+    cand_mock = SimpleNamespace(
+        choice="EXACT",
+        confidence=0.5,
+        probabilities={"EXACT": 0.5, "GRAPH": 0.5},
+    )
+
+    # 1. High dependency signal -> GRAPH
+    res_dep = compose_typesafe_policy(
+        nouls={"has_cross_entity_dependency": 0.88, "is_evidence_stale": 0.05},
+        choices={"candidate_route": cand_mock},
+    )
+    assert res_dep.route == "GRAPH"
+    assert res_dep.confidence == 0.88
+
+    # 2. High staleness signal -> TEMPORAL
+    res_stale = compose_typesafe_policy(
+        nouls={"has_cross_entity_dependency": 0.10, "is_evidence_stale": 0.85},
+        choices={"candidate_route": cand_mock},
+    )
+    assert res_stale.route == "TEMPORAL"
+    assert res_stale.confidence == 0.85
+
+    # 3. Sufficient evidence -> EXACT
+    res_suff = compose_typesafe_policy(
+        nouls={"has_cross_entity_dependency": 0.05, "is_evidence_stale": 0.05, "is_evidence_sufficient": 0.95},
+        choices={"candidate_route": cand_mock},
+    )
+    assert res_suff.route == "EXACT"
+    assert res_suff.confidence == 0.95
+

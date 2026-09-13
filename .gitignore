@@ -7,3 +7,6 @@ __pycache__/
 .run/
 worldloop.db
 .DS_Store
+__marimo__/
+.weave/
+

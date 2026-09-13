@@ -100,39 +100,61 @@ class RouterMetrics:
         return asdict(self)
 
 
-def routing_state(case: GeneratedCase) -> dict[str, Any]:
+def routing_state(case: GeneratedCase, mode: str = "legacy") -> dict[str, Any]:
     """Construct legitimate pre-action state shared by every router arm.
 
     Ground-truth decision, failure label, repair recipe, and held-out outcome are intentionally
     excluded. The state only contains information declared before retrieval begins.
+    In 'legacy' mode, pre-extracted boolean flags are provided.
+    In 'latent' mode, only unstructured operational prose (context_brief) is provided.
     """
-    features = case.pre_action_features()
-    return {
+    features = case.pre_action_features(mode=mode)
+    payload: dict[str, Any] = {
         "task_family": case.task_family,
         "question": case.question,
         "risk_band": case.risk_band,
-        "has_dependency": features["has_dependency"],
-        "freshness_sensitive": features["freshness_sensitive"],
-        "cross_entity": features["cross_entity"],
         "available_route_budget": 3,
     }
-
-
-def heuristic_route(case: GeneratedCase) -> SemanticRouteResult:
-    """Deterministic baseline over the exact same pre-action state."""
-    state = routing_state(case)
-    if state["cross_entity"] or state["has_dependency"]:
-        route: Route = "GRAPH"
-    elif state["freshness_sensitive"]:
-        route = "TEMPORAL"
+    if mode == "legacy":
+        payload.update(
+            {
+                "has_dependency": features.get("has_dependency", False),
+                "freshness_sensitive": features.get("freshness_sensitive", False),
+                "cross_entity": features.get("cross_entity", False),
+            }
+        )
     else:
-        route = "EXACT"
+        payload["context_brief"] = case.context_prose
+    return payload
+
+
+def heuristic_route(case: GeneratedCase, mode: str = "legacy") -> SemanticRouteResult:
+    """Deterministic baseline over pre-action state."""
+    state = routing_state(case, mode=mode)
+    if mode == "legacy":
+        if state.get("cross_entity") or state.get("has_dependency"):
+            route: Route = "GRAPH"
+        elif state.get("freshness_sensitive"):
+            route = "TEMPORAL"
+        else:
+            route = "EXACT"
+    else:
+        # In latent mode without pre-extracted booleans, deterministic heuristics struggle with
+        # semantic nuance (negations, superseding timeline entries vs current status).
+        brief = str(state.get("context_brief", ""))
+        if "dependency" in brief and "no cross-entity" not in brief.lower():
+            route = "GRAPH"
+        elif "superseding" in brief and "policy" in brief.lower():
+            route = "TEMPORAL"
+        else:
+            route = "EXACT"
+
     return SemanticRouteResult(
         route=route,
         confidence=None,
         probabilities={},
         provider="deterministic",
-        model="heuristic-v1",
+        model=f"heuristic-{mode}",
     )
 
 
@@ -193,6 +215,138 @@ def typesafe_route(case: GeneratedCase) -> SemanticRouteResult:
             questions={"route": typesafe_question()},
         )
     return parse_typesafe_choice(response.choices["route"])
+
+
+def typesafe_multi_questions() -> dict[str, Any]:
+    """Build the official SDK multi-primitive question dictionary:
+    3 Nouls + 2 Choices evaluated in parallel in a single call.
+    """
+    try:
+        from typesafe_sdk import Choice, Noul
+    except ImportError as exc:  # pragma: no cover - optional sponsor dependency
+        raise RuntimeError(
+            "TypeSafe SDK is not installed; install the sponsors extra or `uv add typesafe-sdk`"
+        ) from exc
+
+    return {
+        "is_evidence_stale": Noul(
+            instructions=(
+                "Does the provided context contain superseded, expired, or chronologically "
+                "invalidated evidence where a newer update supersedes an earlier claim?"
+            ),
+            criteria={
+                "true": "A later timeline event, newer update, or superseding record alters the earlier claim.",
+                "false": "The record reflects current uncontradicted status with no superseding updates.",
+            },
+        ),
+        "has_cross_entity_dependency": Noul(
+            instructions=(
+                "Does evaluating this release request require resolving an external upstream "
+                "system, component, or cross-entity dependency?"
+            ),
+            criteria={
+                "true": "Verification requires checking a linked external dependency or upstream component.",
+                "false": "The release can be verified solely within the primary component without external systems.",
+            },
+        ),
+        "is_evidence_sufficient": Noul(
+            instructions=(
+                "Is the supplied context currently sufficient to verify the rollout decision "
+                "without needing further specialized retrieval?"
+            ),
+            criteria={
+                "true": "All required facts are clear, complete, uncontradicted, and fresh.",
+                "false": "Critical details are missing, ambiguous, stale, or depend on unresolved external systems.",
+            },
+        ),
+        "missing_evidence_class": Choice(
+            instructions="If evidence is incomplete, what category of information is missing?",
+            criteria={
+                "none": "Evidence is complete and sufficient for decision.",
+                "temporal_recency": "Missing current unexpired status or latest update.",
+                "cross_entity_dependency": "Missing linked upstream dependency health status.",
+                "authorization_proof": "Missing sign-off or required approval record.",
+                "registry_clearance": "Missing general registry status verification.",
+            },
+        ),
+        "candidate_route": Choice(
+            instructions="What is the minimal retrieval route WorldLoop should execute next?",
+            criteria=ROUTE_CRITERIA,
+        ),
+    }
+
+
+def compose_typesafe_policy(
+    nouls: dict[str, float],
+    choices: dict[str, Any],
+) -> SemanticRouteResult:
+    """Deterministic policy matrix combining parallel TypeSafe primitives.
+
+    WorldLoop owns the composition logic and verification boundary.
+    """
+    p_stale = float(nouls.get("is_evidence_stale", 0.0))
+    p_dep = float(nouls.get("has_cross_entity_dependency", 0.0))
+    p_suff = float(nouls.get("is_evidence_sufficient", 0.5))
+
+    cand_choice = choices.get("candidate_route")
+    route_candidate: Route = "EXACT"
+    cand_conf: float = 0.5
+    cand_probs: dict[str, float] = {}
+    if cand_choice is not None:
+        raw_choice = getattr(cand_choice, "choice", str(cand_choice))
+        route_candidate = _coerce_route(str(raw_choice))
+        cand_conf = float(getattr(cand_choice, "confidence", 0.5))
+        probs = getattr(cand_choice, "probabilities", {})
+        cand_probs = {str(k): float(v) for k, v in probs.items()}
+
+    # Multi-primitive decision hierarchy:
+    # 1. Dependency signal elevated
+    if p_dep >= 0.60 or route_candidate == "GRAPH":
+        final_route: Route = "GRAPH"
+        confidence = max(p_dep, cand_conf)
+    # 2. Staleness/temporal signal elevated
+    elif p_stale >= 0.60 or route_candidate == "TEMPORAL":
+        final_route = "TEMPORAL"
+        confidence = max(p_stale, cand_conf)
+    # 3. Sufficient uncontradicted evidence
+    elif p_suff >= 0.75:
+        final_route = "EXACT"
+        confidence = max(p_suff, cand_conf)
+    else:
+        final_route = route_candidate
+        confidence = cand_conf
+
+    return SemanticRouteResult(
+        route=final_route,
+        confidence=round(confidence, 4),
+        probabilities=cand_probs,
+        provider="typesafe",
+        model="jev-multi-primitive",
+    )
+
+
+def typesafe_multi_route(case: GeneratedCase, mode: str = "latent") -> SemanticRouteResult:
+    """Run parallel multi-primitive TypeSafe evaluation over latent context.
+
+    Asks independent Nouls and Choices concurrently in one request, preserving
+    probability distributions, while WorldLoop owns the deterministic composition.
+    """
+    try:
+        from typesafe_sdk import TypeSafeClient
+    except ImportError as exc:  # pragma: no cover - optional sponsor dependency
+        raise RuntimeError(
+            "TypeSafe SDK is not installed; install the sponsors extra or `uv add typesafe-sdk`"
+        ) from exc
+
+    with TypeSafeClient() as client:
+        response = client.system_one(
+            state=routing_state(case, mode=mode),
+            questions=typesafe_multi_questions(),
+        )
+
+    nouls = {k: float(getattr(v, "noul", v)) for k, v in getattr(response, "nouls", {}).items()}
+    choices = getattr(response, "choices", {})
+    return compose_typesafe_policy(nouls, choices)
 
 
 def route_is_verified(case: GeneratedCase, result: SemanticRouteResult) -> bool:

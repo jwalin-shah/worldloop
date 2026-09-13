@@ -1,0 +1,224 @@
+{
+  "case_id": "case-cross-entity",
+  "events": [
+    {
+      "event_type": "program_selected",
+      "observed_at": "2026-09-12T21:42:34+00:00",
+      "payload": {
+        "policy_version": "policy-v0",
+        "recipe": [
+          "vector"
+        ],
+        "workflow_version": "workflow-v0"
+      },
+      "stage": "compiler"
+    },
+    {
+      "event_type": "retrieval_completed",
+      "observed_at": "2026-09-12T21:42:34+00:00",
+      "payload": {
+        "evidence_ids": [
+          "E05",
+          "E03",
+          "E11",
+          "E16"
+        ],
+        "pass_number": 1,
+        "recipe": [
+          "vector"
+        ]
+      },
+      "stage": "retrieval"
+    },
+    {
+      "event_type": "semantic_node_completed",
+      "observed_at": "2026-09-12T21:42:34+00:00",
+      "payload": {
+        "answer": "INSUFFICIENT_EVIDENCE",
+        "pass_number": 1,
+        "sufficient": false,
+        "transition_check": {
+          "effects": [
+            "read:evidence_store"
+          ],
+          "evidence_used": [
+            "E05",
+            "E03",
+            "E11",
+            "E16"
+          ],
+          "failure_class": "cross_entity_join",
+          "next_state": "REPAIR",
+          "node_id": "retrieve-and-verify",
+          "node_version": "v1",
+          "notes": [],
+          "obligation_results": {
+            "evidence:E03": true,
+            "evidence:E04": false,
+            "evidence:E05": true,
+            "retrieval_method:graph": false
+          },
+          "pass_number": 1,
+          "postcondition_passed": false,
+          "postconditions_checked": [
+            "supported_answer_or_correct_abstention"
+          ],
+          "preconditions_checked": [
+            "question_nonempty"
+          ],
+          "preconditions_passed": true,
+          "result": "INSUFFICIENT_EVIDENCE"
+        }
+      },
+      "stage": "worker"
+    },
+    {
+      "event_type": "critic_scored",
+      "observed_at": "2026-09-12T21:42:34+00:00",
+      "payload": {
+        "diagnosis": "cross_entity_join: missing required evidence E04",
+        "failure_class": "cross_entity_join",
+        "pass_number": 1,
+        "score": 0.5
+      },
+      "stage": "critic"
+    },
+    {
+      "event_type": "program_delta_proposed",
+      "observed_at": "2026-09-12T21:42:34+00:00",
+      "payload": {
+        "added_steps": [
+          "graph"
+        ],
+        "failure_class": "cross_entity_join",
+        "from_recipe": [
+          "vector"
+        ],
+        "to_recipe": [
+          "vector",
+          "graph"
+        ]
+      },
+      "stage": "loop_doctor"
+    },
+    {
+      "event_type": "retry_started",
+      "observed_at": "2026-09-12T21:42:34+00:00",
+      "payload": {
+        "pass_number": 2,
+        "recipe": [
+          "vector",
+          "graph"
+        ]
+      },
+      "stage": "runtime"
+    },
+    {
+      "event_type": "retrieval_completed",
+      "observed_at": "2026-09-12T21:42:34+00:00",
+      "payload": {
+        "evidence_ids": [
+          "E05",
+          "E03",
+          "E11",
+          "E16",
+          "E04",
+          "E10",
+          "E15",
+          "E14"
+        ],
+        "pass_number": 2,
+        "recipe": [
+          "vector",
+          "graph"
+        ]
+      },
+      "stage": "retrieval"
+    },
+    {
+      "event_type": "semantic_node_completed",
+      "observed_at": "2026-09-12T21:42:34+00:00",
+      "payload": {
+        "answer": "Orbit Systems is headquartered in Denver, Colorado.",
+        "pass_number": 2,
+        "sufficient": true,
+        "transition_check": {
+          "effects": [
+            "read:evidence_store"
+          ],
+          "evidence_used": [
+            "E05",
+            "E03",
+            "E11",
+            "E16",
+            "E04",
+            "E10",
+            "E15",
+            "E14"
+          ],
+          "failure_class": null,
+          "next_state": "DONE",
+          "node_id": "retrieve-and-verify",
+          "node_version": "v1",
+          "notes": [],
+          "obligation_results": {
+            "evidence:E03": true,
+            "evidence:E04": true,
+            "evidence:E05": true,
+            "retrieval_method:graph": true
+          },
+          "pass_number": 2,
+          "postcondition_passed": true,
+          "postconditions_checked": [
+            "supported_answer_or_correct_abstention"
+          ],
+          "preconditions_checked": [
+            "question_nonempty"
+          ],
+          "preconditions_passed": true,
+          "result": "Orbit Systems is headquartered in Denver, Colorado."
+        }
+      },
+      "stage": "worker"
+    },
+    {
+      "event_type": "critic_scored",
+      "observed_at": "2026-09-12T21:42:34+00:00",
+      "payload": {
+        "diagnosis": null,
+        "failure_class": null,
+        "pass_number": 2,
+        "score": 1.0
+      },
+      "stage": "critic"
+    },
+    {
+      "event_type": "verification_completed",
+      "observed_at": "2026-09-12T21:42:34+00:00",
+      "payload": {
+        "answer": "Orbit Systems is headquartered in Denver, Colorado.",
+        "improved": true,
+        "score": 1.0,
+        "sufficient": true
+      },
+      "stage": "verifier"
+    }
+  ],
+  "final_answer": "Orbit Systems is headquartered in Denver, Colorado.",
+  "final_score": 1.0,
+  "final_sufficient": true,
+  "identity": {
+    "code_revision": "e9b0b83d7324a956df560643d40d542c2139b8b5",
+    "dataset_snapshot": "fixtures:48bb8b00b4432623",
+    "evidence_snapshot": "fixtures:48bb8b00b4432623",
+    "experiment_id": "EXP-008-live",
+    "model": "none",
+    "policy_version": "policy-v0",
+    "provider": "deterministic",
+    "run_id": "run-89b898a4fed9",
+    "scorer_version": "transition-check-v1",
+    "workflow_version": "workflow-v0"
+  },
+  "improved": true,
+  "question": "Which city is the partner company of Maya Singh's company headquartered in?"
+}

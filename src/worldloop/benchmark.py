@@ -46,16 +46,47 @@ class GeneratedCase:
     failure_class: str
     feature_flags: tuple[str, ...]
 
-    def pre_action_features(self) -> dict[str, Any]:
+    @property
+    def context_prose(self) -> str:
+        """Synthesizes unstructured operational prose containing latent evidence."""
+        if self.failure_class == "temporal_staleness":
+            return (
+                f"Operational brief for {self.project} (risk band: {self.risk_band}, as-of: {self.as_of}). "
+                f"Initial incident audit recorded an earlier blocker status. A newer timeline update "
+                f"was subsequently published superseding earlier logs. Policy specifies that stale evidence "
+                f"cannot certify readiness."
+            )
+        if self.failure_class == "cross_entity_join":
+            dep = self.dependency or "upstream-service"
+            return (
+                f"Operational brief for {self.project} (risk band: {self.risk_band}, as-of: {self.as_of}). "
+                f"Service architecture maps an active operational dependency to external component {dep}. "
+                f"Verification requires traversing the dependency graph to resolve {dep}'s stability."
+            )
+        return (
+            f"Operational brief for {self.project} (risk band: {self.risk_band}, as-of: {self.as_of}). "
+            f"Registry status is confirmed clear with zero open incidents. No cross-entity dependencies "
+            f"are linked. Direct routine rollout verification applies."
+        )
+
+    def pre_action_features(self, mode: str = "legacy") -> dict[str, Any]:
         """Features legitimately available before executing a retrieval policy."""
-        return {
+        payload: dict[str, Any] = {
             "case_id": self.case_id,
             "task_family": self.task_family,
+            "question": self.question,
             "risk_band": self.risk_band,
-            "has_dependency": self.dependency is not None,
-            "freshness_sensitive": "freshness_sensitive" in self.feature_flags,
-            "cross_entity": "cross_entity" in self.feature_flags,
+            "context_prose": self.context_prose,
         }
+        if mode == "legacy":
+            payload.update(
+                {
+                    "has_dependency": self.dependency is not None,
+                    "freshness_sensitive": "freshness_sensitive" in self.feature_flags,
+                    "cross_entity": "cross_entity" in self.feature_flags,
+                }
+            )
+        return payload
 
 
 @dataclass(frozen=True)
