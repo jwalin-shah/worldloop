@@ -3,13 +3,17 @@ from __future__ import annotations
 import json
 import os
 import re
-import time
 from typing import Any
 
 import httpx
 
 from .benchmark import GeneratedCase
-from .typesafe_router import ROUTE_CRITERIA, Route, SemanticRouteResult, _coerce_route, routing_state
+from .typesafe_router import (
+    ROUTE_CRITERIA,
+    SemanticRouteResult,
+    _coerce_route,
+    routing_state,
+)
 
 DEFAULT_WANDB_INFERENCE_MODEL = "meta-llama/Llama-3.3-70B-Instruct"
 WANDB_INFERENCE_URL = "https://api.inference.wandb.ai/v1/chat/completions"
@@ -74,13 +78,11 @@ def wandb_inference_route(
         "User-Agent": "worldloop-eval/1.0",
     }
 
-    start_time = time.perf_counter()
     if client is not None:
         resp = client.post(WANDB_INFERENCE_URL, headers=headers, json=payload)
     else:
         with httpx.Client(timeout=30.0) as default_client:
             resp = default_client.post(WANDB_INFERENCE_URL, headers=headers, json=payload)
-    latency_ms = round((time.perf_counter() - start_time) * 1000, 2)
 
     if resp.status_code != 200:
         raise RuntimeError(

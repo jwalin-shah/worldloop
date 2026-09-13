@@ -13,12 +13,14 @@ def _():
 
     from worldloop.engine import WorldLoop
     from worldloop.lab import (
+        benchmark_v2_summary_rows,
         heldout_comparison_rows,
         lab_summary,
         live_program_view,
+        load_adversarial_report,
+        load_benchmark_v2_report,
         load_gate3_report,
         load_three_arm_report,
-        load_adversarial_report,
         program_comparison_rows,
         three_arm_case_rows,
         three_arm_summary_rows,
@@ -30,14 +32,17 @@ def _():
     gate3_report = load_gate3_report(root)
     three_arm_report = load_three_arm_report(root)
     adversarial_report = load_adversarial_report(root)
+    v2_report = load_benchmark_v2_report(root)
     scorecard = lab_summary(gate3_report)
     weave_project = os.getenv("WORLDLOOP_WEAVE_PROJECT", "jwalinshah13-personal/worldloop")
     weave_run_url = os.getenv("WORLDLOOP_WEAVE_RUN_URL", "")
     return (
         adversarial_report,
+        benchmark_v2_summary_rows,
         gate3_report,
         heldout_comparison_rows,
         live_program_view,
+        load_benchmark_v2_report,
         loop,
         mo,
         program_comparison_rows,
@@ -45,6 +50,7 @@ def _():
         three_arm_case_rows,
         three_arm_report,
         three_arm_summary_rows,
+        v2_report,
         weave_project,
         weave_run_url,
     )
@@ -244,8 +250,39 @@ def _(
             )
         )
     frontier_view = mo.vstack(elements)
-    frontier_view
+    return (frontier_view,)
 
+
+@app.cell
+def _(benchmark_v2_summary_rows, mo, v2_report):
+    if v2_report is None:
+        v2_view = mo.callout(
+            mo.md("Benchmark V2 report not generated yet. Run `uv run python scripts/run_four_arm_eval.py`."),
+            kind="neutral",
+        )
+    else:
+        summary_rows = benchmark_v2_summary_rows(v2_report)
+        verdicts = v2_report.get("falsification_verdicts", {})
+        v1 = verdicts.get("kill_rule_1_simplicity", {}).get("verdict", "")
+        v2 = verdicts.get("kill_rule_2_template_leakage", {}).get("verdict", "")
+        v3 = verdicts.get("diagnostic_efficiency", {}).get("verdict", "")
+
+        v2_view = mo.vstack(
+            [
+                mo.md("## 4. Benchmark V2: End-to-End Falsification Frontier"),
+                mo.md(
+                    f"**Snapshot:** `{v2_report.get('dataset_snapshot')}` | "
+                    f"**Cases:** {v2_report.get('case_count')} | "
+                    f"**Split:** `{v2_report.get('split')}`"
+                ),
+                mo.ui.table(summary_rows, selection=None),
+                mo.md("### Falsification Kill Criteria Verdicts"),
+                mo.callout(mo.md(f"**Simplicity Rule:** {v1}"), kind="warn" if "FALSIFIED" in v1 else "success"),
+                mo.callout(mo.md(f"**Template Memorization Rule:** {v2}"), kind="warn" if "FALSIFIED" in v2 else "success"),
+                mo.callout(mo.md(f"**Resource & Latency Tradeoff:** {v3}"), kind="info"),
+            ]
+        )
+    return (v2_view,)
 
 
 @app.cell

@@ -313,10 +313,12 @@ def compose_typesafe_policy(
 
     # Contract enforcement: If an independent receipt is required and not attached,
     # MODEL_ONLY is legally disallowed and bounded to minimal exact receipt retrieval.
-    if obligation == "independent_receipt_required":
-        if route_candidate == "MODEL_ONLY" or p_receipt < 0.70:
-            if route_candidate == "MODEL_ONLY":
-                route_candidate = "EXACT"
+    if (
+        obligation == "independent_receipt_required"
+        and p_receipt < 0.70
+        and route_candidate == "MODEL_ONLY"
+    ):
+        route_candidate = "EXACT"
 
     # Multi-primitive decision hierarchy:
     # 1. Dependency signal elevated

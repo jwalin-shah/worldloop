@@ -6,6 +6,7 @@ import re
 import sqlite3
 from collections import deque
 from pathlib import Path
+from typing import Any
 
 from .models import Evidence
 
@@ -17,21 +18,29 @@ def _tokens(text: str) -> set[str]:
 
 
 class EvidenceStore:
-    def __init__(self, evidence_path: Path):
-        raw = json.loads(evidence_path.read_text())
-        self.evidence = [
-            Evidence(
-                evidence_id=item["evidence_id"],
-                entity=item["entity"],
-                text=item["text"],
-                event_time=item["event_time"],
-                observed_time=item["observed_time"],
-                source=item["source"],
-                links=tuple(item.get("links", [])),
-                tags=tuple(item.get("tags", [])),
-            )
-            for item in raw
-        ]
+    def __init__(self, evidence_source: Path | list[Evidence] | list[dict[str, Any]]):
+        if isinstance(evidence_source, Path):
+            raw = json.loads(evidence_source.read_text())
+        else:
+            raw = evidence_source
+
+        self.evidence: list[Evidence] = []
+        for item in raw:
+            if isinstance(item, Evidence):
+                self.evidence.append(item)
+            else:
+                self.evidence.append(
+                    Evidence(
+                        evidence_id=item["evidence_id"],
+                        entity=item["entity"],
+                        text=item["text"],
+                        event_time=item["event_time"],
+                        observed_time=item["observed_time"],
+                        source=item["source"],
+                        links=tuple(item.get("links", [])),
+                        tags=tuple(item.get("tags", [])),
+                    )
+                )
         self.by_id = {item.evidence_id: item for item in self.evidence}
         self.conn = sqlite3.connect(":memory:")
         self.conn.execute(

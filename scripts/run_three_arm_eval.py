@@ -5,9 +5,10 @@ import json
 import os
 import subprocess
 import time
-from dataclasses import asdict
 from pathlib import Path
 from typing import Any
+
+import httpx
 
 from worldloop.benchmark import generate_benchmark
 from worldloop.typesafe_router import (
@@ -80,7 +81,7 @@ def main() -> None:
     if args.limit is not None:
         cases = cases[: args.limit]
 
-    print(f"=== WorldLoop Three-Arm Cognitive Frontier Evaluation ===")
+    print("=== WorldLoop Three-Arm Cognitive Frontier Evaluation ===")
     print(f"Dataset Snapshot: {dataset.snapshot_id}")
     print(f"Mode: {args.mode}")
     print(f"Cases Count: {len(cases)}")
@@ -132,7 +133,7 @@ def main() -> None:
         for arm in arms:
             try:
                 arm_res = evaluate_arm(case, arm, mode=args.mode)
-            except Exception as exc:
+            except (RuntimeError, ValueError, KeyError, httpx.HTTPError) as exc:
                 print(f"  [ERROR] Arm {arm} failed: {exc}")
                 arm_res = {
                     "arm": arm,
@@ -149,7 +150,7 @@ def main() -> None:
                     "error": str(exc),
                 }
             row["arms"][arm] = arm_res
-            print(f"  [{arm:15}] Route: {arm_res['route']:10} | Verified: {str(arm_res['verified']):5} | Latency: {arm_res['latency_ms']}ms | Conf: {arm_res['confidence']}")
+            print(f"  [{arm:15}] Route: {arm_res['route']:10} | Verified: {arm_res['verified']!s:5} | Latency: {arm_res['latency_ms']}ms | Conf: {arm_res['confidence']}")
 
         case_results.append(row)
         if weave_active:

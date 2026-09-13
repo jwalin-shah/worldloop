@@ -1,5 +1,6 @@
-import pytest
 from types import SimpleNamespace
+
+import pytest
 
 from worldloop.benchmark import generate_benchmark
 from worldloop.typesafe_router import (

@@ -174,3 +174,35 @@ def three_arm_case_rows(report: dict[str, Any]) -> list[dict[str, Any]]:
         )
     return rows
 
+
+def load_benchmark_v2_report(root: Path) -> dict[str, Any] | None:
+    p = root / "reports" / "benchmark-v2-four-arm-eval.json"
+    if p.exists():
+        return json.loads(p.read_text())
+    return None
+
+
+def benchmark_v2_summary_rows(report: dict[str, Any]) -> list[dict[str, Any]]:
+    summary = report.get("summary", {})
+    labels = {
+        "fixed_simple": "Fixed Baseline (Exact + Lexical)",
+        "deterministic_worldloop": "Deterministic WorldLoop Router",
+        "typesafe_router": "TypeSafe Specialized Router",
+        "wandb_llama_70b": "W&B Hosted Llama 3.3 70B",
+    }
+    rows: list[dict[str, Any]] = []
+    for key, arm in summary.items():
+        rows.append(
+            {
+                "Arm": labels.get(key, key),
+                "End-Task Accuracy": f"{arm.get('accuracy', 0.0) * 100:.1f}%",
+                "Citation Precision": f"{arm.get('citation_precision', 0.0) * 100:.1f}%",
+                "Citation Recall": f"{arm.get('citation_recall', 0.0) * 100:.1f}%",
+                "Stale Citation Rate": f"{arm.get('stale_citation_rate', 0.0) * 100:.1f}%",
+                "Mean Retrieval Waste": f"{arm.get('mean_retrieval_waste', 0.0):.1f} items",
+                "Mean Latency": f"{arm.get('mean_latency_ms', 0.0):.1f} ms",
+            }
+        )
+    return rows
+
+

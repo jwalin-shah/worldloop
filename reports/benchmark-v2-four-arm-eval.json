@@ -1,0 +1,2896 @@
+{
+  "dataset_snapshot": "worldloop.benchmark-v2.falsification.v1:0ce424281cf0887b",
+  "split": "heldout",
+  "case_count": 60,
+  "experiment": "EXP-012-benchmark-v2-falsification",
+  "git_revision": "ad195418cdc6a8d147aa14e08f79c0144cf0465a",
+  "summary": {
+    "fixed_simple": {
+      "arm_name": "fixed_simple",
+      "case_count": 60,
+      "accuracy": 0.8833,
+      "citation_precision": 0.8056,
+      "citation_recall": 0.4683,
+      "stale_citation_rate": 0.0,
+      "correct_abstention_rate": 0.0,
+      "false_abstention_rate": 0.0,
+      "mean_retrieval_count": 9.25,
+      "mean_retrieval_waste": 5.5,
+      "mean_latency_ms": 0.01
+    },
+    "deterministic_worldloop": {
+      "arm_name": "deterministic_worldloop",
+      "case_count": 60,
+      "accuracy": 0.8833,
+      "citation_precision": 1.0,
+      "citation_recall": 0.4683,
+      "stale_citation_rate": 0.0,
+      "correct_abstention_rate": 0.0,
+      "false_abstention_rate": 0.0,
+      "mean_retrieval_count": 5.45,
+      "mean_retrieval_waste": 2.2,
+      "mean_latency_ms": 0.0
+    },
+    "typesafe_router": {
+      "arm_name": "typesafe_router",
+      "case_count": 60,
+      "accuracy": 0.6167,
+      "citation_precision": 0.7333,
+      "citation_recall": 0.2983,
+      "stale_citation_rate": 0.0,
+      "correct_abstention_rate": 0.0,
+      "false_abstention_rate": 0.2667,
+      "mean_retrieval_count": 5.22,
+      "mean_retrieval_waste": 1.48,
+      "mean_latency_ms": 0.0
+    },
+    "wandb_llama_70b": {
+      "arm_name": "wandb_llama_70b",
+      "case_count": 60,
+      "accuracy": 0.8833,
+      "citation_precision": 1.0,
+      "citation_recall": 0.4683,
+      "stale_citation_rate": 0.0,
+      "correct_abstention_rate": 0.0,
+      "false_abstention_rate": 0.0,
+      "mean_retrieval_count": 6.0,
+      "mean_retrieval_waste": 2.25,
+      "mean_latency_ms": 0.01
+    }
+  },
+  "falsification_verdicts": {
+    "kill_rule_1_simplicity": {
+      "falsified": true,
+      "verdict": "FALSIFIED (Simplicity Rule): Fixed retrieval (88.3%) matches or beats dynamic router (88.3%)."
+    },
+    "kill_rule_2_template_leakage": {
+      "falsified": false,
+      "verdict": "SURVIVED: Routers maintained coherent reasoning under non-templated text (Stale rates: Deter 0.0%, TypeSafe 0.0%)."
+    },
+    "diagnostic_efficiency": {
+      "verdict": "DIAGNOSTIC: TypeSafe accuracy (61.7%) vs 70B accuracy (88.3%) | Latency: 0.0ms vs 0.0ms."
+    }
+  },
+  "cases": [
+    {
+      "task_id": "heldout-000",
+      "target_entity": "Orion-000",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.02,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-001",
+      "target_entity": "Orion-001",
+      "ground_truth_decision": "BLOCK",
+      "arms": {
+        "fixed_simple": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 3,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 3,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-002",
+      "target_entity": "Orion-002",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.08,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ABSTAIN",
+          "correct": false,
+          "precision": 0.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-003",
+      "target_entity": "Orion-003",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.5,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 2,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ABSTAIN",
+          "correct": false,
+          "precision": 0.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-004",
+      "target_entity": "Orion-004",
+      "ground_truth_decision": "ESCALATE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-005",
+      "target_entity": "Orion-005",
+      "ground_truth_decision": "ABSTAIN",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-006",
+      "target_entity": "Orion-006",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-007",
+      "target_entity": "Orion-007",
+      "ground_truth_decision": "BLOCK",
+      "arms": {
+        "fixed_simple": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 3,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 3,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-008",
+      "target_entity": "Orion-008",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-009",
+      "target_entity": "Orion-009",
+      "ground_truth_decision": "BLOCK",
+      "arms": {
+        "fixed_simple": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 3,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 3,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-010",
+      "target_entity": "Orion-010",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.02,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ABSTAIN",
+          "correct": false,
+          "precision": 0.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-011",
+      "target_entity": "Orion-011",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.5,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 2,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ABSTAIN",
+          "correct": false,
+          "precision": 0.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-012",
+      "target_entity": "Orion-012",
+      "ground_truth_decision": "ESCALATE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-013",
+      "target_entity": "Orion-013",
+      "ground_truth_decision": "ABSTAIN",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-014",
+      "target_entity": "Orion-014",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-015",
+      "target_entity": "Orion-015",
+      "ground_truth_decision": "BLOCK",
+      "arms": {
+        "fixed_simple": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 3,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 3,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-016",
+      "target_entity": "Orion-016",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-017",
+      "target_entity": "Orion-017",
+      "ground_truth_decision": "BLOCK",
+      "arms": {
+        "fixed_simple": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 3,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 3,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-018",
+      "target_entity": "Orion-018",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ABSTAIN",
+          "correct": false,
+          "precision": 0.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-019",
+      "target_entity": "Orion-019",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.5,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 2,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ABSTAIN",
+          "correct": false,
+          "precision": 0.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-020",
+      "target_entity": "Orion-020",
+      "ground_truth_decision": "ESCALATE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-021",
+      "target_entity": "Orion-021",
+      "ground_truth_decision": "ABSTAIN",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.05,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-022",
+      "target_entity": "Orion-022",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-023",
+      "target_entity": "Orion-023",
+      "ground_truth_decision": "BLOCK",
+      "arms": {
+        "fixed_simple": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 3,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 3,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-024",
+      "target_entity": "Orion-024",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-025",
+      "target_entity": "Orion-025",
+      "ground_truth_decision": "BLOCK",
+      "arms": {
+        "fixed_simple": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 3,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 3,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-026",
+      "target_entity": "Orion-026",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ABSTAIN",
+          "correct": false,
+          "precision": 0.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-027",
+      "target_entity": "Orion-027",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.5,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 2,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ABSTAIN",
+          "correct": false,
+          "precision": 0.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-028",
+      "target_entity": "Orion-028",
+      "ground_truth_decision": "ESCALATE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-029",
+      "target_entity": "Orion-029",
+      "ground_truth_decision": "ABSTAIN",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-030",
+      "target_entity": "Orion-030",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-031",
+      "target_entity": "Orion-031",
+      "ground_truth_decision": "BLOCK",
+      "arms": {
+        "fixed_simple": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 3,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 3,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-032",
+      "target_entity": "Orion-032",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-033",
+      "target_entity": "Orion-033",
+      "ground_truth_decision": "BLOCK",
+      "arms": {
+        "fixed_simple": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 3,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 3,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-034",
+      "target_entity": "Orion-034",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ABSTAIN",
+          "correct": false,
+          "precision": 0.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-035",
+      "target_entity": "Orion-035",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.5,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 2,
+          "waste": 0,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ABSTAIN",
+          "correct": false,
+          "precision": 0.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-036",
+      "target_entity": "Orion-036",
+      "ground_truth_decision": "ESCALATE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-037",
+      "target_entity": "Orion-037",
+      "ground_truth_decision": "ABSTAIN",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-038",
+      "target_entity": "Orion-038",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-039",
+      "target_entity": "Orion-039",
+      "ground_truth_decision": "BLOCK",
+      "arms": {
+        "fixed_simple": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 3,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 3,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-040",
+      "target_entity": "Orion-040",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-041",
+      "target_entity": "Orion-041",
+      "ground_truth_decision": "BLOCK",
+      "arms": {
+        "fixed_simple": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 3,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 3,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-042",
+      "target_entity": "Orion-042",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ABSTAIN",
+          "correct": false,
+          "precision": 0.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.02,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-043",
+      "target_entity": "Orion-043",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.5,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 2,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ABSTAIN",
+          "correct": false,
+          "precision": 0.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-044",
+      "target_entity": "Orion-044",
+      "ground_truth_decision": "ESCALATE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-045",
+      "target_entity": "Orion-045",
+      "ground_truth_decision": "ABSTAIN",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-046",
+      "target_entity": "Orion-046",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-047",
+      "target_entity": "Orion-047",
+      "ground_truth_decision": "BLOCK",
+      "arms": {
+        "fixed_simple": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 3,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 3,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-048",
+      "target_entity": "Orion-048",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-049",
+      "target_entity": "Orion-049",
+      "ground_truth_decision": "BLOCK",
+      "arms": {
+        "fixed_simple": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 3,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 3,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-050",
+      "target_entity": "Orion-050",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ABSTAIN",
+          "correct": false,
+          "precision": 0.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.02,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-051",
+      "target_entity": "Orion-051",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.5,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 2,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ABSTAIN",
+          "correct": false,
+          "precision": 0.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-052",
+      "target_entity": "Orion-052",
+      "ground_truth_decision": "ESCALATE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "ESCALATE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-053",
+      "target_entity": "Orion-053",
+      "ground_truth_decision": "ABSTAIN",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": false,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-054",
+      "target_entity": "Orion-054",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-055",
+      "target_entity": "Orion-055",
+      "ground_truth_decision": "BLOCK",
+      "arms": {
+        "fixed_simple": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 3,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 3,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-056",
+      "target_entity": "Orion-056",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-057",
+      "target_entity": "Orion-057",
+      "ground_truth_decision": "BLOCK",
+      "arms": {
+        "fixed_simple": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 9,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 3,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "BLOCK",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 3,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-058",
+      "target_entity": "Orion-058",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.6667,
+          "stale_cited": [],
+          "retrieved": 10,
+          "waste": 5,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 4,
+          "waste": 0,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ABSTAIN",
+          "correct": false,
+          "precision": 0.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.01,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 1,
+          "latency_ms": 0.02,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    },
+    {
+      "task_id": "heldout-059",
+      "target_entity": "Orion-059",
+      "ground_truth_decision": "APPROVE",
+      "arms": {
+        "fixed_simple": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 0.5,
+          "stale_cited": [],
+          "retrieved": 8,
+          "waste": 6,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "deterministic_worldloop": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 2,
+          "waste": 0,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "typesafe_router": {
+          "decision": "ABSTAIN",
+          "correct": false,
+          "precision": 0.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "deterministic_typed"
+        },
+        "wandb_llama_70b": {
+          "decision": "APPROVE",
+          "correct": true,
+          "precision": 1.0,
+          "stale_cited": [],
+          "retrieved": 6,
+          "waste": 4,
+          "latency_ms": 0.0,
+          "solver": "llm_fallback_deterministic"
+        }
+      }
+    }
+  ]
+}
