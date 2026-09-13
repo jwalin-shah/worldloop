@@ -193,7 +193,7 @@ def _(
     three_arm_report,
     three_arm_summary_rows,
 ):
-    elements = [
+    frontier_elements = [
         mo.md(
             "## 4. Three-Arm Cognitive Frontier\n"
             "Evaluating where deterministic structure stops being sufficient and where semantic "
@@ -207,7 +207,7 @@ def _(
     if three_arm_report is not None:
         summary_rows = three_arm_summary_rows(three_arm_report)
         case_rows = three_arm_case_rows(three_arm_report)
-        elements.extend(
+        frontier_elements.extend(
             [
                 mo.md("### Frozen Held-Out Benchmark (Receipt-Obligated)"),
                 mo.ui.table(summary_rows, selection=None),
@@ -225,7 +225,7 @@ def _(
     if adversarial_report is not None:
         adv_summary = three_arm_summary_rows(adversarial_report)
         adv_cases = three_arm_case_rows(adversarial_report)
-        elements.extend(
+        frontier_elements.extend(
             [
                 mo.md("### Adversarial / Naturalistic Frontier (No Keyword Giveaways)"),
                 mo.ui.table(adv_summary, selection=None),
@@ -242,19 +242,19 @@ def _(
             ]
         )
     if three_arm_report is None and adversarial_report is None:
-        elements.append(
+        frontier_elements.append(
             mo.callout(
                 mo.md("Run `python scripts/run_three_arm_eval.py` to populate live evaluations."),
                 kind="info",
             )
         )
-    frontier_view = mo.vstack(elements)
+    frontier_view = mo.vstack(frontier_elements)
     frontier_view
 
 
 @app.cell
 def _(lifeops_pilot_report, lifeops_pilot_rows, mo):
-    elements = [
+    pilot_elements = [
         mo.md(
             "## 5. Real-World Pilot — Engineering Runtime Routing\n"
             "A public-safe snapshot from the real LifeOps execution fabric. This is a **single "
@@ -264,7 +264,7 @@ def _(lifeops_pilot_report, lifeops_pilot_rows, mo):
     if lifeops_pilot_report is not None:
         rows = lifeops_pilot_rows(lifeops_pilot_report)
         route = lifeops_pilot_report["candidate_policy_v1"]["selected_route"]
-        elements.extend(
+        pilot_elements.extend(
             [
                 mo.ui.table(rows, selection=None),
                 mo.callout(
@@ -279,13 +279,13 @@ def _(lifeops_pilot_report, lifeops_pilot_rows, mo):
             ]
         )
     else:
-        elements.append(
+        pilot_elements.append(
             mo.callout(
                 mo.md("Real-world pilot report is not present in this checkout."),
                 kind="info",
             )
         )
-    mo.vstack(elements)
+    mo.vstack(pilot_elements)
 
 
 @app.cell
