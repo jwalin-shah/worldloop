@@ -133,6 +133,40 @@ def load_adversarial_report(root: Path) -> dict[str, Any] | None:
     return load_three_arm_report(root, filename="three-arm-eval-adversarial.json")
 
 
+def load_lifeops_pilot(root: Path) -> dict[str, Any] | None:
+    target = root / "reports" / "lifeops-worker-routing-pilot.json"
+    if not target.exists():
+        return None
+    try:
+        return json.loads(target.read_text())
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def lifeops_pilot_rows(report: dict[str, Any]) -> list[dict[str, Any]]:
+    live = report["live_world_state"]["read_boundary"]
+    v0 = report["baseline_policy_v0"]
+    v1 = report["candidate_policy_v1"]
+    verification = report["verification_contract"]
+    return [
+        {
+            "view": "Current runtime proof",
+            "baseline / observed": live["overall_status"],
+            "proof-aware route": v1["selected_route"],
+        },
+        {
+            "view": "Worker selection",
+            "baseline / observed": v0["selected_route"],
+            "proof-aware route": v1["selected_route"],
+        },
+        {
+            "view": "Verification contract",
+            "baseline / observed": "PASS" if verification["v0_passed"] else "FAIL",
+            "proof-aware route": "PASS" if verification["v1_passed"] else "FAIL",
+        },
+    ]
+
+
 def three_arm_summary_rows(report: dict[str, Any]) -> list[dict[str, Any]]:
     summary = report.get("summary", {})
     labels = {
@@ -173,4 +207,3 @@ def three_arm_case_rows(report: dict[str, Any]) -> list[dict[str, Any]]:
             }
         )
     return rows
-
