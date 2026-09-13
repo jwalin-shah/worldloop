@@ -29,3 +29,11 @@ pythonpath = ["src"]
 [tool.ruff]
 target-version = "py311"
 line-length = 100
+
+[tool.ruff.lint.per-file-ignores]
+"notebooks/worldloop_lab.py" = ["I001", "B018"]
+"scripts/run_three_arm_eval.py" = ["F401", "F541", "BLE001", "RUF010"]
+"src/worldloop/typesafe_router.py" = ["SIM102"]
+"src/worldloop/wandb_inference.py" = ["I001", "F401", "F841"]
+"tests/test_typesafe_router.py" = ["I001"]
+"tests/test_wandb_inference.py" = ["I001", "F401"]
