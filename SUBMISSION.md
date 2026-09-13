@@ -16,7 +16,13 @@ https://github.com/jwalin-shah/worldloop
 
 Best Use of Weave
 
-All projects are also eligible for Best Loop Design. marimo is used as the thin human-readable experiment/demo surface, not as runtime authority or state storage.
+All projects are also eligible for Best Loop Design.
+
+## Hosted marimo / Molab demo
+
+https://molab.marimo.io/github/jwalin-shah/worldloop/blob/main/notebooks/worldloop_lab.py
+
+marimo is used as the thin human-readable experiment/demo surface, with static preview mirrored directly from GitHub without requiring a local install.
 
 ## What we actually proved
 

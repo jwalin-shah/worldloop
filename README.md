@@ -115,7 +115,7 @@ Weave is the experiment proof plane: workflow/node versions, Compiler decisions,
 
 ## marimo / molab
 
-`notebooks/worldloop_lab.py` is the seed of the live WorldLoop Lab. The target surface is the interactive research workstation for inspecting execution graphs, comparing candidate programs/policies, exploring failure classes, running W/C/M knowledge-location experiments, visualizing progressive compilation, and—if justified—launching bounded training/fine-tuning work.
+`notebooks/worldloop_lab.py` is the live WorldLoop Lab. You can view the hosted demo on [Molab](https://molab.marimo.io/github/jwalin-shah/worldloop/blob/main/notebooks/worldloop_lab.py) without local installation. The target surface is the interactive research workstation for inspecting execution graphs, comparing candidate programs/policies, exploring failure classes, running W/C/M knowledge-location experiments, visualizing progressive compilation, and—if justified—launching bounded training/fine-tuning work.
 
 ## External knowledge
 
