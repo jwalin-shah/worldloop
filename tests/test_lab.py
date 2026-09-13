@@ -5,8 +5,10 @@ from worldloop.engine import WorldLoop
 from worldloop.lab import (
     heldout_comparison_rows,
     lab_summary,
+    lifeops_pilot_rows,
     live_program_view,
     load_gate3_report,
+    load_lifeops_pilot,
     program_comparison_rows,
 )
 from worldloop.runtime import FIXTURES
@@ -47,6 +49,17 @@ def test_program_comparison_is_an_inspectable_v0_v1_diff():
     assert by_shape["freshness-sensitive"]["added operation"] == "temporal"
     assert by_shape["cross-entity dependency"]["added operation"] == "graph"
     assert by_shape["exact/control"]["added operation"] == "none"
+
+
+def test_lifeops_pilot_exposes_real_world_abstention_route():
+    report = load_lifeops_pilot(ROOT)
+    assert report is not None
+    assert report["claim_scope"].startswith("single real-world routing snapshot")
+    assert report["baseline_policy_v0"]["selected_route"] == "cursor-agent"
+    assert report["candidate_policy_v1"]["selected_route"] == "ABSTAIN_REPAIR_CONTROL_PLANE"
+    rows = lifeops_pilot_rows(report)
+    assert rows[-1]["baseline / observed"] == "FAIL"
+    assert rows[-1]["proof-aware route"] == "PASS"
 
 
 def test_marimo_source_registers_as_python_without_starting_server():
