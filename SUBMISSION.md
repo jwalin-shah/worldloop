@@ -6,7 +6,7 @@ WorldLoop
 
 ## 2–3 sentence description
 
-WorldLoop turns verified agent failures into better typed execution policies. Instead of simply retrying when a task fails, WorldLoop independently diagnoses why the chosen evidence or control flow was insufficient, changes the execution program, and promotes that change only if it improves first-pass behavior on frozen held-out tasks. The longer-term goal is to progressively compile repeated successful agent behavior into explicit retrieval, reasoning, fallback, and abstention paths so semantic models are used only where they are still genuinely necessary.
+WorldLoop turns verified agent failures into better typed execution policies. Instead of simply retrying when a task fails, WorldLoop independently diagnoses why the chosen evidence or control flow was insufficient, changes the execution program, and promotes that change only if it improves first-pass behavior on frozen held-out tasks. We prove the mechanism on a controlled benchmark, then apply the same route → verify → diagnose → policy-change abstraction to a real changing execution fabric where the correct decision can be to abstain rather than call another agent.
 
 ## Repository
 
@@ -16,7 +16,7 @@ https://github.com/jwalin-shah/worldloop
 
 Best Use of Weave
 
-All projects are also eligible for Best Loop Design.
+All projects are also eligible for Best Loop Design. marimo is used as the thin human-readable experiment/demo surface, not as runtime authority or state storage.
 
 ## What we actually proved
 
@@ -33,7 +33,7 @@ On the concrete cross-entity demo case:
 5. The rerun finds the missing evidence and independently verifies successfully.
 6. Critic score improves from `0.5` to `1.0`.
 
-This is a real program change, not “ask the same model again.” The retained trajectory is in `reports/weave/run-89b898a4fed9.json`.
+This is a real program change, not “ask the same model again.” The retained trajectory is in `reports/weave/run-89b898a4fed9.json` and a fresh live remote Weave run was also published as `run-110ce97451cc`.
 
 ### Outer loop — generalize the repair policy
 
@@ -46,15 +46,28 @@ A v1 routing policy was derived from 45 development cases and evaluated on 21 fr
 
 The public artifact is `reports/EXP-008-gate3.json`.
 
-## Actual use case
+## Real-world validation — LifeOps engineering routing
 
-The use case is not “answer questions better.” It is:
+The synthetic benchmark proves the learning mechanism. We also captured one public-safe real-world routing snapshot from the LifeOps execution fabric.
 
-> Given a task over a changing world, decide what kind of cognition and evidence is required before acting.
+In the live snapshot, the read boundary reported the governed runtime unavailable, worker control not exposed, and no usable current worker/runtime. Historical execution evidence was also internally conflicted: an earlier Cursor receipt was green at the verification layer but contained an Orca worker-invocation failure warning, while fresh provider/demo canaries had failed without successful execution receipts.
 
-A repeated operational task such as “Should Project Aurora be approved for rollout right now?” may require an exact record, a current temporal fact, a dependency relationship, a semantic judgment, or an explicit abstention/escalation path. WorldLoop learns when a task needs exact lookup, vector search, temporal reasoning, graph traversal, a semantic model call, or abstention, and then progressively turns repeated successful behavior into a smaller explicit program.
+A naive baseline policy — “use the last green worker” — would route to `cursor-agent`. The proof-aware candidate policy instead chooses `ABSTAIN_REPAIR_CONTROL_PLANE`: do not spend another worker/provider call until current runtime exposure and worker-completion proof are trustworthy.
 
-This applies to deployment gates, support operations, compliance checks, research workflows, personal agents, and other long-lived agent systems.
+The committed pilot is `reports/lifeops-worker-routing-pilot.json`. This is explicitly **one real-world snapshot, not a generalization benchmark**. Its purpose is to show the same WorldLoop abstraction operating on actual changing infrastructure rather than only synthetic retrieval cases.
+
+## Weave — fresh remote proof
+
+The W&B integration is now proven end-to-end with a fresh Mac run using runtime-injected credentials.
+
+- Weave project: `jwalinshah13-personal/worldloop`
+- run id: `run-110ce97451cc`
+- remote trace call: `01a09c24-3399-7189-a90b-d641fab6a9f9`
+- evaluation summary call: `01a09c24-33af-76ac-a755-0082716056b3`
+- publish receipt: `remote_logged=True`, `evaluation_logged=True`
+- traced flow: `vector` → `cross_entity_join` / score `0.5` → Loop Doctor adds `graph` → `vector + graph` → `VERIFIED_SUCCESS` / score `1.0`
+
+This makes Best Use of Weave a real submission claim rather than a code-only integration claim.
 
 ## Semantic frontier experiment
 
@@ -68,98 +81,84 @@ On the clean 21-case routing benchmark, deterministic routing, TypeSafe, and W&B
 
 The public artifact is `reports/three-arm-eval-adversarial.json`.
 
-The takeaway is not “bigger models always win.” It is:
+Fresh live TypeSafe execution is also now proven. A Mac canary returned a verified `GRAPH` route with high confidence, and a larger OCI experiment issued 240 live HTTP-200 provider requests with unique request IDs. Importantly, that larger candidate scored only `36.67%` and the promotion gate correctly returned `REJECT` because the proposed retrieval recipe caused excessive false abstention. We treat that rejection as evidence that provider availability and model confidence do not override independent outcome verification.
 
-> Compile away semantic intelligence where the structure is known; keep semantic models only at nodes that still genuinely need them.
+The takeaway is:
 
-Current live TypeSafe connectivity is **not** part of the submission claim. Provider-specific claims should use retained artifacts only; offline fallback results must never be presented as live TypeSafe performance.
+> Compile away semantic intelligence where the structure is known; keep semantic models only at nodes that still genuinely need them — and reject semantic candidates when held-out verification says they are worse.
 
 ## Relationship to prior systems
 
 - **WorldLoop:** learns better cognitive / execution programs.
-- **LifeOps:** one future real environment that could run those learned programs.
+- **LifeOps:** one real environment where those routing ideas can be validated and eventually deployed.
 - **Bridge / HomeBase:** governs whether real effects are authorized.
 - **Verifier:** proves the intended real-world postcondition happened.
 
-Do not present the hackathon as “we built a self-improving LifeOps.” LifeOps and LiveLM/BTW are prior infrastructure; the public WorldLoop proof is sanitized and independent of them.
+Do not present the hackathon as “we built a self-improving LifeOps.” LifeOps and LiveLM/BTW are prior infrastructure; the public WorldLoop benchmark and learning loop are the hackathon project.
 
 ## 3-minute judging script
 
-### 0:00–0:25 — The problem
-
-“Agents can often recover from mistakes, but they repeatedly rediscover the same mistakes. WorldLoop asks a narrower question: can verified failures change the execution program used on future tasks, and can we prove that change generalizes?”
-
-### 0:25–1:15 — Inner loop
+### 0:00–1:30 — Clean scientific proof
 
 Open **WorldLoop Lab** on the known cross-entity case.
 
-Show:
+Show `Program v0 = vector`, incomplete evidence, Critic classification `cross_entity_join`, then the Loop Doctor change `vector -> vector + graph`. Rerun and show the missing evidence, verification passing, and score `0.5 -> 1.0`.
 
-`Program v0 = vector`
-
-Run it. Point to incomplete evidence and the failed obligation. Show the Critic classifying `cross_entity_join`. Then show the Loop Doctor changing:
-
-`vector -> vector + graph`
-
-Rerun and show the missing evidence being retrieved, verification passing, and the score moving from `0.5` to `1.0`.
-
-Say: “This is not another retry prompt. The execution program itself changed.”
-
-### 1:15–2:00 — Outer loop
-
-Switch to the held-out comparison.
-
-Show:
+Then switch to the held-out comparison:
 
 `v0: 7/21 = 33.3% first-pass verified`
 
 `v1: 21/21 = 100% first-pass verified`
 
-Explain that both eventually recover to 100%, so the measured improvement is that v1 chooses the correct cognitive route before failing. The policy was derived from development trajectories; the 21 evaluation cases were frozen and unseen during derivation.
+Say: “The loop doesn’t just repair this example. The candidate policy was derived from development failures and only promoted after it improved first-pass behavior on frozen unseen cases.”
 
-### 2:00–2:30 — Where compilation stops
+### 1:30–2:25 — This is not just a toy
 
-Optionally show the adversarial three-arm result:
+Open **WorldLoop Lab → Real-World Pilot**.
 
-`deterministic 33.3% | TypeSafe 66.7% | W&B Inference 100%`
+Say: “Here the world is not a fixture. It is my actual execution fabric: multiple workers, changing runtime health, repositories, and verification contracts.”
 
-Say: “This is the boundary: compile what has become reliable, but keep semantic intelligence where the structure is not yet safely captured.”
+Show that the naive `last-green-worker` policy chooses Cursor, while the proof-aware candidate chooses `ABSTAIN_REPAIR_CONTROL_PLANE` because current worker/runtime proof is unavailable or contradictory.
 
-### 2:30–2:55 — Weave
+Say: “Sometimes the better cognitive program is not a smarter model call. It is recognizing that the execution path itself is not trustworthy yet.”
 
-Show the actual trajectory / program and policy versions in Weave or the retained Weave report. Emphasize that Weave is the evidence plane: execution path, failure class, program delta, retry, and verification are inspectable.
+### 2:25–2:50 — Weave + marimo
 
-### 2:55–3:00 — Close
+Open the fresh remote Weave trace for `run-110ce97451cc`. Point to the pass-1 failure, Critic diagnosis, program delta, retry, and verified result.
 
-“The loop doesn’t just fix one answer. It changes the program used for future tasks, and we only promote that change if it wins on unseen cases.”
+Say: “Weave is the evidence plane. marimo is the thin experiment surface. Neither gets to decide promotion — the verifier and frozen evaluation do.”
+
+### 2:50–3:00 — Close
+
+“WorldLoop learns the smallest verified program that can do the work, and keeps semantic intelligence only where it earns its cost.”
 
 ## One-diagram explanation
 
 ```text
 TASK
   ↓
-Program v0 chooses a route
+choose cognition / evidence / execution route
   ↓
 execute
   ↓
-VERIFY explicit evidence obligations
+VERIFY explicit obligations
   ↓
-wrong?
+wrong or unproven?
   ↓
 classify WHY
   ↓
 change the program
   ↓
-test candidate on unseen tasks
+test candidate on unseen tasks / objective receipts
   ↓
 better?
-  ├─ no  → reject
-  └─ yes → promote to v1
+  ├─ no  → reject / abstain
+  └─ yes → promote
 ```
 
 ## Demo fallback
 
-The core proof is fully reproducible from sanitized source-controlled fixtures. If Weave, OCI, or a sponsor API is unavailable during judging, use WorldLoop Lab plus the committed trajectory and held-out reports. Do not make a live external service a dependency of the proof.
+The core proof is fully reproducible from sanitized source-controlled fixtures. If a live sponsor API or OCI path is unavailable during judging, use WorldLoop Lab plus the committed trajectory and held-out reports. The fresh remote Weave run is additive evidence, not a dependency of the core proof.
 
 ## Submission checklist
 
@@ -171,5 +170,6 @@ The core proof is fully reproducible from sanitized source-controlled fixtures. 
 - [ ] GitHub: https://github.com/jwalin-shah/worldloop
 - [ ] Select Best Use of Weave.
 - [ ] Add the <2-minute demo recording.
+- [ ] Include / keep handy the fresh Weave run `run-110ce97451cc`.
 - [ ] Verify WorldLoop Lab runs locally.
 - [ ] Keep the team onsite for final presentations and the awards ceremony.
