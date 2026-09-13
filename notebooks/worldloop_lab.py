@@ -15,10 +15,12 @@ def _():
     from worldloop.lab import (
         heldout_comparison_rows,
         lab_summary,
+        lifeops_pilot_rows,
         live_program_view,
-        load_gate3_report,
-        load_three_arm_report,
         load_adversarial_report,
+        load_gate3_report,
+        load_lifeops_pilot,
+        load_three_arm_report,
         program_comparison_rows,
         three_arm_case_rows,
         three_arm_summary_rows,
@@ -30,6 +32,7 @@ def _():
     gate3_report = load_gate3_report(root)
     three_arm_report = load_three_arm_report(root)
     adversarial_report = load_adversarial_report(root)
+    lifeops_pilot_report = load_lifeops_pilot(root)
     scorecard = lab_summary(gate3_report)
     weave_project = os.getenv("WORLDLOOP_WEAVE_PROJECT", "jwalinshah13-personal/worldloop")
     weave_run_url = os.getenv("WORLDLOOP_WEAVE_RUN_URL", "")
@@ -37,6 +40,8 @@ def _():
         adversarial_report,
         gate3_report,
         heldout_comparison_rows,
+        lifeops_pilot_report,
+        lifeops_pilot_rows,
         live_program_view,
         loop,
         mo,
@@ -247,14 +252,50 @@ def _(
     frontier_view
 
 
+@app.cell
+def _(lifeops_pilot_report, lifeops_pilot_rows, mo):
+    elements = [
+        mo.md(
+            "## 5. Real-World Pilot — Engineering Runtime Routing\n"
+            "A public-safe snapshot from the real LifeOps execution fabric. This is a **single "
+            "live snapshot**, not a held-out real-world benchmark."
+        )
+    ]
+    if lifeops_pilot_report is not None:
+        rows = lifeops_pilot_rows(lifeops_pilot_report)
+        route = lifeops_pilot_report["candidate_policy_v1"]["selected_route"]
+        elements.extend(
+            [
+                mo.ui.table(rows, selection=None),
+                mo.callout(
+                    mo.md(
+                        f"**Proof-aware route:** `{route}`  \n"
+                        "When current runtime proof is unavailable or internally conflicted, "
+                        "the correct policy is to abstain and repair the evidence path before "
+                        "spending another worker/model call."
+                    ),
+                    kind="warn",
+                ),
+            ]
+        )
+    else:
+        elements.append(
+            mo.callout(
+                mo.md("Real-world pilot report is not present in this checkout."),
+                kind="info",
+            )
+        )
+    mo.vstack(elements)
+
 
 @app.cell
 def _(mo):
     mo.callout(
         mo.md(
             "**Reproducibility / privacy:** this lab reads only source-controlled sanitized "
-            "WorldLoop fixtures and the committed Gate 3 report. W&B credentials are optional "
-            "and injected at runtime; private LifeOps data is never loaded automatically."
+            "WorldLoop fixtures, committed experiment reports, and a public-safe LifeOps routing "
+            "snapshot. W&B credentials are optional and private LifeOps data is never loaded "
+            "automatically."
         ),
         kind="info",
     )
