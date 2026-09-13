@@ -119,14 +119,18 @@ def lab_summary(report: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def load_three_arm_report(root: Path) -> dict[str, Any] | None:
-    target = root / "reports" / "three-arm-eval.json"
+def load_three_arm_report(root: Path, filename: str = "three-arm-eval.json") -> dict[str, Any] | None:
+    target = root / "reports" / filename
     if not target.exists():
         return None
     try:
         return json.loads(target.read_text())
     except (OSError, json.JSONDecodeError):
         return None
+
+
+def load_adversarial_report(root: Path) -> dict[str, Any] | None:
+    return load_three_arm_report(root, filename="three-arm-eval-adversarial.json")
 
 
 def three_arm_summary_rows(report: dict[str, Any]) -> list[dict[str, Any]]:

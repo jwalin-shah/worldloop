@@ -1,3 +1,4 @@
+import pytest
 from types import SimpleNamespace
 
 from worldloop.benchmark import generate_benchmark
@@ -80,7 +81,7 @@ def test_multi_primitive_questions_structure():
     questions = typesafe_multi_questions()
     assert "is_evidence_stale" in questions
     assert "has_cross_entity_dependency" in questions
-    assert "is_evidence_sufficient" in questions
+    assert "is_receipt_attached" in questions
     assert "missing_evidence_class" in questions
     assert "candidate_route" in questions
 
@@ -110,11 +111,30 @@ def test_compose_typesafe_policy_prioritizes_dependency_and_staleness():
     assert res_stale.route == "TEMPORAL"
     assert res_stale.confidence == 0.85
 
-    # 3. Sufficient evidence -> EXACT
-    res_suff = compose_typesafe_policy(
-        nouls={"has_cross_entity_dependency": 0.05, "is_evidence_stale": 0.05, "is_evidence_sufficient": 0.95},
-        choices={"candidate_route": cand_mock},
+    # 3. Model only with receipt obligation is bounded to EXACT
+    cand_model_only = SimpleNamespace(
+        choice="MODEL_ONLY",
+        confidence=0.75,
+        probabilities={"MODEL_ONLY": 0.75, "EXACT": 0.25},
     )
-    assert res_suff.route == "EXACT"
-    assert res_suff.confidence == 0.95
+    res_bounded = compose_typesafe_policy(
+        nouls={"has_cross_entity_dependency": 0.05, "is_evidence_stale": 0.05, "is_receipt_attached": 0.1},
+        choices={"candidate_route": cand_model_only},
+        obligation="independent_receipt_required",
+    )
+    assert res_bounded.route == "EXACT"
+    assert res_bounded.confidence == 0.75
+
+
+def test_heuristic_collapses_on_adversarial_prose():
+    from worldloop.typesafe_router import evaluate_router, heuristic_route
+
+    dataset = generate_benchmark()
+    metrics, _ = evaluate_router(dataset.heldout, lambda c: heuristic_route(c, mode="adversarial"))
+    # Keyword-matching fails on natural operational prose, dropping to 33.3%
+    assert metrics.verified_success == pytest.approx(1 / 3, abs=0.01)
+    assert metrics.under_allocation_count == 14
+    assert metrics.route_counts == {"EXACT": 21}
+
+
 

@@ -106,7 +106,8 @@ def routing_state(case: GeneratedCase, mode: str = "legacy") -> dict[str, Any]:
     Ground-truth decision, failure label, repair recipe, and held-out outcome are intentionally
     excluded. The state only contains information declared before retrieval begins.
     In 'legacy' mode, pre-extracted boolean flags are provided.
-    In 'latent' mode, only unstructured operational prose (context_brief) is provided.
+    In 'latent' mode, unstructured operational prose (context_brief) is provided.
+    In 'adversarial' mode, naturalistic operational prose without keyword giveaways is provided.
     """
     features = case.pre_action_features(mode=mode)
     payload: dict[str, Any] = {
@@ -114,6 +115,7 @@ def routing_state(case: GeneratedCase, mode: str = "legacy") -> dict[str, Any]:
         "question": case.question,
         "risk_band": case.risk_band,
         "available_route_budget": 3,
+        "evidence_obligation": "independent_receipt_required",
     }
     if mode == "legacy":
         payload.update(
@@ -123,6 +125,8 @@ def routing_state(case: GeneratedCase, mode: str = "legacy") -> dict[str, Any]:
                 "cross_entity": features.get("cross_entity", False),
             }
         )
+    elif mode == "adversarial":
+        payload["context_brief"] = case.adversarial_context_prose
     else:
         payload["context_brief"] = case.context_prose
     return payload
@@ -232,45 +236,49 @@ def typesafe_multi_questions() -> dict[str, Any]:
         "is_evidence_stale": Noul(
             instructions=(
                 "Does the provided context contain superseded, expired, or chronologically "
-                "invalidated evidence where a newer update supersedes an earlier claim?"
+                "invalidated evidence where a later update or override supersedes an earlier claim?"
             ),
             criteria={
-                "true": "A later timeline event, newer update, or superseding record alters the earlier claim.",
+                "true": "A later timeline event, newer update, or remedial override alters the earlier claim.",
                 "false": "The record reflects current uncontradicted status with no superseding updates.",
             },
         ),
         "has_cross_entity_dependency": Noul(
             instructions=(
                 "Does evaluating this release request require resolving an external upstream "
-                "system, component, or cross-entity dependency?"
+                "system, coupled component, or cross-entity dependency?"
             ),
             criteria={
-                "true": "Verification requires checking a linked external dependency or upstream component.",
+                "true": "Verification requires checking a linked external dependency, coupled service, or upstream component.",
                 "false": "The release can be verified solely within the primary component without external systems.",
             },
         ),
-        "is_evidence_sufficient": Noul(
+        "is_receipt_attached": Noul(
             instructions=(
-                "Is the supplied context currently sufficient to verify the rollout decision "
-                "without needing further specialized retrieval?"
+                "Does the supplied state already contain an independently verified execution receipt, "
+                "cryptographic signature, or raw verification proof from the target system?"
             ),
             criteria={
-                "true": "All required facts are clear, complete, uncontradicted, and fresh.",
-                "false": "Critical details are missing, ambiguous, stale, or depend on unresolved external systems.",
+                "true": "An independent verifiable execution receipt or raw proof artifact is already attached in state.",
+                "false": "Only unverified prose assertions, notes, or tickets are provided without raw execution receipts.",
             },
         ),
         "missing_evidence_class": Choice(
-            instructions="If evidence is incomplete, what category of information is missing?",
+            instructions="If independent verification is missing, what category of retrieval receipt is required?",
             criteria={
-                "none": "Evidence is complete and sufficient for decision.",
-                "temporal_recency": "Missing current unexpired status or latest update.",
+                "none": "Independently verified receipt is already attached in state.",
+                "temporal_recency": "Missing current unexpired status or latest timeline update.",
                 "cross_entity_dependency": "Missing linked upstream dependency health status.",
                 "authorization_proof": "Missing sign-off or required approval record.",
                 "registry_clearance": "Missing general registry status verification.",
             },
         ),
         "candidate_route": Choice(
-            instructions="What is the minimal retrieval route WorldLoop should execute next?",
+            instructions=(
+                "What is the minimal external retrieval route WorldLoop should execute to acquire an "
+                "independent verification receipt for this rollout claim? Prose assertions in state do NOT "
+                "satisfy verification obligations."
+            ),
             criteria=ROUTE_CRITERIA,
         ),
     }
@@ -279,14 +287,18 @@ def typesafe_multi_questions() -> dict[str, Any]:
 def compose_typesafe_policy(
     nouls: dict[str, float],
     choices: dict[str, Any],
+    obligation: str = "independent_receipt_required",
 ) -> SemanticRouteResult:
     """Deterministic policy matrix combining parallel TypeSafe primitives.
 
     WorldLoop owns the composition logic and verification boundary.
+    Under an independent_receipt_required contract (Machine Constitution:
+    'Observation is not completion'), prose assertions in state do not
+    permit MODEL_ONLY; the minimal bounded receipt acquisition is EXACT.
     """
     p_stale = float(nouls.get("is_evidence_stale", 0.0))
     p_dep = float(nouls.get("has_cross_entity_dependency", 0.0))
-    p_suff = float(nouls.get("is_evidence_sufficient", 0.5))
+    p_receipt = float(nouls.get("is_receipt_attached", 0.0))
 
     cand_choice = choices.get("candidate_route")
     route_candidate: Route = "EXACT"
@@ -299,6 +311,13 @@ def compose_typesafe_policy(
         probs = getattr(cand_choice, "probabilities", {})
         cand_probs = {str(k): float(v) for k, v in probs.items()}
 
+    # Contract enforcement: If an independent receipt is required and not attached,
+    # MODEL_ONLY is legally disallowed and bounded to minimal exact receipt retrieval.
+    if obligation == "independent_receipt_required":
+        if route_candidate == "MODEL_ONLY" or p_receipt < 0.70:
+            if route_candidate == "MODEL_ONLY":
+                route_candidate = "EXACT"
+
     # Multi-primitive decision hierarchy:
     # 1. Dependency signal elevated
     if p_dep >= 0.60 or route_candidate == "GRAPH":
@@ -308,10 +327,6 @@ def compose_typesafe_policy(
     elif p_stale >= 0.60 or route_candidate == "TEMPORAL":
         final_route = "TEMPORAL"
         confidence = max(p_stale, cand_conf)
-    # 3. Sufficient uncontradicted evidence
-    elif p_suff >= 0.75:
-        final_route = "EXACT"
-        confidence = max(p_suff, cand_conf)
     else:
         final_route = route_candidate
         confidence = cand_conf
@@ -338,15 +353,20 @@ def typesafe_multi_route(case: GeneratedCase, mode: str = "latent") -> SemanticR
             "TypeSafe SDK is not installed; install the sponsors extra or `uv add typesafe-sdk`"
         ) from exc
 
+    state = routing_state(case, mode=mode)
     with TypeSafeClient() as client:
         response = client.system_one(
-            state=routing_state(case, mode=mode),
+            state=state,
             questions=typesafe_multi_questions(),
         )
 
     nouls = {k: float(getattr(v, "noul", v)) for k, v in getattr(response, "nouls", {}).items()}
     choices = getattr(response, "choices", {})
-    return compose_typesafe_policy(nouls, choices)
+    return compose_typesafe_policy(
+        nouls,
+        choices,
+        obligation=state.get("evidence_obligation", "independent_receipt_required"),
+    )
 
 
 def route_is_verified(case: GeneratedCase, result: SemanticRouteResult) -> bool:

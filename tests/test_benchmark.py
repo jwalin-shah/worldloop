@@ -79,3 +79,14 @@ def test_committed_manifest_locks_default_snapshot():
     assert manifest["seed"] == dataset.seed
     assert manifest["development_count"] == len(dataset.development)
     assert manifest["heldout_count"] == len(dataset.heldout)
+
+
+def test_adversarial_context_prose_eliminates_keyword_giveaways():
+    dataset = generate_benchmark()
+    for case in dataset.heldout:
+        adv = case.adversarial_context_prose.lower()
+        assert "dependency" not in adv
+        assert "superseding" not in adv
+        features = case.pre_action_features(mode="adversarial")
+        assert features["context_prose"] == case.adversarial_context_prose
+

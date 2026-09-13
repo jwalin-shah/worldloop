@@ -69,14 +69,38 @@ class GeneratedCase:
             f"are linked. Direct routine rollout verification applies."
         )
 
+    @property
+    def adversarial_context_prose(self) -> str:
+        """Naturalistic operational prose that eliminates literal benchmark keyword giveaways."""
+        if self.failure_class == "temporal_staleness":
+            return (
+                f"Operational log for {self.project} (band: {self.risk_band}, as-of: {self.as_of}). "
+                f"Initial health check flagged a gate failure at 09:00. However, on-call engineers deployed "
+                f"a remedial patch at 09:45 which overrode earlier diagnostic alerts. System standards "
+                f"prohibit relying on expired morning status."
+            )
+        if self.failure_class == "cross_entity_join":
+            dep = self.dependency or "upstream-service"
+            return (
+                f"Operational log for {self.project} (band: {self.risk_band}, as-of: {self.as_of}). "
+                f"Target rollout couples directly with {dep}'s runtime cluster. Releasing the primary binary "
+                f"requires first validating the operational stability and latency SLA of {dep}."
+            )
+        return (
+            f"Operational log for {self.project} (band: {self.risk_band}, as-of: {self.as_of}). "
+            f"Isolated standalone package with all unit diagnostics green. Independent confirmation "
+            f"from central registry is required before release gate unlocks."
+        )
+
     def pre_action_features(self, mode: str = "legacy") -> dict[str, Any]:
         """Features legitimately available before executing a retrieval policy."""
+        prose = self.adversarial_context_prose if mode == "adversarial" else self.context_prose
         payload: dict[str, Any] = {
             "case_id": self.case_id,
             "task_family": self.task_family,
             "question": self.question,
             "risk_band": self.risk_band,
-            "context_prose": self.context_prose,
+            "context_prose": prose,
         }
         if mode == "legacy":
             payload.update(

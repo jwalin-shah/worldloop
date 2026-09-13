@@ -70,9 +70,9 @@ def evaluate_arm(case: Any, arm_name: str, mode: str) -> dict[str, Any]:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Three-Arm Latent Routing Evaluation (Deterministic vs. TypeSafe vs. W&B LLM)")
     parser.add_argument("--limit", type=int, default=None, help="Number of held-out cases to evaluate")
-    parser.add_argument("--mode", default="latent", choices=["latent", "legacy"], help="Evaluation mode")
+    parser.add_argument("--mode", default="latent", choices=["latent", "adversarial", "legacy"], help="Evaluation mode")
     parser.add_argument("--output", default="reports/three-arm-eval.json", help="Path for JSON output")
-    parser.add_argument("--experiment", default="EXP-009-three-arm-frontier", help="Experiment identifier")
+    parser.add_argument("--experiment", default="EXP-010-receipt-aware-frontier", help="Experiment identifier")
     args = parser.parse_args()
 
     dataset = generate_benchmark()
@@ -117,11 +117,16 @@ def main() -> None:
 
     for case in cases:
         print(f"Evaluating Case {case.case_id}...")
+        context_prose = (
+            case.adversarial_context_prose
+            if args.mode == "adversarial"
+            else (case.context_prose if args.mode == "latent" else "")
+        )
         row: dict[str, Any] = {
             "case_id": case.case_id,
             "question": case.question,
             "target_recipe": list(case.repair_recipe),
-            "context_prose": case.context_prose if args.mode == "latent" else "",
+            "context_prose": context_prose,
             "arms": {},
         }
         for arm in arms:
