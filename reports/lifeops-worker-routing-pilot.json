@@ -1,0 +1,70 @@
+{
+  "schema_version": "worldloop.real-world-pilot.v1",
+  "experiment_id": "EXP-LIFEOPS-ROUTING-001",
+  "captured_at": "2026-09-13T18:33:30Z",
+  "public_safe": true,
+  "claim_scope": "single real-world routing snapshot; this does not establish generalization",
+  "question": "Given a real engineering task and the current LifeOps execution state, should WorldLoop route to a worker, use a deterministic path, or abstain and repair the control plane first?",
+  "task_family": "engineering worker and runtime routing",
+  "live_world_state": {
+    "read_boundary": {
+      "overall_status": "blocked",
+      "governed_runtime_status": "unavailable",
+      "worker_control": "not_exposed",
+      "available_workers": [],
+      "active_runtimes": [],
+      "known_gap": "agent runtime adapter not exposed at the read boundary"
+    },
+    "execution_evidence": [
+      {
+        "case": "prior cursor readiness canary",
+        "reported_status": "VERIFIED_SUCCESS",
+        "verification_status": "PASSED",
+        "proof_conflict": true,
+        "conflict": "the same execution receipt contains a post-execution warning that the Orca worker invocation failed",
+        "safe_interpretation": "do not treat the green receipt alone as proof that a healthy worker executed"
+      },
+      {
+        "case": "fresh TypeSafe canary",
+        "reported_status": "EXECUTION_FAILED",
+        "receipt_present": false,
+        "safe_interpretation": "provider execution is not currently proven"
+      },
+      {
+        "case": "judge-facing remote demo canary",
+        "reported_status": "EXECUTION_FAILED",
+        "receipt_present": false,
+        "safe_interpretation": "remote governed demo execution is not currently proven"
+      }
+    ]
+  },
+  "baseline_policy_v0": {
+    "name": "last-green-worker",
+    "rule": "if a prior worker receipt says VERIFIED_SUCCESS, prefer that worker for the next compatible task",
+    "selected_route": "cursor-agent",
+    "verified_for_current_world_state": false,
+    "failure_class": "stale_or_conflicted_runtime_proof"
+  },
+  "candidate_policy_v1": {
+    "name": "readiness-and-proof-aware",
+    "rule": "before semantic worker routing, require current runtime exposure and non-contradictory worker-completion proof; otherwise abstain and repair the control-plane evidence path",
+    "selected_route": "ABSTAIN_REPAIR_CONTROL_PLANE",
+    "worker_call_attempted": false,
+    "provider_call_attempted": false,
+    "reason": "current read boundary exposes no usable worker runtime and existing execution evidence is failed or internally conflicted"
+  },
+  "verification_contract": {
+    "requirements": [
+      "never route to a worker whose current readiness is unavailable or unproven",
+      "never treat a verification-only green result as proof of worker completion when execution evidence conflicts",
+      "fail closed when no trustworthy ExecutionReceipt proves the required worker/provider path"
+    ],
+    "v0_passed": false,
+    "v1_passed": true
+  },
+  "result": {
+    "decision": "KEEP_AS_REAL_WORLD_PILOT",
+    "what_it_supports": "WorldLoop can apply the same route -> verify -> diagnose -> policy-change abstraction to a real changing execution fabric, including choosing not to call an agent when runtime proof is unhealthy.",
+    "what_it_does_not_support": "This one snapshot does not prove that the candidate worker-routing policy generalizes across engineering tasks or workers. A real held-out fleet benchmark would be the next experiment."
+  }
+}
