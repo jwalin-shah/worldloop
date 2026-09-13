@@ -6,7 +6,7 @@ WorldLoop
 
 ## 2–3 sentence description
 
-WorldLoop is a self-improving execution compiler for agents: it observes a run, independently verifies what failed, proposes a smaller typed context/resource/workflow policy, and promotes that policy only if it wins on frozen held-out worlds. Instead of letting an agent endlessly reason about its own transcript, WorldLoop separates exploration from verification and progressively compiles successful behavior into deterministic transitions, retrieval steps, and bounded semantic decisions. During the hackathon we also used the loop on its own infrastructure failures, turning ambiguous provider/worker failures into explicit readiness states rather than silently treating missing evidence as success.
+WorldLoop turns verified agent failures into better typed execution policies. Instead of simply retrying when a task fails, WorldLoop independently diagnoses why the chosen evidence or control flow was insufficient, changes the execution program, and promotes that change only if it improves first-pass behavior on frozen held-out tasks. The longer-term goal is to progressively compile repeated successful agent behavior into explicit retrieval, reasoning, fallback, and abstention paths so semantic models are used only where they are still genuinely necessary.
 
 ## Repository
 
@@ -18,59 +18,148 @@ Best Use of Weave
 
 All projects are also eligible for Best Loop Design.
 
-## What to show judges first
+## What we actually proved
 
-1. **The problem:** agents repeatedly choose the wrong context/tool/model path and can mistake apparent progress for verified progress.
-2. **Program v0:** a deliberately weaker execution/retrieval policy fails on a generated hidden-world case.
-3. **Independent Critic:** classifies the concrete missing obligation/failure without reading the hidden answer during execution.
-4. **Loop Doctor / compiler:** derives a candidate typed policy/program from development failures.
-5. **Frozen held-out gate:** compares the candidate against the incumbent before promotion.
-6. **Weave:** shows the trajectory and evaluation evidence for the loop.
-7. **Provider readiness:** a zero-provider-call check reports the first broken runtime hop before paid/live experiments, so unavailable providers are routed around instead of producing false green results.
+WorldLoop is **not** claiming to be a general self-improving AI. The hackathon proof is narrower and stronger: we proved an inner loop and an outer loop.
 
-## Verified benchmark result to cite
+### Inner loop — repair one failed execution program
 
-The public `reports/EXP-008-gate3.json` artifact records a frozen 21-case held-out promotion gate: Program/policy v0 achieved 33.33% first-pass verified success, while the automatically derived v1 policy achieved 100% first-pass verified success and was marked `PROMOTED`. Both reached 100% eventual verified success, so the improvement is specifically that WorldLoop learned to choose the right execution/retrieval program on the first pass rather than relying on recovery.
+On the concrete cross-entity demo case:
 
-A larger V2 generated-world sweep was also run during development, but do not use its metrics in the submission unless its exact artifact is published and linked.
+1. Program v0 chooses `vector` retrieval.
+2. Execution cannot satisfy the required cross-entity evidence obligation.
+3. The independent Critic identifies `cross_entity_join` and the missing evidence.
+4. The Loop Doctor changes the program from `vector` to `vector + graph`.
+5. The rerun finds the missing evidence and independently verifies successfully.
+6. Critic score improves from `0.5` to `1.0`.
 
-## TypeSafe experiment story
+This is a real program change, not “ask the same model again.” The retained trajectory is in `reports/weave/run-89b898a4fed9.json`.
 
-TypeSafe is used as a bounded semantic routing primitive rather than as the global controller. Live experiments during the hackathon exposed an important composition result: broader multi-primitive routing could over-route, while a narrower Choice-style decision primitive was substantially more stable on the tested routing cases. Provider-specific claims should be shown only with retained request/usage evidence; offline fallback results must not be presented as live TypeSafe performance.
+### Outer loop — generalize the repair policy
+
+A v1 routing policy was derived from 45 development cases and evaluated on 21 frozen held-out cases.
+
+- v0: `7/21 = 33.33%` first-pass verified success.
+- v1: `21/21 = 100%` first-pass verified success.
+- both eventually reached `21/21`, so the measured gain is specifically choosing the right cognitive route before needing repair.
+- promotion decision: `PROMOTED`.
+
+The public artifact is `reports/EXP-008-gate3.json`.
+
+## Actual use case
+
+The use case is not “answer questions better.” It is:
+
+> Given a task over a changing world, decide what kind of cognition and evidence is required before acting.
+
+A repeated operational task such as “Should Project Aurora be approved for rollout right now?” may require an exact record, a current temporal fact, a dependency relationship, a semantic judgment, or an explicit abstention/escalation path. WorldLoop learns when a task needs exact lookup, vector search, temporal reasoning, graph traversal, a semantic model call, or abstention, and then progressively turns repeated successful behavior into a smaller explicit program.
+
+This applies to deployment gates, support operations, compliance checks, research workflows, personal agents, and other long-lived agent systems.
+
+## Semantic frontier experiment
+
+The TypeSafe / W&B Inference experiment tests where deterministic structure stops being sufficient.
+
+On the clean 21-case routing benchmark, deterministic routing, TypeSafe, and W&B Inference all reached 100%. On the adversarial version, where obvious keyword cues were removed:
+
+- deterministic: `7/21 = 33.33%`;
+- TypeSafe: `14/21 = 66.67%`;
+- W&B Inference: `21/21 = 100%`.
+
+The public artifact is `reports/three-arm-eval-adversarial.json`.
+
+The takeaway is not “bigger models always win.” It is:
+
+> Compile away semantic intelligence where the structure is known; keep semantic models only at nodes that still genuinely need them.
+
+Current live TypeSafe connectivity is **not** part of the submission claim. Provider-specific claims should use retained artifacts only; offline fallback results must never be presented as live TypeSafe performance.
+
+## Relationship to prior systems
+
+- **WorldLoop:** learns better cognitive / execution programs.
+- **LifeOps:** one future real environment that could run those learned programs.
+- **Bridge / HomeBase:** governs whether real effects are authorized.
+- **Verifier:** proves the intended real-world postcondition happened.
+
+Do not present the hackathon as “we built a self-improving LifeOps.” LifeOps and LiveLM/BTW are prior infrastructure; the public WorldLoop proof is sanitized and independent of them.
 
 ## 3-minute judging script
 
-### 0:00–0:25 — Problem
+### 0:00–0:25 — The problem
 
-“Agents are getting smarter, but they still repeatedly choose the wrong cognitive path: too much context, the wrong retriever, an expensive model when a deterministic branch would work, or a confident answer when evidence is insufficient. Observability tells you what happened after the run; WorldLoop asks whether verified failures can change the next execution program.”
+“Agents can often recover from mistakes, but they repeatedly rediscover the same mistakes. WorldLoop asks a narrower question: can verified failures change the execution program used on future tasks, and can we prove that change generalizes?”
 
-### 0:25–1:05 — Show one failure
+### 0:25–1:15 — Inner loop
 
-Open one generated hidden-world case. Show Program v0 choosing the weaker route, then the independent Critic identifying the missing evidence/failure class. Emphasize that the hidden oracle is not exposed to the runtime policy.
+Open **WorldLoop Lab** on the known cross-entity case.
 
-### 1:05–1:40 — Show the repair
+Show:
 
-Show the candidate graph/policy delta: change the retrieval/resource branch and/or add an explicit fallback/abstention transition. Explain: “The model can explore, but the improvement is compiled into a smaller typed program rather than becoming another prompt.”
+`Program v0 = vector`
 
-### 1:40–2:10 — Show held-out proof
+Run it. Point to incomplete evidence and the failed obligation. Show the Critic classifying `cross_entity_join`. Then show the Loop Doctor changing:
 
-Open `reports/EXP-008-gate3.json`: v0 gets 7/21 (33.33%) first-pass verified success; v1 gets 21/21 (100%) and is marked `PROMOTED`. Both eventually recover to 21/21, which makes the result easy to explain: the learned program removes avoidable recovery loops instead of merely making the final answer look better.
+`vector -> vector + graph`
 
-### 2:10–2:35 — Show Weave
+Rerun and show the missing evidence being retrieved, verification passing, and the score moving from `0.5` to `1.0`.
 
-Open `reports/weave/run-89b898a4fed9.json` or the corresponding live Weave trace. Point to Program v0 selecting vector retrieval, the Critic classifying `cross_entity_join`, the Loop Doctor adding graph retrieval, and the independent verifier passing the repaired run. This is the evidence plane, not the authority plane.
+Say: “This is not another retry prompt. The execution program itself changed.”
 
-### 2:35–2:55 — Show self-healing/readiness
+### 1:15–2:00 — Outer loop
 
-Show the provider-readiness output or incident: WorldLoop found that the TypeSafe SDK/runtime existed but the isolated execution's Infisical secret context was unavailable, so it classified the first blocking hop before spending a provider call. Explain that runtime/provider capability is itself changing world state and should affect program selection.
+Switch to the held-out comparison.
+
+Show:
+
+`v0: 7/21 = 33.3% first-pass verified`
+
+`v1: 21/21 = 100% first-pass verified`
+
+Explain that both eventually recover to 100%, so the measured improvement is that v1 chooses the correct cognitive route before failing. The policy was derived from development trajectories; the 21 evaluation cases were frozen and unseen during derivation.
+
+### 2:00–2:30 — Where compilation stops
+
+Optionally show the adversarial three-arm result:
+
+`deterministic 33.3% | TypeSafe 66.7% | W&B Inference 100%`
+
+Say: “This is the boundary: compile what has become reliable, but keep semantic intelligence where the structure is not yet safely captured.”
+
+### 2:30–2:55 — Weave
+
+Show the actual trajectory / program and policy versions in Weave or the retained Weave report. Emphasize that Weave is the evidence plane: execution path, failure class, program delta, retry, and verification are inspectable.
 
 ### 2:55–3:00 — Close
 
-“Models explore. WorldLoop learns what can become software—and only promotes it when independent evidence says it should.”
+“The loop doesn’t just fix one answer. It changes the program used for future tasks, and we only promote that change if it wins on unseen cases.”
 
-## Demo fallback if remote services fail
+## One-diagram explanation
 
-The public demo must remain reproducible from sanitized fixtures. If a sponsor API, Weave, or OCI path is unavailable during judging, run the generated-world benchmark and held-out promotion path locally, then show retained sponsor traces/artifacts separately. Do not block the core proof on a live external service.
+```text
+TASK
+  ↓
+Program v0 chooses a route
+  ↓
+execute
+  ↓
+VERIFY explicit evidence obligations
+  ↓
+wrong?
+  ↓
+classify WHY
+  ↓
+change the program
+  ↓
+test candidate on unseen tasks
+  ↓
+better?
+  ├─ no  → reject
+  └─ yes → promote to v1
+```
+
+## Demo fallback
+
+The core proof is fully reproducible from sanitized source-controlled fixtures. If Weave, OCI, or a sponsor API is unavailable during judging, use WorldLoop Lab plus the committed trajectory and held-out reports. Do not make a live external service a dependency of the proof.
 
 ## Submission checklist
 
@@ -81,6 +170,6 @@ The public demo must remain reproducible from sanitized fixtures. If a sponsor A
 - [ ] Paste the 2–3 sentence description above.
 - [ ] GitHub: https://github.com/jwalin-shah/worldloop
 - [ ] Select Best Use of Weave.
-- [ ] Add a demo link / short video if setup is not instantly obvious.
-- [ ] Verify the repo quick-start works from a clean checkout.
+- [ ] Add the <2-minute demo recording.
+- [ ] Verify WorldLoop Lab runs locally.
 - [ ] Keep the team onsite for final presentations and the awards ceremony.
