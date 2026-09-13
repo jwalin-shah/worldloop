@@ -30,7 +30,9 @@ All projects are also eligible for Best Loop Design.
 
 ## Verified benchmark result to cite
 
-On the generated V2 benchmark, the learned policy reached 100% held-out accuracy on the 60-case frozen held-out set while the fixed deterministic retrieval baseline reached 88.33%. This result is from the leakage-safe generated-world harness and should be kept separate from provider-specific TypeSafe experiments.
+The public `reports/EXP-008-gate3.json` artifact records a frozen 21-case held-out promotion gate: Program/policy v0 achieved 33.33% first-pass verified success, while the automatically derived v1 policy achieved 100% first-pass verified success and was marked `PROMOTED`. Both reached 100% eventual verified success, so the improvement is specifically that WorldLoop learned to choose the right execution/retrieval program on the first pass rather than relying on recovery.
+
+A larger V2 generated-world sweep was also run during development, but do not use its metrics in the submission unless its exact artifact is published and linked.
 
 ## TypeSafe experiment story
 
@@ -52,11 +54,11 @@ Show the candidate graph/policy delta: change the retrieval/resource branch and/
 
 ### 1:40–2:10 — Show held-out proof
 
-Show the frozen held-out comparison: learned policy 100% vs fixed deterministic 88.33% on 60 held-out cases. Show retrieval/resource reduction if visible. Say explicitly that promotion is decided by independent held-out verification, not by the agent grading itself.
+Open `reports/EXP-008-gate3.json`: v0 gets 7/21 (33.33%) first-pass verified success; v1 gets 21/21 (100%) and is marked `PROMOTED`. Both eventually recover to 21/21, which makes the result easy to explain: the learned program removes avoidable recovery loops instead of merely making the final answer look better.
 
 ### 2:10–2:35 — Show Weave
 
-Open the selected Weave trajectory/evaluation and point to the execution path, failure class, candidate delta, rerun, and verification metadata. This is the evidence plane, not the authority plane.
+Open `reports/weave/run-89b898a4fed9.json` or the corresponding live Weave trace. Point to Program v0 selecting vector retrieval, the Critic classifying `cross_entity_join`, the Loop Doctor adding graph retrieval, and the independent verifier passing the repaired run. This is the evidence plane, not the authority plane.
 
 ### 2:35–2:55 — Show self-healing/readiness
 
