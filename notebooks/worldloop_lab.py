@@ -6,10 +6,42 @@ app = marimo.App(width="full")
 
 @app.cell
 def _():
+    import io
     import os
+    import subprocess
+    import sys
+    import tarfile
+    import urllib.request
     from pathlib import Path
 
     import marimo as mo
+
+    root = Path(__file__).resolve().parents[1]
+    if not (root / "fixtures").exists() or not (root / "src").exists():
+        repo_dir = Path("/tmp/worldloop_repo")
+        if not (repo_dir / "fixtures").exists():
+            try:
+                subprocess.run(
+                    ["git", "clone", "--depth", "1", "https://github.com/jwalin-shah/worldloop.git", str(repo_dir)],
+                    check=True,
+                    capture_output=True,
+                )
+            except (OSError, subprocess.SubprocessError):
+                try:
+                    url = "https://github.com/jwalin-shah/worldloop/archive/refs/heads/main.tar.gz"
+                    with (
+                        urllib.request.urlopen(url, timeout=15) as resp,
+                        tarfile.open(fileobj=io.BytesIO(resp.read()), mode="r:gz") as tar,
+                    ):
+                        tar.extractall(path=Path("/tmp/worldloop_extract"))
+                    repo_dir = next(Path("/tmp/worldloop_extract").glob("worldloop-*"), repo_dir)
+                except (OSError, tarfile.TarError):
+                    repo_dir = root
+        if (repo_dir / "fixtures").exists():
+            root = repo_dir
+
+    if (root / "src").exists() and str(root / "src") not in sys.path:
+        sys.path.insert(0, str(root / "src"))
 
     from worldloop.engine import WorldLoop
     from worldloop.lab import (
@@ -25,10 +57,8 @@ def _():
         three_arm_case_rows,
         three_arm_summary_rows,
     )
-    from worldloop.runtime import FIXTURES
 
-    root = Path(__file__).resolve().parents[1]
-    loop = WorldLoop(FIXTURES)
+    loop = WorldLoop(root / "fixtures")
     gate3_report = load_gate3_report(root)
     three_arm_report = load_three_arm_report(root)
     adversarial_report = load_adversarial_report(root)
