@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -9,6 +10,7 @@ SCRIPT = Path(__file__).parents[1] / "scripts" / "provider_readiness.py"
 SPEC = importlib.util.spec_from_file_location("provider_readiness", SCRIPT)
 assert SPEC and SPEC.loader
 provider_readiness = importlib.util.module_from_spec(SPEC)
+sys.modules[SPEC.name] = provider_readiness
 SPEC.loader.exec_module(provider_readiness)
 
 
