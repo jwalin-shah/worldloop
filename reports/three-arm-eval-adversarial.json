@@ -1,26 +1,26 @@
 {
-  "experiment_id": "EXP-010-receipt-frozen",
+  "experiment_id": "EXP-010-adversarial",
   "snapshot_id": "worldloop.change-aware-rollout.v1:eccb8b1a77397dc7",
-  "mode": "latent",
+  "mode": "adversarial",
   "code_revision": "7227c15ada966a9a25c6562e387937928c2d2d3d",
   "summary": {
     "deterministic": {
-      "verified_count": 21,
+      "verified_count": 7,
       "total_cases": 21,
-      "verified_success_rate": 1.0,
-      "under_allocation_rate": 0.0,
+      "verified_success_rate": 0.3333,
+      "under_allocation_rate": 0.6667,
       "unnecessary_retrieval_rate": 0.0,
       "mean_latency_ms": 0.01,
       "mean_confidence": 0.0
     },
     "typesafe": {
-      "verified_count": 21,
+      "verified_count": 14,
       "total_cases": 21,
-      "verified_success_rate": 1.0,
-      "under_allocation_rate": 0.0,
+      "verified_success_rate": 0.6667,
+      "under_allocation_rate": 0.3333,
       "unnecessary_retrieval_rate": 0.0,
-      "mean_latency_ms": 200.48,
-      "mean_confidence": 0.8229
+      "mean_latency_ms": 208.08,
+      "mean_confidence": 0.9552
     },
     "wandb_inference": {
       "verified_count": 21,
@@ -28,8 +28,8 @@
       "verified_success_rate": 1.0,
       "under_allocation_rate": 0.0,
       "unnecessary_retrieval_rate": 0.0,
-      "mean_latency_ms": 702.26,
-      "mean_confidence": 0.8667
+      "mean_latency_ms": 750.52,
+      "mean_confidence": 0.8333
     }
   },
   "cases": [
@@ -40,23 +40,22 @@
         "vector",
         "graph"
       ],
-      "context_prose": "Operational brief for Orion-001 (risk band: medium, as-of: 2026-07-09T03:00:00Z). Service architecture maps an active operational dependency to external component Lyra-001. Verification requires traversing the dependency graph to resolve Lyra-001's stability.",
+      "context_prose": "Operational log for Orion-001 (band: medium, as-of: 2026-07-09T03:00:00Z). Target rollout couples directly with Lyra-001's runtime cluster. Releasing the primary binary requires first validating the operational stability and latency SLA of Lyra-001.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
-          "route": "GRAPH",
+          "model": "heuristic-adversarial",
+          "route": "EXACT",
           "recipe": [
-            "vector",
-            "graph"
+            "exact"
           ],
           "confidence": null,
           "probabilities": {},
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
-          "latency_ms": 0.02
+          "latency_ms": 0.05
         },
         "typesafe": {
           "arm": "typesafe",
@@ -67,21 +66,21 @@
             "vector",
             "graph"
           ],
-          "confidence": 0.98,
+          "confidence": 0.97,
           "probabilities": {
+            "EXACT": 0.04,
+            "ABSTAIN": 0.02,
+            "GRAPH": 0.85,
             "MODEL_ONLY": 0.0,
             "LEXICAL": 0.0,
-            "VECTOR": 0.0,
-            "ABSTAIN": 0.0,
-            "EXACT": 0.0,
-            "DEEP_RETRIEVAL": 0.01,
-            "GRAPH": 0.99,
-            "TEMPORAL": 0.0
+            "DEEP_RETRIEVAL": 0.02,
+            "TEMPORAL": 0.06,
+            "VECTOR": 0.01
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 347.74
+          "latency_ms": 332.3
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -92,14 +91,14 @@
             "vector",
             "graph"
           ],
-          "confidence": 0.9,
+          "confidence": 0.8,
           "probabilities": {
-            "GRAPH": 0.9
+            "GRAPH": 0.8
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 844.87
+          "latency_ms": 774.69
         }
       }
     },
@@ -109,12 +108,12 @@
       "target_recipe": [
         "exact"
       ],
-      "context_prose": "Operational brief for Orion-002 (risk band: high, as-of: 2026-07-11T03:00:00Z). Registry status is confirmed clear with zero open incidents. No cross-entity dependencies are linked. Direct routine rollout verification applies.",
+      "context_prose": "Operational log for Orion-002 (band: high, as-of: 2026-07-11T03:00:00Z). Isolated standalone package with all unit diagnostics green. Independent confirmation from central registry is required before release gate unlocks.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
+          "model": "heuristic-adversarial",
           "route": "EXACT",
           "recipe": [
             "exact"
@@ -130,25 +129,26 @@
           "arm": "typesafe",
           "provider": "typesafe",
           "model": "jev-multi-primitive",
-          "route": "EXACT",
+          "route": "GRAPH",
           "recipe": [
-            "exact"
+            "vector",
+            "graph"
           ],
-          "confidence": 0.52,
+          "confidence": 0.94,
           "probabilities": {
-            "TEMPORAL": 0.31,
-            "ABSTAIN": 0.06,
+            "DEEP_RETRIEVAL": 0.0,
+            "ABSTAIN": 0.02,
+            "GRAPH": 0.15,
+            "VECTOR": 0.02,
+            "TEMPORAL": 0.09,
+            "EXACT": 0.72,
             "LEXICAL": 0.0,
-            "EXACT": 0.57,
-            "GRAPH": 0.01,
-            "VECTOR": 0.03,
-            "DEEP_RETRIEVAL": 0.01,
-            "MODEL_ONLY": 0.01
+            "MODEL_ONLY": 0.0
           },
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
-          "latency_ms": 173.58
+          "latency_ms": 170.06
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -165,7 +165,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 669.33
+          "latency_ms": 673.78
         }
       }
     },
@@ -176,21 +176,20 @@
         "vector",
         "temporal"
       ],
-      "context_prose": "Operational brief for Orion-003 (risk band: low, as-of: 2026-07-13T03:00:00Z). Initial incident audit recorded an earlier blocker status. A newer timeline update was subsequently published superseding earlier logs. Policy specifies that stale evidence cannot certify readiness.",
+      "context_prose": "Operational log for Orion-003 (band: low, as-of: 2026-07-13T03:00:00Z). Initial health check flagged a gate failure at 09:00. However, on-call engineers deployed a remedial patch at 09:45 which overrode earlier diagnostic alerts. System standards prohibit relying on expired morning status.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
-          "route": "TEMPORAL",
+          "model": "heuristic-adversarial",
+          "route": "EXACT",
           "recipe": [
-            "vector",
-            "temporal"
+            "exact"
           ],
           "confidence": null,
           "probabilities": {},
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
           "latency_ms": 0.01
         },
@@ -205,19 +204,19 @@
           ],
           "confidence": 0.95,
           "probabilities": {
-            "DEEP_RETRIEVAL": 0.01,
-            "ABSTAIN": 0.02,
-            "GRAPH": 0.0,
-            "VECTOR": 0.0,
-            "TEMPORAL": 0.95,
-            "EXACT": 0.02,
+            "EXACT": 0.1,
             "LEXICAL": 0.0,
-            "MODEL_ONLY": 0.0
+            "GRAPH": 0.03,
+            "TEMPORAL": 0.78,
+            "ABSTAIN": 0.05,
+            "DEEP_RETRIEVAL": 0.03,
+            "MODEL_ONLY": 0.0,
+            "VECTOR": 0.01
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 243.44
+          "latency_ms": 224.31
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -235,7 +234,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 722.31
+          "latency_ms": 845.42
         }
       }
     },
@@ -246,21 +245,20 @@
         "vector",
         "graph"
       ],
-      "context_prose": "Operational brief for Orion-004 (risk band: medium, as-of: 2026-07-15T03:00:00Z). Service architecture maps an active operational dependency to external component Lyra-004. Verification requires traversing the dependency graph to resolve Lyra-004's stability.",
+      "context_prose": "Operational log for Orion-004 (band: medium, as-of: 2026-07-15T03:00:00Z). Target rollout couples directly with Lyra-004's runtime cluster. Releasing the primary binary requires first validating the operational stability and latency SLA of Lyra-004.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
-          "route": "GRAPH",
+          "model": "heuristic-adversarial",
+          "route": "EXACT",
           "recipe": [
-            "vector",
-            "graph"
+            "exact"
           ],
           "confidence": null,
           "probabilities": {},
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
           "latency_ms": 0.01
         },
@@ -273,21 +271,21 @@
             "vector",
             "graph"
           ],
-          "confidence": 0.98,
+          "confidence": 0.97,
           "probabilities": {
-            "TEMPORAL": 0.0,
-            "DEEP_RETRIEVAL": 0.01,
+            "TEMPORAL": 0.05,
+            "DEEP_RETRIEVAL": 0.02,
             "MODEL_ONLY": 0.0,
             "LEXICAL": 0.0,
-            "VECTOR": 0.0,
-            "ABSTAIN": 0.0,
-            "EXACT": 0.0,
-            "GRAPH": 0.99
+            "VECTOR": 0.01,
+            "ABSTAIN": 0.02,
+            "EXACT": 0.05,
+            "GRAPH": 0.85
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 227.28
+          "latency_ms": 168.12
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -298,14 +296,14 @@
             "vector",
             "graph"
           ],
-          "confidence": 0.9,
+          "confidence": 0.8,
           "probabilities": {
-            "GRAPH": 0.9
+            "GRAPH": 0.8
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 626.42
+          "latency_ms": 738.66
         }
       }
     },
@@ -315,12 +313,12 @@
       "target_recipe": [
         "exact"
       ],
-      "context_prose": "Operational brief for Orion-005 (risk band: high, as-of: 2026-07-17T03:00:00Z). Registry status is confirmed clear with zero open incidents. No cross-entity dependencies are linked. Direct routine rollout verification applies.",
+      "context_prose": "Operational log for Orion-005 (band: high, as-of: 2026-07-17T03:00:00Z). Isolated standalone package with all unit diagnostics green. Independent confirmation from central registry is required before release gate unlocks.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
+          "model": "heuristic-adversarial",
           "route": "EXACT",
           "recipe": [
             "exact"
@@ -336,25 +334,26 @@
           "arm": "typesafe",
           "provider": "typesafe",
           "model": "jev-multi-primitive",
-          "route": "EXACT",
+          "route": "GRAPH",
           "recipe": [
-            "exact"
+            "vector",
+            "graph"
           ],
-          "confidence": 0.49,
+          "confidence": 0.95,
           "probabilities": {
-            "ABSTAIN": 0.05,
-            "EXACT": 0.56,
-            "GRAPH": 0.01,
+            "TEMPORAL": 0.09,
+            "ABSTAIN": 0.02,
+            "DEEP_RETRIEVAL": 0.0,
+            "GRAPH": 0.16,
+            "VECTOR": 0.02,
+            "MODEL_ONLY": 0.0,
             "LEXICAL": 0.0,
-            "TEMPORAL": 0.32,
-            "DEEP_RETRIEVAL": 0.01,
-            "VECTOR": 0.04,
-            "MODEL_ONLY": 0.01
+            "EXACT": 0.71
           },
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
-          "latency_ms": 221.67
+          "latency_ms": 154.55
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -371,7 +370,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 652.81
+          "latency_ms": 649.79
         }
       }
     },
@@ -382,21 +381,20 @@
         "vector",
         "temporal"
       ],
-      "context_prose": "Operational brief for Orion-006 (risk band: low, as-of: 2026-07-19T03:00:00Z). Initial incident audit recorded an earlier blocker status. A newer timeline update was subsequently published superseding earlier logs. Policy specifies that stale evidence cannot certify readiness.",
+      "context_prose": "Operational log for Orion-006 (band: low, as-of: 2026-07-19T03:00:00Z). Initial health check flagged a gate failure at 09:00. However, on-call engineers deployed a remedial patch at 09:45 which overrode earlier diagnostic alerts. System standards prohibit relying on expired morning status.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
-          "route": "TEMPORAL",
+          "model": "heuristic-adversarial",
+          "route": "EXACT",
           "recipe": [
-            "vector",
-            "temporal"
+            "exact"
           ],
           "confidence": null,
           "probabilities": {},
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
           "latency_ms": 0.01
         },
@@ -411,19 +409,19 @@
           ],
           "confidence": 0.96,
           "probabilities": {
-            "DEEP_RETRIEVAL": 0.01,
-            "ABSTAIN": 0.01,
-            "GRAPH": 0.0,
-            "VECTOR": 0.0,
-            "TEMPORAL": 0.96,
-            "EXACT": 0.02,
+            "TEMPORAL": 0.81,
             "LEXICAL": 0.0,
+            "ABSTAIN": 0.04,
+            "EXACT": 0.1,
+            "GRAPH": 0.02,
+            "VECTOR": 0.01,
+            "DEEP_RETRIEVAL": 0.02,
             "MODEL_ONLY": 0.0
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 156.36
+          "latency_ms": 163.35
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -441,7 +439,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 730.94
+          "latency_ms": 743.4
         }
       }
     },
@@ -452,21 +450,20 @@
         "vector",
         "graph"
       ],
-      "context_prose": "Operational brief for Orion-007 (risk band: medium, as-of: 2026-07-21T03:00:00Z). Service architecture maps an active operational dependency to external component Lyra-007. Verification requires traversing the dependency graph to resolve Lyra-007's stability.",
+      "context_prose": "Operational log for Orion-007 (band: medium, as-of: 2026-07-21T03:00:00Z). Target rollout couples directly with Lyra-007's runtime cluster. Releasing the primary binary requires first validating the operational stability and latency SLA of Lyra-007.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
-          "route": "GRAPH",
+          "model": "heuristic-adversarial",
+          "route": "EXACT",
           "recipe": [
-            "vector",
-            "graph"
+            "exact"
           ],
           "confidence": null,
           "probabilities": {},
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
           "latency_ms": 0.01
         },
@@ -479,21 +476,21 @@
             "vector",
             "graph"
           ],
-          "confidence": 0.98,
+          "confidence": 0.97,
           "probabilities": {
-            "ABSTAIN": 0.0,
-            "EXACT": 0.0,
-            "GRAPH": 0.99,
-            "LEXICAL": 0.0,
+            "DEEP_RETRIEVAL": 0.02,
             "MODEL_ONLY": 0.0,
-            "DEEP_RETRIEVAL": 0.01,
-            "VECTOR": 0.0,
-            "TEMPORAL": 0.0
+            "TEMPORAL": 0.05,
+            "EXACT": 0.04,
+            "GRAPH": 0.86,
+            "VECTOR": 0.01,
+            "LEXICAL": 0.0,
+            "ABSTAIN": 0.02
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 225.15
+          "latency_ms": 216.09
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -504,14 +501,14 @@
             "vector",
             "graph"
           ],
-          "confidence": 0.9,
+          "confidence": 0.8,
           "probabilities": {
-            "GRAPH": 0.9
+            "GRAPH": 0.8
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 699.82
+          "latency_ms": 824.6
         }
       }
     },
@@ -521,12 +518,12 @@
       "target_recipe": [
         "exact"
       ],
-      "context_prose": "Operational brief for Orion-008 (risk band: high, as-of: 2026-07-23T03:00:00Z). Registry status is confirmed clear with zero open incidents. No cross-entity dependencies are linked. Direct routine rollout verification applies.",
+      "context_prose": "Operational log for Orion-008 (band: high, as-of: 2026-07-23T03:00:00Z). Isolated standalone package with all unit diagnostics green. Independent confirmation from central registry is required before release gate unlocks.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
+          "model": "heuristic-adversarial",
           "route": "EXACT",
           "recipe": [
             "exact"
@@ -542,25 +539,26 @@
           "arm": "typesafe",
           "provider": "typesafe",
           "model": "jev-multi-primitive",
-          "route": "EXACT",
+          "route": "GRAPH",
           "recipe": [
-            "exact"
+            "vector",
+            "graph"
           ],
-          "confidence": 0.56,
+          "confidence": 0.94,
           "probabilities": {
-            "ABSTAIN": 0.05,
-            "EXACT": 0.61,
-            "GRAPH": 0.01,
+            "DEEP_RETRIEVAL": 0.0,
+            "ABSTAIN": 0.02,
+            "GRAPH": 0.18,
+            "MODEL_ONLY": 0.0,
+            "TEMPORAL": 0.09,
             "LEXICAL": 0.0,
-            "MODEL_ONLY": 0.01,
-            "DEEP_RETRIEVAL": 0.01,
-            "TEMPORAL": 0.28,
-            "VECTOR": 0.03
+            "VECTOR": 0.02,
+            "EXACT": 0.69
           },
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
-          "latency_ms": 160.1
+          "latency_ms": 163.95
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -577,7 +575,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 671.74
+          "latency_ms": 682.62
         }
       }
     },
@@ -588,21 +586,20 @@
         "vector",
         "temporal"
       ],
-      "context_prose": "Operational brief for Orion-009 (risk band: low, as-of: 2026-07-25T03:00:00Z). Initial incident audit recorded an earlier blocker status. A newer timeline update was subsequently published superseding earlier logs. Policy specifies that stale evidence cannot certify readiness.",
+      "context_prose": "Operational log for Orion-009 (band: low, as-of: 2026-07-25T03:00:00Z). Initial health check flagged a gate failure at 09:00. However, on-call engineers deployed a remedial patch at 09:45 which overrode earlier diagnostic alerts. System standards prohibit relying on expired morning status.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
-          "route": "TEMPORAL",
+          "model": "heuristic-adversarial",
+          "route": "EXACT",
           "recipe": [
-            "vector",
-            "temporal"
+            "exact"
           ],
           "confidence": null,
           "probabilities": {},
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
           "latency_ms": 0.01
         },
@@ -617,19 +614,19 @@
           ],
           "confidence": 0.95,
           "probabilities": {
-            "LEXICAL": 0.0,
-            "MODEL_ONLY": 0.0,
-            "VECTOR": 0.0,
-            "ABSTAIN": 0.01,
-            "EXACT": 0.02,
             "DEEP_RETRIEVAL": 0.02,
-            "TEMPORAL": 0.95,
-            "GRAPH": 0.0
+            "MODEL_ONLY": 0.0,
+            "TEMPORAL": 0.8,
+            "EXACT": 0.1,
+            "GRAPH": 0.02,
+            "VECTOR": 0.01,
+            "LEXICAL": 0.0,
+            "ABSTAIN": 0.04
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 218.33
+          "latency_ms": 222.37
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -647,7 +644,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 740.53
+          "latency_ms": 799.79
         }
       }
     },
@@ -658,21 +655,20 @@
         "vector",
         "graph"
       ],
-      "context_prose": "Operational brief for Orion-010 (risk band: medium, as-of: 2026-07-27T03:00:00Z). Service architecture maps an active operational dependency to external component Lyra-010. Verification requires traversing the dependency graph to resolve Lyra-010's stability.",
+      "context_prose": "Operational log for Orion-010 (band: medium, as-of: 2026-07-27T03:00:00Z). Target rollout couples directly with Lyra-010's runtime cluster. Releasing the primary binary requires first validating the operational stability and latency SLA of Lyra-010.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
-          "route": "GRAPH",
+          "model": "heuristic-adversarial",
+          "route": "EXACT",
           "recipe": [
-            "vector",
-            "graph"
+            "exact"
           ],
           "confidence": null,
           "probabilities": {},
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
           "latency_ms": 0.01
         },
@@ -685,21 +681,21 @@
             "vector",
             "graph"
           ],
-          "confidence": 0.98,
+          "confidence": 0.97,
           "probabilities": {
-            "GRAPH": 0.99,
-            "ABSTAIN": 0.0,
-            "VECTOR": 0.0,
-            "MODEL_ONLY": 0.0,
-            "TEMPORAL": 0.0,
+            "DEEP_RETRIEVAL": 0.02,
+            "ABSTAIN": 0.02,
+            "GRAPH": 0.84,
+            "VECTOR": 0.01,
+            "TEMPORAL": 0.07,
+            "EXACT": 0.04,
             "LEXICAL": 0.0,
-            "DEEP_RETRIEVAL": 0.01,
-            "EXACT": 0.0
+            "MODEL_ONLY": 0.0
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 166.12
+          "latency_ms": 220.82
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -710,14 +706,14 @@
             "vector",
             "graph"
           ],
-          "confidence": 0.9,
+          "confidence": 0.8,
           "probabilities": {
-            "GRAPH": 0.9
+            "GRAPH": 0.8
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 697.32
+          "latency_ms": 911.05
         }
       }
     },
@@ -727,12 +723,12 @@
       "target_recipe": [
         "exact"
       ],
-      "context_prose": "Operational brief for Orion-011 (risk band: high, as-of: 2026-07-29T03:00:00Z). Registry status is confirmed clear with zero open incidents. No cross-entity dependencies are linked. Direct routine rollout verification applies.",
+      "context_prose": "Operational log for Orion-011 (band: high, as-of: 2026-07-29T03:00:00Z). Isolated standalone package with all unit diagnostics green. Independent confirmation from central registry is required before release gate unlocks.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
+          "model": "heuristic-adversarial",
           "route": "EXACT",
           "recipe": [
             "exact"
@@ -748,25 +744,26 @@
           "arm": "typesafe",
           "provider": "typesafe",
           "model": "jev-multi-primitive",
-          "route": "EXACT",
+          "route": "GRAPH",
           "recipe": [
-            "exact"
+            "vector",
+            "graph"
           ],
-          "confidence": 0.54,
+          "confidence": 0.95,
           "probabilities": {
-            "DEEP_RETRIEVAL": 0.01,
-            "ABSTAIN": 0.05,
-            "VECTOR": 0.04,
-            "MODEL_ONLY": 0.01,
-            "TEMPORAL": 0.28,
-            "LEXICAL": 0.01,
-            "GRAPH": 0.01,
-            "EXACT": 0.59
+            "GRAPH": 0.21000000000000002,
+            "ABSTAIN": 0.02,
+            "DEEP_RETRIEVAL": 0.0,
+            "MODEL_ONLY": 0.0,
+            "TEMPORAL": 0.09,
+            "LEXICAL": 0.0,
+            "VECTOR": 0.02,
+            "EXACT": 0.66
           },
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
-          "latency_ms": 224.02
+          "latency_ms": 221.39
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -783,7 +780,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 710.78
+          "latency_ms": 726.29
         }
       }
     },
@@ -794,21 +791,20 @@
         "vector",
         "temporal"
       ],
-      "context_prose": "Operational brief for Orion-012 (risk band: low, as-of: 2026-07-31T03:00:00Z). Initial incident audit recorded an earlier blocker status. A newer timeline update was subsequently published superseding earlier logs. Policy specifies that stale evidence cannot certify readiness.",
+      "context_prose": "Operational log for Orion-012 (band: low, as-of: 2026-07-31T03:00:00Z). Initial health check flagged a gate failure at 09:00. However, on-call engineers deployed a remedial patch at 09:45 which overrode earlier diagnostic alerts. System standards prohibit relying on expired morning status.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
-          "route": "TEMPORAL",
+          "model": "heuristic-adversarial",
+          "route": "EXACT",
           "recipe": [
-            "vector",
-            "temporal"
+            "exact"
           ],
           "confidence": null,
           "probabilities": {},
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
           "latency_ms": 0.01
         },
@@ -821,21 +817,21 @@
             "vector",
             "temporal"
           ],
-          "confidence": 0.96,
+          "confidence": 0.95,
           "probabilities": {
-            "VECTOR": 0.0,
-            "ABSTAIN": 0.01,
-            "DEEP_RETRIEVAL": 0.01,
-            "MODEL_ONLY": 0.0,
-            "TEMPORAL": 0.95,
             "LEXICAL": 0.0,
-            "GRAPH": 0.01,
-            "EXACT": 0.02
+            "MODEL_ONLY": 0.0,
+            "DEEP_RETRIEVAL": 0.02,
+            "TEMPORAL": 0.82,
+            "EXACT": 0.1,
+            "GRAPH": 0.02,
+            "ABSTAIN": 0.03,
+            "VECTOR": 0.01
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 167.34
+          "latency_ms": 160.99
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -853,7 +849,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 744.34
+          "latency_ms": 793.84
         }
       }
     },
@@ -864,21 +860,20 @@
         "vector",
         "graph"
       ],
-      "context_prose": "Operational brief for Orion-013 (risk band: medium, as-of: 2026-08-02T03:00:00Z). Service architecture maps an active operational dependency to external component Lyra-013. Verification requires traversing the dependency graph to resolve Lyra-013's stability.",
+      "context_prose": "Operational log for Orion-013 (band: medium, as-of: 2026-08-02T03:00:00Z). Target rollout couples directly with Lyra-013's runtime cluster. Releasing the primary binary requires first validating the operational stability and latency SLA of Lyra-013.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
-          "route": "GRAPH",
+          "model": "heuristic-adversarial",
+          "route": "EXACT",
           "recipe": [
-            "vector",
-            "graph"
+            "exact"
           ],
           "confidence": null,
           "probabilities": {},
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
           "latency_ms": 0.01
         },
@@ -891,21 +886,21 @@
             "vector",
             "graph"
           ],
-          "confidence": 0.98,
+          "confidence": 0.97,
           "probabilities": {
-            "LEXICAL": 0.0,
+            "GRAPH": 0.83,
+            "DEEP_RETRIEVAL": 0.02,
             "MODEL_ONLY": 0.0,
-            "VECTOR": 0.0,
-            "EXACT": 0.0,
-            "ABSTAIN": 0.0,
-            "DEEP_RETRIEVAL": 0.01,
-            "TEMPORAL": 0.0,
-            "GRAPH": 0.99
+            "LEXICAL": 0.0,
+            "VECTOR": 0.01,
+            "ABSTAIN": 0.02,
+            "EXACT": 0.05,
+            "TEMPORAL": 0.07
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 150.69
+          "latency_ms": 223.38
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -916,14 +911,14 @@
             "vector",
             "graph"
           ],
-          "confidence": 0.9,
+          "confidence": 0.8,
           "probabilities": {
-            "GRAPH": 0.9
+            "GRAPH": 0.8
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 665.08
+          "latency_ms": 758.35
         }
       }
     },
@@ -933,12 +928,12 @@
       "target_recipe": [
         "exact"
       ],
-      "context_prose": "Operational brief for Orion-014 (risk band: high, as-of: 2026-08-04T03:00:00Z). Registry status is confirmed clear with zero open incidents. No cross-entity dependencies are linked. Direct routine rollout verification applies.",
+      "context_prose": "Operational log for Orion-014 (band: high, as-of: 2026-08-04T03:00:00Z). Isolated standalone package with all unit diagnostics green. Independent confirmation from central registry is required before release gate unlocks.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
+          "model": "heuristic-adversarial",
           "route": "EXACT",
           "recipe": [
             "exact"
@@ -954,25 +949,26 @@
           "arm": "typesafe",
           "provider": "typesafe",
           "model": "jev-multi-primitive",
-          "route": "EXACT",
+          "route": "GRAPH",
           "recipe": [
-            "exact"
+            "vector",
+            "graph"
           ],
-          "confidence": 0.53,
+          "confidence": 0.94,
           "probabilities": {
-            "GRAPH": 0.01,
-            "DEEP_RETRIEVAL": 0.01,
-            "MODEL_ONLY": 0.01,
+            "DEEP_RETRIEVAL": 0.0,
+            "ABSTAIN": 0.02,
+            "GRAPH": 0.19,
+            "VECTOR": 0.02,
+            "TEMPORAL": 0.1,
+            "EXACT": 0.67,
             "LEXICAL": 0.0,
-            "VECTOR": 0.03,
-            "ABSTAIN": 0.06,
-            "EXACT": 0.58,
-            "TEMPORAL": 0.3
+            "MODEL_ONLY": 0.0
           },
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
-          "latency_ms": 221.26
+          "latency_ms": 361.58
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -989,7 +985,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 686.0
+          "latency_ms": 652.88
         }
       }
     },
@@ -1000,21 +996,20 @@
         "vector",
         "temporal"
       ],
-      "context_prose": "Operational brief for Orion-015 (risk band: low, as-of: 2026-08-06T03:00:00Z). Initial incident audit recorded an earlier blocker status. A newer timeline update was subsequently published superseding earlier logs. Policy specifies that stale evidence cannot certify readiness.",
+      "context_prose": "Operational log for Orion-015 (band: low, as-of: 2026-08-06T03:00:00Z). Initial health check flagged a gate failure at 09:00. However, on-call engineers deployed a remedial patch at 09:45 which overrode earlier diagnostic alerts. System standards prohibit relying on expired morning status.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
-          "route": "TEMPORAL",
+          "model": "heuristic-adversarial",
+          "route": "EXACT",
           "recipe": [
-            "vector",
-            "temporal"
+            "exact"
           ],
           "confidence": null,
           "probabilities": {},
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
           "latency_ms": 0.01
         },
@@ -1029,19 +1024,19 @@
           ],
           "confidence": 0.95,
           "probabilities": {
-            "TEMPORAL": 0.94,
-            "ABSTAIN": 0.02,
-            "LEXICAL": 0.0,
-            "EXACT": 0.02,
-            "GRAPH": 0.0,
-            "VECTOR": 0.0,
+            "GRAPH": 0.03,
             "DEEP_RETRIEVAL": 0.02,
-            "MODEL_ONLY": 0.0
+            "MODEL_ONLY": 0.0,
+            "LEXICAL": 0.0,
+            "VECTOR": 0.01,
+            "ABSTAIN": 0.04,
+            "EXACT": 0.1,
+            "TEMPORAL": 0.8
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 221.29
+          "latency_ms": 223.41
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -1059,7 +1054,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 715.56
+          "latency_ms": 824.94
         }
       }
     },
@@ -1070,21 +1065,20 @@
         "vector",
         "graph"
       ],
-      "context_prose": "Operational brief for Orion-016 (risk band: medium, as-of: 2026-08-08T03:00:00Z). Service architecture maps an active operational dependency to external component Lyra-016. Verification requires traversing the dependency graph to resolve Lyra-016's stability.",
+      "context_prose": "Operational log for Orion-016 (band: medium, as-of: 2026-08-08T03:00:00Z). Target rollout couples directly with Lyra-016's runtime cluster. Releasing the primary binary requires first validating the operational stability and latency SLA of Lyra-016.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
-          "route": "GRAPH",
+          "model": "heuristic-adversarial",
+          "route": "EXACT",
           "recipe": [
-            "vector",
-            "graph"
+            "exact"
           ],
           "confidence": null,
           "probabilities": {},
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
           "latency_ms": 0.01
         },
@@ -1097,21 +1091,21 @@
             "vector",
             "graph"
           ],
-          "confidence": 0.98,
+          "confidence": 0.97,
           "probabilities": {
-            "TEMPORAL": 0.0,
-            "LEXICAL": 0.0,
-            "ABSTAIN": 0.0,
-            "EXACT": 0.0,
-            "GRAPH": 0.99,
-            "VECTOR": 0.0,
+            "TEMPORAL": 0.06,
+            "DEEP_RETRIEVAL": 0.03,
             "MODEL_ONLY": 0.0,
-            "DEEP_RETRIEVAL": 0.01
+            "LEXICAL": 0.0,
+            "VECTOR": 0.01,
+            "ABSTAIN": 0.02,
+            "EXACT": 0.04,
+            "GRAPH": 0.84
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 166.96
+          "latency_ms": 218.23
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -1122,14 +1116,14 @@
             "vector",
             "graph"
           ],
-          "confidence": 0.9,
+          "confidence": 0.8,
           "probabilities": {
-            "GRAPH": 0.9
+            "GRAPH": 0.8
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 748.27
+          "latency_ms": 772.99
         }
       }
     },
@@ -1139,12 +1133,12 @@
       "target_recipe": [
         "exact"
       ],
-      "context_prose": "Operational brief for Orion-017 (risk band: high, as-of: 2026-08-10T03:00:00Z). Registry status is confirmed clear with zero open incidents. No cross-entity dependencies are linked. Direct routine rollout verification applies.",
+      "context_prose": "Operational log for Orion-017 (band: high, as-of: 2026-08-10T03:00:00Z). Isolated standalone package with all unit diagnostics green. Independent confirmation from central registry is required before release gate unlocks.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
+          "model": "heuristic-adversarial",
           "route": "EXACT",
           "recipe": [
             "exact"
@@ -1160,25 +1154,26 @@
           "arm": "typesafe",
           "provider": "typesafe",
           "model": "jev-multi-primitive",
-          "route": "EXACT",
+          "route": "GRAPH",
           "recipe": [
-            "exact"
+            "vector",
+            "graph"
           ],
-          "confidence": 0.53,
+          "confidence": 0.94,
           "probabilities": {
-            "DEEP_RETRIEVAL": 0.01,
-            "MODEL_ONLY": 0.01,
-            "TEMPORAL": 0.3,
-            "EXACT": 0.59,
-            "GRAPH": 0.01,
-            "VECTOR": 0.03,
+            "DEEP_RETRIEVAL": 0.0,
+            "VECTOR": 0.02,
+            "TEMPORAL": 0.11,
+            "MODEL_ONLY": 0.0,
             "LEXICAL": 0.0,
-            "ABSTAIN": 0.05
+            "ABSTAIN": 0.02,
+            "EXACT": 0.7,
+            "GRAPH": 0.15
           },
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
-          "latency_ms": 150.19
+          "latency_ms": 167.44
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -1195,7 +1190,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 665.13
+          "latency_ms": 628.56
         }
       }
     },
@@ -1206,21 +1201,20 @@
         "vector",
         "temporal"
       ],
-      "context_prose": "Operational brief for Orion-018 (risk band: low, as-of: 2026-08-12T03:00:00Z). Initial incident audit recorded an earlier blocker status. A newer timeline update was subsequently published superseding earlier logs. Policy specifies that stale evidence cannot certify readiness.",
+      "context_prose": "Operational log for Orion-018 (band: low, as-of: 2026-08-12T03:00:00Z). Initial health check flagged a gate failure at 09:00. However, on-call engineers deployed a remedial patch at 09:45 which overrode earlier diagnostic alerts. System standards prohibit relying on expired morning status.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
-          "route": "TEMPORAL",
+          "model": "heuristic-adversarial",
+          "route": "EXACT",
           "recipe": [
-            "vector",
-            "temporal"
+            "exact"
           ],
           "confidence": null,
           "probabilities": {},
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
           "latency_ms": 0.01
         },
@@ -1235,19 +1229,19 @@
           ],
           "confidence": 0.95,
           "probabilities": {
-            "GRAPH": 0.01,
-            "ABSTAIN": 0.01,
+            "TEMPORAL": 0.8,
+            "ABSTAIN": 0.03,
             "DEEP_RETRIEVAL": 0.02,
+            "GRAPH": 0.03,
+            "VECTOR": 0.01,
             "MODEL_ONLY": 0.0,
-            "TEMPORAL": 0.94,
             "LEXICAL": 0.0,
-            "VECTOR": 0.0,
-            "EXACT": 0.02
+            "EXACT": 0.11
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 221.97
+          "latency_ms": 152.65
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -1265,7 +1259,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 731.59
+          "latency_ms": 774.13
         }
       }
     },
@@ -1276,21 +1270,20 @@
         "vector",
         "graph"
       ],
-      "context_prose": "Operational brief for Orion-019 (risk band: medium, as-of: 2026-08-14T03:00:00Z). Service architecture maps an active operational dependency to external component Lyra-019. Verification requires traversing the dependency graph to resolve Lyra-019's stability.",
+      "context_prose": "Operational log for Orion-019 (band: medium, as-of: 2026-08-14T03:00:00Z). Target rollout couples directly with Lyra-019's runtime cluster. Releasing the primary binary requires first validating the operational stability and latency SLA of Lyra-019.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
-          "route": "GRAPH",
+          "model": "heuristic-adversarial",
+          "route": "EXACT",
           "recipe": [
-            "vector",
-            "graph"
+            "exact"
           ],
           "confidence": null,
           "probabilities": {},
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
           "latency_ms": 0.01
         },
@@ -1303,21 +1296,21 @@
             "vector",
             "graph"
           ],
-          "confidence": 0.98,
+          "confidence": 0.97,
           "probabilities": {
-            "TEMPORAL": 0.0,
             "LEXICAL": 0.0,
-            "ABSTAIN": 0.0,
-            "EXACT": 0.0,
-            "VECTOR": 0.0,
-            "GRAPH": 0.99,
             "MODEL_ONLY": 0.0,
-            "DEEP_RETRIEVAL": 0.01
+            "DEEP_RETRIEVAL": 0.02,
+            "TEMPORAL": 0.06,
+            "EXACT": 0.04,
+            "GRAPH": 0.86,
+            "ABSTAIN": 0.01,
+            "VECTOR": 0.01
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 163.78
+          "latency_ms": 220.73
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -1328,14 +1321,14 @@
             "vector",
             "graph"
           ],
-          "confidence": 0.9,
+          "confidence": 0.8,
           "probabilities": {
-            "GRAPH": 0.9
+            "GRAPH": 0.8
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 665.44
+          "latency_ms": 771.58
         }
       }
     },
@@ -1345,12 +1338,12 @@
       "target_recipe": [
         "exact"
       ],
-      "context_prose": "Operational brief for Orion-020 (risk band: high, as-of: 2026-08-16T03:00:00Z). Registry status is confirmed clear with zero open incidents. No cross-entity dependencies are linked. Direct routine rollout verification applies.",
+      "context_prose": "Operational log for Orion-020 (band: high, as-of: 2026-08-16T03:00:00Z). Isolated standalone package with all unit diagnostics green. Independent confirmation from central registry is required before release gate unlocks.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
+          "model": "heuristic-adversarial",
           "route": "EXACT",
           "recipe": [
             "exact"
@@ -1366,25 +1359,26 @@
           "arm": "typesafe",
           "provider": "typesafe",
           "model": "jev-multi-primitive",
-          "route": "EXACT",
+          "route": "GRAPH",
           "recipe": [
-            "exact"
+            "vector",
+            "graph"
           ],
-          "confidence": 0.58,
+          "confidence": 0.95,
           "probabilities": {
-            "ABSTAIN": 0.04,
-            "EXACT": 0.63,
-            "GRAPH": 0.01,
+            "GRAPH": 0.16,
+            "ABSTAIN": 0.02,
+            "VECTOR": 0.01,
+            "MODEL_ONLY": 0.0,
+            "TEMPORAL": 0.08,
             "LEXICAL": 0.0,
-            "MODEL_ONLY": 0.01,
-            "DEEP_RETRIEVAL": 0.01,
-            "VECTOR": 0.03,
-            "TEMPORAL": 0.27
+            "DEEP_RETRIEVAL": 0.0,
+            "EXACT": 0.73
           },
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
-          "latency_ms": 214.5
+          "latency_ms": 160.51
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -1401,7 +1395,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 613.29
+          "latency_ms": 657.49
         }
       }
     },
@@ -1412,21 +1406,20 @@
         "vector",
         "temporal"
       ],
-      "context_prose": "Operational brief for Orion-021 (risk band: low, as-of: 2026-08-18T03:00:00Z). Initial incident audit recorded an earlier blocker status. A newer timeline update was subsequently published superseding earlier logs. Policy specifies that stale evidence cannot certify readiness.",
+      "context_prose": "Operational log for Orion-021 (band: low, as-of: 2026-08-18T03:00:00Z). Initial health check flagged a gate failure at 09:00. However, on-call engineers deployed a remedial patch at 09:45 which overrode earlier diagnostic alerts. System standards prohibit relying on expired morning status.",
       "arms": {
         "deterministic": {
           "arm": "deterministic",
           "provider": "deterministic",
-          "model": "heuristic-latent",
-          "route": "TEMPORAL",
+          "model": "heuristic-adversarial",
+          "route": "EXACT",
           "recipe": [
-            "vector",
-            "temporal"
+            "exact"
           ],
           "confidence": null,
           "probabilities": {},
-          "verified": true,
-          "under_allocated": false,
+          "verified": false,
+          "under_allocated": true,
           "unnecessary": false,
           "latency_ms": 0.01
         },
@@ -1441,19 +1434,19 @@
           ],
           "confidence": 0.95,
           "probabilities": {
-            "GRAPH": 0.0,
-            "ABSTAIN": 0.02,
-            "VECTOR": 0.0,
-            "MODEL_ONLY": 0.0,
-            "TEMPORAL": 0.95,
+            "TEMPORAL": 0.79,
             "LEXICAL": 0.0,
-            "DEEP_RETRIEVAL": 0.01,
-            "EXACT": 0.02
+            "ABSTAIN": 0.04,
+            "EXACT": 0.11,
+            "VECTOR": 0.01,
+            "GRAPH": 0.03,
+            "MODEL_ONLY": 0.0,
+            "DEEP_RETRIEVAL": 0.02
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 168.39
+          "latency_ms": 223.51
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -1471,7 +1464,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 745.83
+          "latency_ms": 755.98
         }
       }
     }
