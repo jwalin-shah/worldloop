@@ -1,38 +1,34 @@
-# WorldLoop — 60–90 Second Demo Recording
+# WorldLoop — 90–110 Second Demo Recording
 
 ## Goal
 
 Record one continuous screen capture that makes the self-improving loop obvious without setup explanation. Use this as the AGI House demo-link fallback and, if desired, the Best Social Media Demo entry.
 
+Do not introduce LifeOps first. WorldLoop is the hackathon project; LifeOps is only one future production environment where learned programs could eventually be deployed.
+
 ## Shot list
 
 ### 0:00–0:12 — Thesis
 
-Say: “Agents can recover from mistakes, but recovery is expensive and transcript-based self-grading is easy to fool. WorldLoop turns verified failures into a better typed execution program.”
+Say: “A normal agent fails and thinks harder. WorldLoop watches the failure, independently diagnoses the wrong cognitive path, changes the execution program, and keeps the change only if it generalizes.”
 
 Show the WorldLoop README / architecture headline.
 
-### 0:12–0:32 — Failure → diagnosis
+### 0:12–0:35 — Failure → diagnosis → repair
 
 Show `reports/weave/run-89b898a4fed9.json` or the corresponding Weave trace.
 
 Point to:
 - Program v0 selecting `vector`;
-- the failed evidence obligation `evidence:E04 = false`;
+- failed evidence obligation `evidence:E04 = false`;
 - failure class `cross_entity_join`;
-- Critic diagnosis: missing required evidence E04.
-
-### 0:32–0:48 — Repair
-
-Show the `program_delta_proposed` event:
-
-`vector` → `vector + graph`
-
-Then show pass 2 finding E04 and the verifier returning score `1.0`.
+- Critic diagnosis: missing required evidence E04;
+- `program_delta_proposed`: `vector` → `vector + graph`;
+- pass 2 finds E04 and the verifier returns score `1.0`.
 
 Say: “The improvement becomes an explicit program delta, not another vague prompt.”
 
-### 0:48–1:05 — Held-out promotion
+### 0:35–0:58 — Held-out promotion
 
 Show `reports/EXP-008-gate3.json`.
 
@@ -41,9 +37,20 @@ Highlight:
 - v1 first-pass verified success: 21/21 = 100%;
 - `promotion_decision: PROMOTED`.
 
-Say: “Both can eventually recover, but the learned program removes the avoidable recovery loop on frozen held-out tasks.”
+Say: “Both eventually recover, but the learned program removes the avoidable recovery loop on frozen held-out tasks.”
 
-### 1:05–1:20 — Self-healing infrastructure
+### 0:58–1:18 — Falsification / where compilation stops
+
+Show `reports/three-arm-eval-adversarial.json`.
+
+Highlight:
+- deterministic: 7/21 = 33.33%;
+- TypeSafe: 14/21 = 66.67%;
+- W&B Inference: 21/21 = 100%.
+
+Say: “When we adversarially remove the easy cues, compiled deterministic routing breaks first. That is the point: WorldLoop should compile only what has actually become safe, and keep semantic intelligence where structure is still unresolved.”
+
+### 1:18–1:35 — Self-healing infrastructure
 
 Run or show:
 
@@ -51,12 +58,12 @@ Run or show:
 
 If blocked, show the typed first blocking hop. If ready, show `READY` with `external_provider_calls: 0`.
 
-Say: “WorldLoop now treats provider capability as changing world state too, so it can diagnose a broken execution path before wasting paid calls.”
+Say: “We also turned provider capability into changing world state, so the loop diagnoses a broken execution path before wasting live calls.”
 
-### 1:20–1:30 — Close
+### 1:35–1:45 — Close
 
-Say: “Models explore. WorldLoop learns what can become software—and promotes it only when independent evidence says it should.”
+Say: “The best agent loop is one that learns how to need less agent loop next time.”
 
 ## Post caption
 
-WorldLoop turns agent failures into better typed execution programs. It observes a trajectory, independently verifies the failure, compiles a candidate policy, and promotes it only on frozen held-out worlds. At CoreWeave Hacks we also used the same loop on its own provider/runtime failures: capability readiness becomes world state instead of another silent agent assumption.
+WorldLoop uses agent loops to learn how to need less open-ended agent reasoning next time. It observes a trajectory, independently verifies the failure, compiles a candidate execution policy, and promotes it only on frozen held-out worlds. At CoreWeave Hacks we also used the same loop on its own provider/runtime failures, turning capability readiness into explicit world state rather than another silent agent assumption.
