@@ -2,11 +2,11 @@
   "experiment_id": "EXP-009-three-arm-frontier",
   "snapshot_id": "worldloop.change-aware-rollout.v1:eccb8b1a77397dc7",
   "mode": "latent",
-  "code_revision": "fb4e08d711c3e260b971553d8a64df25d9f9a190",
+  "code_revision": "b9e4834d8257da3eb9c2aeda18145e1f30331977",
   "summary": {
     "deterministic": {
-      "verified_count": 3,
-      "total_cases": 3,
+      "verified_count": 21,
+      "total_cases": 21,
       "verified_success_rate": 1.0,
       "under_allocation_rate": 0.0,
       "unnecessary_retrieval_rate": 0.0,
@@ -14,21 +14,21 @@
       "mean_confidence": 0.0
     },
     "typesafe": {
-      "verified_count": 2,
-      "total_cases": 3,
+      "verified_count": 14,
+      "total_cases": 21,
       "verified_success_rate": 0.6667,
       "under_allocation_rate": 0.3333,
       "unnecessary_retrieval_rate": 0.0,
-      "mean_latency_ms": 251.89,
-      "mean_confidence": 0.9033
+      "mean_latency_ms": 205.03,
+      "mean_confidence": 0.8914
     },
     "wandb_inference": {
-      "verified_count": 3,
-      "total_cases": 3,
+      "verified_count": 21,
+      "total_cases": 21,
       "verified_success_rate": 1.0,
       "under_allocation_rate": 0.0,
       "unnecessary_retrieval_rate": 0.0,
-      "mean_latency_ms": 776.08,
+      "mean_latency_ms": 705.26,
       "mean_confidence": 0.8667
     }
   },
@@ -56,7 +56,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 0.01
+          "latency_ms": 0.02
         },
         "typesafe": {
           "arm": "typesafe",
@@ -69,19 +69,19 @@
           ],
           "confidence": 1.0,
           "probabilities": {
-            "DEEP_RETRIEVAL": 0.0,
-            "VECTOR": 0.0,
-            "TEMPORAL": 0.0,
-            "MODEL_ONLY": 0.0,
-            "LEXICAL": 0.0,
-            "EXACT": 0.0,
             "ABSTAIN": 0.0,
-            "GRAPH": 1.0
+            "EXACT": 0.0,
+            "GRAPH": 1.0,
+            "LEXICAL": 0.0,
+            "VECTOR": 0.0,
+            "DEEP_RETRIEVAL": 0.0,
+            "MODEL_ONLY": 0.0,
+            "TEMPORAL": 0.0
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 208.4
+          "latency_ms": 464.64
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -99,7 +99,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 719.02
+          "latency_ms": 800.01
         }
       }
     },
@@ -132,21 +132,21 @@
           "model": "jev-multi-primitive",
           "route": "MODEL_ONLY",
           "recipe": [],
-          "confidence": 0.73,
+          "confidence": 0.68,
           "probabilities": {
-            "DEEP_RETRIEVAL": 0.0,
-            "ABSTAIN": 0.01,
-            "VECTOR": 0.0,
-            "MODEL_ONLY": 0.77,
-            "TEMPORAL": 0.09,
+            "EXACT": 0.14,
             "LEXICAL": 0.0,
             "GRAPH": 0.0,
-            "EXACT": 0.13
+            "ABSTAIN": 0.01,
+            "MODEL_ONLY": 0.73,
+            "DEEP_RETRIEVAL": 0.0,
+            "TEMPORAL": 0.12,
+            "VECTOR": 0.0
           },
           "verified": false,
           "under_allocated": true,
           "unnecessary": false,
-          "latency_ms": 315.2
+          "latency_ms": 223.61
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -163,7 +163,7 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 811.82
+          "latency_ms": 644.75
         }
       }
     },
@@ -203,19 +203,19 @@
           ],
           "confidence": 0.98,
           "probabilities": {
-            "DEEP_RETRIEVAL": 0.0,
-            "MODEL_ONLY": 0.01,
-            "TEMPORAL": 0.99,
             "EXACT": 0.0,
-            "GRAPH": 0.0,
-            "VECTOR": 0.0,
             "LEXICAL": 0.0,
-            "ABSTAIN": 0.0
+            "GRAPH": 0.0,
+            "ABSTAIN": 0.0,
+            "MODEL_ONLY": 0.01,
+            "DEEP_RETRIEVAL": 0.0,
+            "TEMPORAL": 0.99,
+            "VECTOR": 0.0
           },
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 232.06
+          "latency_ms": 235.29
         },
         "wandb_inference": {
           "arm": "wandb_inference",
@@ -233,7 +233,1231 @@
           "verified": true,
           "under_allocated": false,
           "unnecessary": false,
-          "latency_ms": 797.39
+          "latency_ms": 786.74
+        }
+      }
+    },
+    {
+      "case_id": "heldout-004",
+      "question": "Should Orion-004 be approved for rollout as of 2026-07-15T03:00:00Z?",
+      "target_recipe": [
+        "vector",
+        "graph"
+      ],
+      "context_prose": "Operational brief for Orion-004 (risk band: medium, as-of: 2026-07-15T03:00:00Z). Service architecture maps an active operational dependency to external component Lyra-004. Verification requires traversing the dependency graph to resolve Lyra-004's stability.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": 1.0,
+          "probabilities": {
+            "MODEL_ONLY": 0.0,
+            "LEXICAL": 0.0,
+            "VECTOR": 0.0,
+            "ABSTAIN": 0.0,
+            "EXACT": 0.0,
+            "DEEP_RETRIEVAL": 0.0,
+            "GRAPH": 1.0,
+            "TEMPORAL": 0.0
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 164.49
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": 0.9,
+          "probabilities": {
+            "GRAPH": 0.9
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 685.6
+        }
+      }
+    },
+    {
+      "case_id": "heldout-005",
+      "question": "Should Orion-005 be approved for rollout as of 2026-07-17T03:00:00Z?",
+      "target_recipe": [
+        "exact"
+      ],
+      "context_prose": "Operational brief for Orion-005 (risk band: high, as-of: 2026-07-17T03:00:00Z). Registry status is confirmed clear with zero open incidents. No cross-entity dependencies are linked. Direct routine rollout verification applies.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "EXACT",
+          "recipe": [
+            "exact"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "MODEL_ONLY",
+          "recipe": [],
+          "confidence": 0.7,
+          "probabilities": {
+            "DEEP_RETRIEVAL": 0.0,
+            "VECTOR": 0.0,
+            "TEMPORAL": 0.12,
+            "MODEL_ONLY": 0.74,
+            "LEXICAL": 0.0,
+            "ABSTAIN": 0.01,
+            "EXACT": 0.13,
+            "GRAPH": 0.0
+          },
+          "verified": false,
+          "under_allocated": true,
+          "unnecessary": false,
+          "latency_ms": 165.98
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "EXACT",
+          "recipe": [
+            "exact"
+          ],
+          "confidence": 0.9,
+          "probabilities": {
+            "EXACT": 0.9
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 656.09
+        }
+      }
+    },
+    {
+      "case_id": "heldout-006",
+      "question": "Should Orion-006 be approved for rollout as of 2026-07-19T03:00:00Z?",
+      "target_recipe": [
+        "vector",
+        "temporal"
+      ],
+      "context_prose": "Operational brief for Orion-006 (risk band: low, as-of: 2026-07-19T03:00:00Z). Initial incident audit recorded an earlier blocker status. A newer timeline update was subsequently published superseding earlier logs. Policy specifies that stale evidence cannot certify readiness.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": 0.98,
+          "probabilities": {
+            "TEMPORAL": 0.99,
+            "ABSTAIN": 0.0,
+            "DEEP_RETRIEVAL": 0.0,
+            "GRAPH": 0.0,
+            "MODEL_ONLY": 0.01,
+            "VECTOR": 0.0,
+            "LEXICAL": 0.0,
+            "EXACT": 0.0
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 159.82
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": 0.8,
+          "probabilities": {
+            "TEMPORAL": 0.8
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 709.4
+        }
+      }
+    },
+    {
+      "case_id": "heldout-007",
+      "question": "Should Orion-007 be approved for rollout as of 2026-07-21T03:00:00Z?",
+      "target_recipe": [
+        "vector",
+        "graph"
+      ],
+      "context_prose": "Operational brief for Orion-007 (risk band: medium, as-of: 2026-07-21T03:00:00Z). Service architecture maps an active operational dependency to external component Lyra-007. Verification requires traversing the dependency graph to resolve Lyra-007's stability.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": 1.0,
+          "probabilities": {
+            "EXACT": 0.0,
+            "LEXICAL": 0.0,
+            "GRAPH": 1.0,
+            "ABSTAIN": 0.0,
+            "MODEL_ONLY": 0.0,
+            "DEEP_RETRIEVAL": 0.0,
+            "TEMPORAL": 0.0,
+            "VECTOR": 0.0
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 161.86
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": 0.9,
+          "probabilities": {
+            "GRAPH": 0.9
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 685.51
+        }
+      }
+    },
+    {
+      "case_id": "heldout-008",
+      "question": "Should Orion-008 be approved for rollout as of 2026-07-23T03:00:00Z?",
+      "target_recipe": [
+        "exact"
+      ],
+      "context_prose": "Operational brief for Orion-008 (risk band: high, as-of: 2026-07-23T03:00:00Z). Registry status is confirmed clear with zero open incidents. No cross-entity dependencies are linked. Direct routine rollout verification applies.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "EXACT",
+          "recipe": [
+            "exact"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "MODEL_ONLY",
+          "recipe": [],
+          "confidence": 0.7,
+          "probabilities": {
+            "DEEP_RETRIEVAL": 0.0,
+            "MODEL_ONLY": 0.74,
+            "TEMPORAL": 0.11,
+            "EXACT": 0.14,
+            "GRAPH": 0.0,
+            "VECTOR": 0.0,
+            "LEXICAL": 0.0,
+            "ABSTAIN": 0.01
+          },
+          "verified": false,
+          "under_allocated": true,
+          "unnecessary": false,
+          "latency_ms": 223.35
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "EXACT",
+          "recipe": [
+            "exact"
+          ],
+          "confidence": 0.9,
+          "probabilities": {
+            "EXACT": 0.9
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 682.86
+        }
+      }
+    },
+    {
+      "case_id": "heldout-009",
+      "question": "Should Orion-009 be approved for rollout as of 2026-07-25T03:00:00Z?",
+      "target_recipe": [
+        "vector",
+        "temporal"
+      ],
+      "context_prose": "Operational brief for Orion-009 (risk band: low, as-of: 2026-07-25T03:00:00Z). Initial incident audit recorded an earlier blocker status. A newer timeline update was subsequently published superseding earlier logs. Policy specifies that stale evidence cannot certify readiness.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": 0.98,
+          "probabilities": {
+            "DEEP_RETRIEVAL": 0.0,
+            "ABSTAIN": 0.0,
+            "GRAPH": 0.0,
+            "VECTOR": 0.0,
+            "TEMPORAL": 0.99,
+            "EXACT": 0.0,
+            "LEXICAL": 0.0,
+            "MODEL_ONLY": 0.01
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 171.94
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": 0.8,
+          "probabilities": {
+            "TEMPORAL": 0.8
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 722.31
+        }
+      }
+    },
+    {
+      "case_id": "heldout-010",
+      "question": "Should Orion-010 be approved for rollout as of 2026-07-27T03:00:00Z?",
+      "target_recipe": [
+        "vector",
+        "graph"
+      ],
+      "context_prose": "Operational brief for Orion-010 (risk band: medium, as-of: 2026-07-27T03:00:00Z). Service architecture maps an active operational dependency to external component Lyra-010. Verification requires traversing the dependency graph to resolve Lyra-010's stability.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": 1.0,
+          "probabilities": {
+            "TEMPORAL": 0.0,
+            "ABSTAIN": 0.0,
+            "LEXICAL": 0.0,
+            "EXACT": 0.0,
+            "GRAPH": 1.0,
+            "VECTOR": 0.0,
+            "DEEP_RETRIEVAL": 0.0,
+            "MODEL_ONLY": 0.0
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 164.37
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": 0.9,
+          "probabilities": {
+            "GRAPH": 0.9
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 701.77
+        }
+      }
+    },
+    {
+      "case_id": "heldout-011",
+      "question": "Should Orion-011 be approved for rollout as of 2026-07-29T03:00:00Z?",
+      "target_recipe": [
+        "exact"
+      ],
+      "context_prose": "Operational brief for Orion-011 (risk band: high, as-of: 2026-07-29T03:00:00Z). Registry status is confirmed clear with zero open incidents. No cross-entity dependencies are linked. Direct routine rollout verification applies.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "EXACT",
+          "recipe": [
+            "exact"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "MODEL_ONLY",
+          "recipe": [],
+          "confidence": 0.72,
+          "probabilities": {
+            "MODEL_ONLY": 0.75,
+            "DEEP_RETRIEVAL": 0.0,
+            "TEMPORAL": 0.1,
+            "EXACT": 0.14,
+            "GRAPH": 0.0,
+            "VECTOR": 0.0,
+            "LEXICAL": 0.0,
+            "ABSTAIN": 0.01
+          },
+          "verified": false,
+          "under_allocated": true,
+          "unnecessary": false,
+          "latency_ms": 217.42
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "EXACT",
+          "recipe": [
+            "exact"
+          ],
+          "confidence": 0.9,
+          "probabilities": {
+            "EXACT": 0.9
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 631.45
+        }
+      }
+    },
+    {
+      "case_id": "heldout-012",
+      "question": "Should Orion-012 be approved for rollout as of 2026-07-31T03:00:00Z?",
+      "target_recipe": [
+        "vector",
+        "temporal"
+      ],
+      "context_prose": "Operational brief for Orion-012 (risk band: low, as-of: 2026-07-31T03:00:00Z). Initial incident audit recorded an earlier blocker status. A newer timeline update was subsequently published superseding earlier logs. Policy specifies that stale evidence cannot certify readiness.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": 0.98,
+          "probabilities": {
+            "LEXICAL": 0.0,
+            "MODEL_ONLY": 0.01,
+            "DEEP_RETRIEVAL": 0.0,
+            "TEMPORAL": 0.99,
+            "EXACT": 0.0,
+            "GRAPH": 0.0,
+            "ABSTAIN": 0.0,
+            "VECTOR": 0.0
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 168.14
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": 0.8,
+          "probabilities": {
+            "TEMPORAL": 0.8
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 698.43
+        }
+      }
+    },
+    {
+      "case_id": "heldout-013",
+      "question": "Should Orion-013 be approved for rollout as of 2026-08-02T03:00:00Z?",
+      "target_recipe": [
+        "vector",
+        "graph"
+      ],
+      "context_prose": "Operational brief for Orion-013 (risk band: medium, as-of: 2026-08-02T03:00:00Z). Service architecture maps an active operational dependency to external component Lyra-013. Verification requires traversing the dependency graph to resolve Lyra-013's stability.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": 0.99,
+          "probabilities": {
+            "DEEP_RETRIEVAL": 0.0,
+            "ABSTAIN": 0.0,
+            "EXACT": 0.0,
+            "VECTOR": 0.0,
+            "TEMPORAL": 0.0,
+            "GRAPH": 1.0,
+            "LEXICAL": 0.0,
+            "MODEL_ONLY": 0.0
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 165.71
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": 0.9,
+          "probabilities": {
+            "GRAPH": 0.9
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 651.21
+        }
+      }
+    },
+    {
+      "case_id": "heldout-014",
+      "question": "Should Orion-014 be approved for rollout as of 2026-08-04T03:00:00Z?",
+      "target_recipe": [
+        "exact"
+      ],
+      "context_prose": "Operational brief for Orion-014 (risk band: high, as-of: 2026-08-04T03:00:00Z). Registry status is confirmed clear with zero open incidents. No cross-entity dependencies are linked. Direct routine rollout verification applies.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "EXACT",
+          "recipe": [
+            "exact"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "MODEL_ONLY",
+          "recipe": [],
+          "confidence": 0.7,
+          "probabilities": {
+            "DEEP_RETRIEVAL": 0.0,
+            "VECTOR": 0.0,
+            "TEMPORAL": 0.1,
+            "MODEL_ONLY": 0.75,
+            "LEXICAL": 0.0,
+            "EXACT": 0.14,
+            "ABSTAIN": 0.01,
+            "GRAPH": 0.0
+          },
+          "verified": false,
+          "under_allocated": true,
+          "unnecessary": false,
+          "latency_ms": 218.24
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "EXACT",
+          "recipe": [
+            "exact"
+          ],
+          "confidence": 0.9,
+          "probabilities": {
+            "EXACT": 0.9
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 662.33
+        }
+      }
+    },
+    {
+      "case_id": "heldout-015",
+      "question": "Should Orion-015 be approved for rollout as of 2026-08-06T03:00:00Z?",
+      "target_recipe": [
+        "vector",
+        "temporal"
+      ],
+      "context_prose": "Operational brief for Orion-015 (risk band: low, as-of: 2026-08-06T03:00:00Z). Initial incident audit recorded an earlier blocker status. A newer timeline update was subsequently published superseding earlier logs. Policy specifies that stale evidence cannot certify readiness.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": 0.98,
+          "probabilities": {
+            "ABSTAIN": 0.0,
+            "DEEP_RETRIEVAL": 0.0,
+            "GRAPH": 0.0,
+            "MODEL_ONLY": 0.01,
+            "LEXICAL": 0.0,
+            "EXACT": 0.0,
+            "VECTOR": 0.0,
+            "TEMPORAL": 0.99
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 171.66
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": 0.8,
+          "probabilities": {
+            "TEMPORAL": 0.8
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 730.3
+        }
+      }
+    },
+    {
+      "case_id": "heldout-016",
+      "question": "Should Orion-016 be approved for rollout as of 2026-08-08T03:00:00Z?",
+      "target_recipe": [
+        "vector",
+        "graph"
+      ],
+      "context_prose": "Operational brief for Orion-016 (risk band: medium, as-of: 2026-08-08T03:00:00Z). Service architecture maps an active operational dependency to external component Lyra-016. Verification requires traversing the dependency graph to resolve Lyra-016's stability.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": 0.99,
+          "probabilities": {
+            "GRAPH": 1.0,
+            "ABSTAIN": 0.0,
+            "DEEP_RETRIEVAL": 0.0,
+            "MODEL_ONLY": 0.0,
+            "TEMPORAL": 0.0,
+            "LEXICAL": 0.0,
+            "VECTOR": 0.0,
+            "EXACT": 0.0
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 220.55
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": 0.9,
+          "probabilities": {
+            "GRAPH": 0.9
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 681.79
+        }
+      }
+    },
+    {
+      "case_id": "heldout-017",
+      "question": "Should Orion-017 be approved for rollout as of 2026-08-10T03:00:00Z?",
+      "target_recipe": [
+        "exact"
+      ],
+      "context_prose": "Operational brief for Orion-017 (risk band: high, as-of: 2026-08-10T03:00:00Z). Registry status is confirmed clear with zero open incidents. No cross-entity dependencies are linked. Direct routine rollout verification applies.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "EXACT",
+          "recipe": [
+            "exact"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "MODEL_ONLY",
+          "recipe": [],
+          "confidence": 0.71,
+          "probabilities": {
+            "TEMPORAL": 0.1,
+            "DEEP_RETRIEVAL": 0.0,
+            "MODEL_ONLY": 0.75,
+            "LEXICAL": 0.0,
+            "VECTOR": 0.0,
+            "ABSTAIN": 0.01,
+            "EXACT": 0.14,
+            "GRAPH": 0.0
+          },
+          "verified": false,
+          "under_allocated": true,
+          "unnecessary": false,
+          "latency_ms": 165.78
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "EXACT",
+          "recipe": [
+            "exact"
+          ],
+          "confidence": 0.9,
+          "probabilities": {
+            "EXACT": 0.9
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 681.9
+        }
+      }
+    },
+    {
+      "case_id": "heldout-018",
+      "question": "Should Orion-018 be approved for rollout as of 2026-08-12T03:00:00Z?",
+      "target_recipe": [
+        "vector",
+        "temporal"
+      ],
+      "context_prose": "Operational brief for Orion-018 (risk band: low, as-of: 2026-08-12T03:00:00Z). Initial incident audit recorded an earlier blocker status. A newer timeline update was subsequently published superseding earlier logs. Policy specifies that stale evidence cannot certify readiness.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": 0.98,
+          "probabilities": {
+            "ABSTAIN": 0.0,
+            "EXACT": 0.0,
+            "GRAPH": 0.0,
+            "LEXICAL": 0.0,
+            "MODEL_ONLY": 0.01,
+            "DEEP_RETRIEVAL": 0.0,
+            "VECTOR": 0.0,
+            "TEMPORAL": 0.99
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 167.49
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": 0.8,
+          "probabilities": {
+            "TEMPORAL": 0.8
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 865.4
+        }
+      }
+    },
+    {
+      "case_id": "heldout-019",
+      "question": "Should Orion-019 be approved for rollout as of 2026-08-14T03:00:00Z?",
+      "target_recipe": [
+        "vector",
+        "graph"
+      ],
+      "context_prose": "Operational brief for Orion-019 (risk band: medium, as-of: 2026-08-14T03:00:00Z). Service architecture maps an active operational dependency to external component Lyra-019. Verification requires traversing the dependency graph to resolve Lyra-019's stability.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": 1.0,
+          "probabilities": {
+            "TEMPORAL": 0.0,
+            "DEEP_RETRIEVAL": 0.0,
+            "GRAPH": 1.0,
+            "MODEL_ONLY": 0.0,
+            "LEXICAL": 0.0,
+            "EXACT": 0.0,
+            "VECTOR": 0.0,
+            "ABSTAIN": 0.0
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 223.89
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "GRAPH",
+          "recipe": [
+            "vector",
+            "graph"
+          ],
+          "confidence": 0.9,
+          "probabilities": {
+            "GRAPH": 0.9
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 688.81
+        }
+      }
+    },
+    {
+      "case_id": "heldout-020",
+      "question": "Should Orion-020 be approved for rollout as of 2026-08-16T03:00:00Z?",
+      "target_recipe": [
+        "exact"
+      ],
+      "context_prose": "Operational brief for Orion-020 (risk band: high, as-of: 2026-08-16T03:00:00Z). Registry status is confirmed clear with zero open incidents. No cross-entity dependencies are linked. Direct routine rollout verification applies.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "EXACT",
+          "recipe": [
+            "exact"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "MODEL_ONLY",
+          "recipe": [],
+          "confidence": 0.67,
+          "probabilities": {
+            "LEXICAL": 0.0,
+            "MODEL_ONLY": 0.71,
+            "DEEP_RETRIEVAL": 0.0,
+            "TEMPORAL": 0.12,
+            "EXACT": 0.15,
+            "GRAPH": 0.0,
+            "ABSTAIN": 0.01,
+            "VECTOR": 0.01
+          },
+          "verified": false,
+          "under_allocated": true,
+          "unnecessary": false,
+          "latency_ms": 223.03
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "EXACT",
+          "recipe": [
+            "exact"
+          ],
+          "confidence": 0.9,
+          "probabilities": {
+            "EXACT": 0.9
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 721.16
+        }
+      }
+    },
+    {
+      "case_id": "heldout-021",
+      "question": "Should Orion-021 be approved for rollout as of 2026-08-18T03:00:00Z?",
+      "target_recipe": [
+        "vector",
+        "temporal"
+      ],
+      "context_prose": "Operational brief for Orion-021 (risk band: low, as-of: 2026-08-18T03:00:00Z). Initial incident audit recorded an earlier blocker status. A newer timeline update was subsequently published superseding earlier logs. Policy specifies that stale evidence cannot certify readiness.",
+      "arms": {
+        "deterministic": {
+          "arm": "deterministic",
+          "provider": "deterministic",
+          "model": "heuristic-latent",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": null,
+          "probabilities": {},
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 0.01
+        },
+        "typesafe": {
+          "arm": "typesafe",
+          "provider": "typesafe",
+          "model": "jev-multi-primitive",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": 0.98,
+          "probabilities": {
+            "DEEP_RETRIEVAL": 0.0,
+            "ABSTAIN": 0.0,
+            "EXACT": 0.0,
+            "VECTOR": 0.0,
+            "TEMPORAL": 0.99,
+            "GRAPH": 0.0,
+            "LEXICAL": 0.0,
+            "MODEL_ONLY": 0.01
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 228.37
+        },
+        "wandb_inference": {
+          "arm": "wandb_inference",
+          "provider": "wandb_inference",
+          "model": "meta-llama/Llama-3.3-70B-Instruct",
+          "route": "TEMPORAL",
+          "recipe": [
+            "vector",
+            "temporal"
+          ],
+          "confidence": 0.8,
+          "probabilities": {
+            "TEMPORAL": 0.8
+          },
+          "verified": true,
+          "under_allocated": false,
+          "unnecessary": false,
+          "latency_ms": 722.67
         }
       }
     }
